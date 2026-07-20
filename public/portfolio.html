@@ -1,0 +1,2388 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kapil Rajput — Full-Stack Software Engineer</title>
+    <meta
+      name="description"
+      content="Kapil Rajput. Full-stack software engineer — React, Next.js, Node.js. Two years building production-scale platforms at Vaayro Technologies."
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;700;800;900&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ============================================================
+   TOKENS
+   Paper   #EDE9E0   drafting paper, warm off-white
+   Ink     #17233B   blueprint ink, near-navy
+   Signal  #FF5A1F   highlighter orange, technical marker
+   Graphite#14161A   deep chapters
+   Mist    #F5F6F4   clean gallery white
+   Void    #0A0B0D   deep space
+   Glass   #DCE6E0   cool glass tint
+   ============================================================ */
+      :root {
+        --paper: #ede9e0;
+        --paper-line: #c9c2b2;
+        --ink: #17233b;
+        --ink-soft: #3c4a66;
+        --signal: #ff5a1f;
+        --graphite: #14161a;
+        --graphite-soft: #8a8d94;
+        --mist: #f5f6f4;
+        --mist-line: #dcdcd8;
+        --void: #0a0b0d;
+        --glass: #dce6e0;
+        --display: "Big Shoulders Display", sans-serif;
+        --serif: "Instrument Serif", serif;
+        --body: "Inter", sans-serif;
+        --mono: "IBM Plex Mono", monospace;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        background: var(--paper);
+      }
+      body {
+        font-family: var(--body);
+        background: var(--paper);
+        color: var(--ink);
+        overflow-x: hidden;
+        cursor: none;
+      }
+      ::selection {
+        background: var(--signal);
+        color: var(--paper);
+      }
+      img {
+        display: block;
+        max-width: 100%;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.001ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.001ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+
+      /* ---------------- custom cursor: coordinate readout ---------------- */
+      #cursor {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 0;
+        pointer-events: none;
+        z-index: 9999;
+        mix-blend-mode: difference;
+      }
+      #cursor .dot {
+        position: absolute;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #fff;
+        transform: translate(-50%, -50%);
+      }
+      #cursor .ring {
+        position: absolute;
+        width: 34px;
+        height: 34px;
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+      }
+      #cursor .coord {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.05em;
+        color: #fff;
+        white-space: nowrap;
+      }
+      @media (hover: none), (pointer: coarse) {
+        #cursor {
+          display: none;
+        }
+        body {
+          cursor: auto;
+        }
+      }
+
+      /* ---------------- progress spine ---------------- */
+      #spine {
+        position: fixed;
+        right: 22px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 500;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        font-family: var(--mono);
+        font-size: 9px;
+        letter-spacing: 0.08em;
+        mix-blend-mode: difference;
+      }
+      #spine .track {
+        width: 1px;
+        height: 160px;
+        background: rgba(255, 255, 255, 0.35);
+        position: relative;
+      }
+      #spine .fill {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 0%;
+        background: #fff;
+      }
+      #spine .lbl {
+        color: #fff;
+        writing-mode: vertical-rl;
+      }
+
+      /* ---------------- top nav ---------------- */
+      #nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 900;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 26px 40px;
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        mix-blend-mode: difference;
+        color: #fff;
+        pointer-events: none;
+      }
+      #nav .mark {
+        font-family: var(--display);
+        font-weight: 700;
+        font-size: 16px;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
+      #nav .idx {
+        opacity: 0.8;
+      }
+
+      /* ============================================================
+   CHAPTER 01 — HERO : centered, blueprint paper + wireframe solid
+   ============================================================ */
+      .ch {
+        position: relative;
+        width: 100%;
+      }
+      #ch-hero {
+        min-height: 100vh;
+        background: var(--paper);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+      .blueprint-grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(var(--paper-line) 1px, transparent 1px),
+          linear-gradient(90deg, var(--paper-line) 1px, transparent 1px);
+        background-size: 48px 48px;
+        opacity: 0.35;
+      }
+      #canvas-hero {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .hero-inner {
+        position: relative;
+        z-index: 2;
+        padding: 0 24px;
+      }
+      .hero-eyebrow {
+        font-family: var(--mono);
+        font-size: 12px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        margin-bottom: 22px;
+      }
+      .hero-eyebrow .tick {
+        color: var(--signal);
+      }
+      .hero-title {
+        font-family: var(--display);
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: clamp(58px, 12vw, 180px);
+        line-height: 0.86;
+        letter-spacing: -0.01em;
+        color: var(--ink);
+      }
+      .hero-title .line {
+        overflow: hidden;
+        display: block;
+      }
+      .hero-title .line span {
+        display: inline-block;
+        will-change: transform;
+      }
+      .hero-sub {
+        margin-top: 26px;
+        font-family: var(--serif);
+        font-style: italic;
+        font-size: clamp(18px, 2.6vw, 28px);
+        color: var(--ink-soft);
+        max-width: 640px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .hero-scroll {
+        position: absolute;
+        bottom: 36px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+      .hero-scroll .bar {
+        width: 1px;
+        height: 36px;
+        background: var(--ink-soft);
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-scroll .bar::after {
+        content: "";
+        position: absolute;
+        top: -100%;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--signal);
+        animation: scrollpulse 1.8s ease-in-out infinite;
+      }
+      @keyframes scrollpulse {
+        0% {
+          top: -100%;
+        }
+        100% {
+          top: 100%;
+        }
+      }
+
+      /* dimension callouts, reused motif */
+      .dim {
+        position: absolute;
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.05em;
+        color: var(--ink-soft);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        z-index: 3;
+      }
+      .dim::before {
+        content: "";
+        width: 20px;
+        height: 1px;
+        background: currentColor;
+      }
+
+      /* ============================================================
+   CHAPTER 02 — MANIFESTO : split screen, sticky annotation panel
+   ============================================================ */
+      #ch-about {
+        background: var(--paper);
+        position: relative;
+        padding: 0;
+      }
+      .split {
+        display: grid;
+        grid-template-columns: 0.85fr 1.15fr;
+        min-height: 100vh;
+      }
+      .split-sticky {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        border-right: 1px solid var(--paper-line);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 52px 40px 34px;
+      }
+      .split-sticky .tag {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+      }
+      .split-sticky .name {
+        font-family: var(--display);
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: clamp(32px, 4vw, 56px);
+        line-height: 0.95;
+        margin-top: 18px;
+      }
+      .spec-list {
+        list-style: none;
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--ink-soft);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .spec-list li {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px dashed var(--paper-line);
+        padding-bottom: 8px;
+      }
+      .spec-list li b {
+        color: var(--ink);
+        font-weight: 500;
+      }
+      .split-flow {
+        padding: 52px 56px 52px 48px;
+        display: flex;
+        flex-direction: column;
+        gap: 26px;
+      }
+      .manifesto-line {
+        font-family: var(--serif);
+        font-style: italic;
+        font-size: clamp(22px, 3.4vw, 40px);
+        line-height: 1.35;
+        max-width: 720px;
+        color: var(--ink);
+      }
+      .manifesto-body {
+        font-size: 16px;
+        line-height: 1.85;
+        color: var(--ink-soft);
+        max-width: 520px;
+      }
+
+      /* ============================================================
+   CHAPTER 03 — TOOL RACK : horizontal gallery
+   ============================================================ */
+      #ch-tools {
+        background: var(--mist);
+        position: relative;
+      }
+      .tools-pin {
+        height: 100vh;
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .tools-head {
+        padding: 0 6vw;
+        margin-bottom: 26px;
+      }
+      .tools-head .kicker {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--graphite-soft);
+      }
+      .tools-head h2 {
+        font-family: var(--display);
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: clamp(34px, 5vw, 64px);
+        color: var(--graphite);
+      }
+      .tools-track {
+        display: flex;
+        gap: 0;
+        padding-left: 6vw;
+        will-change: transform;
+      }
+      .tool-card {
+        flex: 0 0 auto;
+        width: min(64vw, 560px);
+        height: 56vh;
+        margin-right: 28px;
+        border: 1px solid var(--mist-line);
+        background: #fff;
+        padding: 36px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .tool-card .num {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--signal);
+      }
+      .tool-card h3 {
+        font-family: var(--display);
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: clamp(28px, 3.6vw, 44px);
+        color: var(--graphite);
+        margin-top: 18px;
+      }
+      .tool-card p {
+        font-size: 14.5px;
+        line-height: 1.75;
+        color: var(--graphite-soft);
+        max-width: 38ch;
+      }
+      .tool-card .tags {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.06em;
+        color: var(--graphite-soft);
+      }
+      .tool-card .tags span {
+        border: 1px solid var(--mist-line);
+        padding: 4px 8px;
+        border-radius: 2px;
+      }
+
+      /* ============================================================
+   CHAPTER 04 — PROJECT ONE (Meridian) : pinned article w/ mask reveals
+   ============================================================ */
+      .project {
+        background: var(--graphite);
+        color: var(--mist);
+        position: relative;
+        overflow: hidden;
+      }
+      .project-pin {
+        min-height: 260vh;
+        position: relative;
+      }
+      .project-stage {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        overflow: hidden;
+      }
+      .project-media {
+        position: relative;
+        height: 70vh;
+        margin: 0 6vw;
+        display: grid;
+        grid-template-columns: 1.3fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 10px;
+      }
+      .project-media .shot {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(245, 246, 244, 0.15);
+        background: #0e0f11;
+      }
+      .project-media .shot img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scale(1.15);
+      }
+      .project-media .shot.website {
+        grid-row: 1/3;
+        grid-column: 1;
+      }
+      .project-media .shot.admin {
+        grid-row: 1;
+        grid-column: 2;
+      }
+      .project-media .shot.app {
+        grid-row: 2;
+        grid-column: 2;
+      }
+      .project-media .shot .shot-tag {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        font-family: var(--mono);
+        font-size: 9.5px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #fff;
+        background: rgba(10, 11, 13, 0.55);
+        backdrop-filter: blur(4px);
+        padding: 4px 9px;
+      }
+      .project-copy {
+        padding: 0 6vw 0 0;
+        position: relative;
+        height: 70vh;
+      }
+      .project-copy .stagewrap {
+        position: relative;
+        height: 100%;
+      }
+      .project-stagelabel {
+        position: absolute;
+        top: 0;
+        left: 0;
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--signal);
+      }
+      .project-block {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        opacity: 0;
+      }
+      .project-block .kicker {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--graphite-soft);
+      }
+      .project-block h3 {
+        font-family: var(--serif);
+        font-style: italic;
+        font-size: clamp(26px, 3.2vw, 42px);
+        margin-top: 14px;
+        line-height: 1.25;
+        max-width: 16ch;
+      }
+      .project-block p {
+        margin-top: 18px;
+        font-size: 15px;
+        line-height: 1.85;
+        color: #c7c9c4;
+        max-width: 44ch;
+      }
+      .project-block .stat {
+        display: flex;
+        gap: 36px;
+        margin-top: 26px;
+      }
+      .project-block .stat div b {
+        display: block;
+        font-family: var(--display);
+        font-size: 34px;
+        color: var(--signal);
+        font-weight: 700;
+      }
+      .project-block .stat div span {
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.05em;
+        color: var(--graphite-soft);
+        text-transform: uppercase;
+      }
+      .project-title-fixed {
+        position: absolute;
+        bottom: 36px;
+        left: 6vw;
+        font-family: var(--display);
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: clamp(40px, 7vw, 110px);
+        color: rgba(245, 246, 244, 0.06);
+        letter-spacing: -0.01em;
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      /* ============================================================
+   CHAPTER 05 — PROJECT TWO (Northbound) : magazine layout
+   ============================================================ */
+      #ch-proj2 {
+        background: var(--mist);
+        color: var(--graphite);
+        padding: 64px 6vw 56px;
+      }
+      .mag-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 22px;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      .mag-kicker {
+        grid-column: 1/5;
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--graphite-soft);
+        align-self: start;
+      }
+      .mag-title {
+        grid-column: 1/13;
+        font-family: var(--display);
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: clamp(40px, 7vw, 120px);
+        line-height: 0.9;
+        margin: 10px 0 26px;
+      }
+      .mag-mosaic {
+        grid-column: 1/8;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1.3fr 1fr;
+        gap: 12px;
+        aspect-ratio: 4/5;
+      }
+      .mag-mosaic .shot {
+        position: relative;
+        overflow: hidden;
+        background: #111;
+        border: 1px solid var(--mist-line);
+      }
+      .mag-mosaic .shot img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .mag-mosaic .shot.website {
+        grid-column: 1/3;
+        grid-row: 1;
+      }
+      .mag-mosaic .shot.admin {
+        grid-column: 1;
+        grid-row: 2;
+      }
+      .mag-mosaic .shot.app {
+        grid-column: 2;
+        grid-row: 2;
+      }
+      .mag-mosaic .shot .shot-tag {
+        position: absolute;
+        bottom: 8px;
+        left: 8px;
+        font-family: var(--mono);
+        font-size: 9.5px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #fff;
+        background: rgba(10, 11, 13, 0.55);
+        padding: 4px 8px;
+      }
+      .mag-copy {
+        grid-column: 8/13;
+        align-self: end;
+        padding-bottom: 12px;
+      }
+      .mag-copy p {
+        font-size: 15.5px;
+        line-height: 1.85;
+        color: #4b4d49;
+        margin-bottom: 18px;
+      }
+      .mag-stats {
+        grid-column: 1/13;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+        margin-top: 26px;
+        border-top: 1px solid var(--mist-line);
+        padding-top: 20px;
+      }
+      .mag-stats div b {
+        font-family: var(--display);
+        font-size: clamp(30px, 3.4vw, 52px);
+        font-weight: 700;
+        display: block;
+        color: var(--graphite);
+      }
+      .mag-stats div span {
+        font-family: var(--mono);
+        font-size: 10.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--graphite-soft);
+      }
+
+      /* ============================================================
+   CHAPTER 06 — PROJECT THREE (Glasshouse) : freeform overlap + three.js
+   ============================================================ */
+      #ch-proj3 {
+        background: var(--ink);
+        color: var(--paper);
+        position: relative;
+        min-height: 104vh;
+        overflow: hidden;
+      }
+      #canvas-arch {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.9;
+      }
+      .freeform {
+        position: relative;
+        z-index: 2;
+        padding: 64px 6vw;
+      }
+      .ff-kicker {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #9db0d6;
+      }
+      .ff-title {
+        font-family: var(--display);
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: clamp(46px, 8vw, 140px);
+        line-height: 0.86;
+        margin-top: 16px;
+      }
+      .ff-card {
+        margin-top: 40px;
+        max-width: 460px;
+        background: rgba(237, 233, 224, 0.06);
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba(237, 233, 224, 0.18);
+        padding: 30px;
+        margin-left: auto;
+      }
+      .ff-card p {
+        font-size: 15px;
+        line-height: 1.85;
+        color: #d8dced;
+      }
+      .ff-gallery {
+        display: flex;
+        gap: 16px;
+        margin-top: 34px;
+      }
+      .ff-gallery .shot {
+        width: min(38vw, 220px);
+        aspect-ratio: 3/4;
+        overflow: hidden;
+        border: 1px solid rgba(237, 233, 224, 0.22);
+        position: relative;
+        background: #0e1526;
+      }
+      .ff-gallery .shot:nth-child(2) {
+        margin-top: 26px;
+      }
+      .ff-gallery .shot img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .ff-gallery .shot .shot-tag {
+        position: absolute;
+        bottom: 8px;
+        left: 8px;
+        font-family: var(--mono);
+        font-size: 9.5px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #fff;
+        background: rgba(10, 11, 13, 0.55);
+        padding: 4px 8px;
+      }
+      .ff-tag-float {
+        position: absolute;
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        color: #9db0d6;
+        border: 1px solid rgba(237, 233, 224, 0.25);
+        padding: 6px 12px;
+        border-radius: 20px;
+      }
+
+      /* ============================================================
+   CHAPTER 07 — JOURNEY : horizontal road, camera-follow
+   ============================================================ */
+      #ch-journey {
+        background: var(--void);
+        position: relative;
+      }
+      .journey-pin {
+        height: 100vh;
+        overflow: hidden;
+        position: relative;
+      }
+      .journey-head {
+        position: absolute;
+        top: 60px;
+        left: 6vw;
+        z-index: 3;
+      }
+      .journey-head .kicker {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #7d8290;
+      }
+      .journey-head h2 {
+        font-family: var(--display);
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: clamp(30px, 4.6vw, 58px);
+        color: var(--mist);
+      }
+      #canvas-journey {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .journey-track {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: flex-end;
+        height: 60vh;
+        padding-left: 12vw;
+        will-change: transform;
+      }
+      .mile {
+        flex: 0 0 auto;
+        width: min(46vw, 380px);
+        margin-right: 80px;
+        padding-bottom: 70px;
+        position: relative;
+      }
+      .mile::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--signal);
+        box-shadow: 0 0 0 4px rgba(255, 90, 31, 0.2);
+      }
+      .mile .yr {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--signal);
+        margin-bottom: 10px;
+        display: block;
+      }
+      .mile h4 {
+        font-family: var(--serif);
+        font-style: italic;
+        color: var(--mist);
+        font-size: clamp(20px, 2.4vw, 30px);
+      }
+      .mile p {
+        margin-top: 10px;
+        font-size: 13.5px;
+        line-height: 1.7;
+        color: #9b9ea6;
+        max-width: 34ch;
+      }
+
+      /* ============================================================
+   CHAPTER 08 — PROCESS : editorial, paper texture, pull quotes
+   ============================================================ */
+      #ch-process {
+        background: var(--paper);
+        color: var(--ink);
+        padding: 64px 0 64px;
+        position: relative;
+      }
+      .process-texture {
+        position: absolute;
+        inset: 0;
+        opacity: 0.5;
+        background-image: radial-gradient(
+          circle at 1px 1px,
+          var(--paper-line) 1px,
+          transparent 0
+        );
+        background-size: 22px 22px;
+        pointer-events: none;
+      }
+      .editorial {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 0 24px;
+        position: relative;
+        z-index: 1;
+      }
+      .editorial .kicker {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        text-align: center;
+      }
+      .editorial h2 {
+        font-family: var(--display);
+        font-weight: 800;
+        text-transform: uppercase;
+        text-align: center;
+        font-size: clamp(34px, 6vw, 72px);
+        margin: 14px 0 34px;
+      }
+      .process-row {
+        display: grid;
+        grid-template-columns: 0.4fr 1fr;
+        gap: 32px;
+        padding: 30px 0;
+        border-top: 1px solid var(--paper-line);
+        align-items: start;
+      }
+      .process-row:last-child {
+        border-bottom: 1px solid var(--paper-line);
+      }
+      .process-row .step {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--signal);
+      }
+      .process-row h3 {
+        font-family: var(--display);
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: clamp(22px, 2.6vw, 32px);
+        margin-top: 6px;
+      }
+      .process-row p {
+        font-size: 15px;
+        line-height: 1.85;
+        color: var(--ink-soft);
+        max-width: 56ch;
+      }
+      .pull-quote {
+        font-family: var(--serif);
+        font-style: italic;
+        font-size: clamp(24px, 3.6vw, 44px);
+        line-height: 1.4;
+        text-align: center;
+        max-width: 820px;
+        margin: 38px auto 0;
+        color: var(--ink);
+      }
+      .pull-quote span {
+        color: var(--signal);
+      }
+
+      /* ============================================================
+   CHAPTER 09 — HIGHLIGHTS : deep space, image-led grid
+   ============================================================ */
+      #ch-highlights {
+        background: var(--void);
+        color: var(--mist);
+        padding: 60px 0 90px;
+        position: relative;
+        overflow: hidden;
+      }
+      #canvas-space {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .recog-head {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        margin-bottom: 36px;
+      }
+      .recog-head .kicker {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #7d8290;
+      }
+      .recog-head h2 {
+        font-family: var(--display);
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: clamp(34px, 6vw, 72px);
+      }
+      .highlight-grid {
+        position: relative;
+        z-index: 2;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 6vw;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+      }
+      .highlight-card {
+        background: #16181d;
+        border: 1px solid rgba(245, 246, 244, 0.1);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .highlight-card .hl-thumb {
+        aspect-ratio: 16/10;
+        overflow: hidden;
+        position: relative;
+      }
+      .highlight-card .hl-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .highlight-card .hl-num {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.06em;
+        color: #fff;
+        background: rgba(10, 11, 13, 0.55);
+        padding: 4px 9px;
+      }
+      .highlight-card .hl-body {
+        padding: 26px 26px 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .highlight-card .hl-tag {
+        font-family: var(--mono);
+        font-size: 10.5px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--signal);
+      }
+      .highlight-card .hl-text {
+        font-family: var(--serif);
+        font-style: italic;
+        font-size: 16.5px;
+        line-height: 1.55;
+        color: var(--mist);
+      }
+
+      /* ============================================================
+   CHAPTER 10 — CONTACT : minimal ending, glass sculpture
+   ============================================================ */
+      #ch-contact {
+        background: var(--mist);
+        color: var(--graphite);
+        min-height: 100vh;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      #canvas-contact {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .contact-inner {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        padding: 0 24px;
+      }
+      .contact-inner .kicker {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--graphite-soft);
+      }
+      .contact-inner h2 {
+        font-family: var(--display);
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: clamp(46px, 10vw, 150px);
+        line-height: 0.86;
+        margin: 14px 0 20px;
+      }
+      .contact-link {
+        font-family: var(--serif);
+        font-style: italic;
+        font-size: clamp(20px, 2.8vw, 30px);
+        color: var(--ink);
+        border-bottom: 1px solid var(--graphite);
+        padding-bottom: 4px;
+      }
+      .contact-meta {
+        margin-top: 26px;
+        display: flex;
+        gap: 40px;
+        justify-content: center;
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        color: var(--graphite-soft);
+        flex-wrap: wrap;
+      }
+      .contact-meta a {
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s;
+      }
+      .contact-meta a:hover {
+        border-color: var(--graphite-soft);
+      }
+      footer {
+        text-align: center;
+        padding: 18px 0;
+        font-family: var(--mono);
+        font-size: 10px;
+        color: var(--graphite-soft);
+        letter-spacing: 0.06em;
+      }
+
+      @media (max-width: 860px) {
+        #spine {
+          display: none;
+        }
+        .split {
+          grid-template-columns: 1fr;
+        }
+        .split-sticky {
+          position: relative;
+          height: auto;
+          border-right: none;
+          border-bottom: 1px solid var(--paper-line);
+          padding: 80px 28px 40px;
+        }
+        .split-flow {
+          padding: 60px 28px;
+        }
+        .project-stage {
+          grid-template-columns: 1fr;
+          gap: 20px;
+          padding: 20px 0;
+        }
+        .project-media {
+          margin: 0 5vw;
+          height: auto;
+          grid-template-columns: 1fr 1fr;
+          grid-template-rows: auto auto;
+        }
+        .project-media .shot {
+          aspect-ratio: 3/4;
+        }
+        .project-media .shot.website {
+          grid-column: 1/3;
+          grid-row: 1;
+        }
+        .project-media .shot.admin {
+          grid-column: 1;
+          grid-row: 2;
+        }
+        .project-media .shot.app {
+          grid-column: 2;
+          grid-row: 2;
+        }
+        .project-copy {
+          padding: 0 5vw;
+          height: auto;
+        }
+        .mag-grid {
+          grid-template-columns: 1fr;
+        }
+        .mag-kicker,
+        .mag-title,
+        .mag-mosaic,
+        .mag-copy,
+        .mag-stats {
+          grid-column: 1/-1;
+        }
+        .mag-mosaic {
+          aspect-ratio: auto;
+        }
+        .mag-stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .ff-gallery {
+          flex-wrap: wrap;
+        }
+        .ff-gallery .shot:nth-child(2) {
+          margin-top: 0;
+        }
+        .process-row {
+          grid-template-columns: 1fr;
+        }
+        .highlight-grid {
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="cursor">
+      <div class="ring"></div>
+      <div class="dot"></div>
+      <div class="coord">X 0 · Y 0</div>
+    </div>
+
+    <nav id="nav">
+      <span class="mark">Kapil Rajput</span>
+      <span class="idx"><span id="navChapter">01</span> / 10</span>
+    </nav>
+
+    <div id="spine">
+      <span class="lbl">SCROLL</span>
+      <div class="track"><div class="fill" id="spineFill"></div></div>
+    </div>
+
+    <main id="scroller">
+      <!-- ================= 01 HERO ================= -->
+      <section class="ch" id="ch-hero">
+        <div class="blueprint-grid"></div>
+        <canvas id="canvas-hero"></canvas>
+        <span class="dim" style="top: 18%; left: 8%">02 · FULL-STACK</span>
+        <span class="dim" style="bottom: 22%; right: 8%"
+          >VAAYRO TECHNOLOGIES</span
+        >
+        <div class="hero-inner">
+          <div class="hero-eyebrow">
+            <span class="tick">＋</span> Full-Stack Software Engineer · MERN /
+            Next.js
+          </div>
+          <h1 class="hero-title">
+            <span class="line"><span>KAPIL</span></span>
+            <span class="line"><span>RAJPUT</span></span>
+          </h1>
+          <p class="hero-sub">
+            I build production-scale platforms end to end — React interfaces,
+            REST APIs, and the Docker deploy that puts it on AWS.
+          </p>
+        </div>
+        <div class="hero-scroll">
+          <span>Scroll</span>
+          <div class="bar"></div>
+        </div>
+      </section>
+
+      <!-- ================= 02 MANIFESTO / ABOUT ================= -->
+      <section class="ch" id="ch-about">
+        <div class="split">
+          <div class="split-sticky">
+            <div>
+              <span class="tag">Spec sheet</span>
+              <h2 class="name">About<br />the<br />work</h2>
+            </div>
+            <ul class="spec-list">
+              <li><span>Based</span><b>Bijnor, Uttar Pradesh, IN</b></li>
+              <li><span>Practice</span><b>Full-stack (MERN / Next.js)</b></li>
+              <li><span>Tools</span><b>React, Next.js, Node.js, MongoDB</b></li>
+              <li>
+                <span>Experience</span><b>2 years — Vaayro Technologies</b>
+              </li>
+              <li>
+                <span>Status</span><b>Open to full-stack / backend roles</b>
+              </li>
+            </ul>
+          </div>
+          <div class="split-flow">
+            <p class="manifesto-line reveal-line">
+              I don't stop at the interface. I follow a feature from a
+              <span style="color: var(--signal); font-style: normal"
+                >React component</span
+              >
+              down to the index that keeps its API fast.
+            </p>
+            <p class="manifesto-body reveal-line">
+              Two years at Vaayro Technologies, building production-scale web
+              and mobile platforms across e-commerce, fintech, and marketplace
+              domains — catalog to checkout, trading to compliance, worker
+              onboarding to approval.
+            </p>
+            <p class="manifesto-line reveal-line">
+              Every project here started as a real business running on
+              <span style="color: var(--signal); font-style: normal"
+                >spreadsheets and phone calls</span
+              >, needing something that could hold under actual use.
+            </p>
+            <p class="manifesto-body reveal-line">
+              I'm comfortable owning a feature end to end — architecture
+              discussions, database optimization, Docker-based deployment on AWS
+              — with a strong focus on performance, clean documentation, and
+              admin systems real operations teams rely on daily.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 03 TOOL RACK ================= -->
+      <section class="ch" id="ch-tools">
+        <div class="tools-pin">
+          <div class="tools-head">
+            <span class="kicker">The rack — 06 instruments</span>
+            <h2>Working set</h2>
+          </div>
+          <div class="tools-track" id="toolsTrack">
+            <div class="tool-card">
+              <span class="num">01</span>
+              <h3>Frontend</h3>
+              <p>
+                SSR storefronts and admin UIs in React and Next.js, plus React
+                Native for the mobile side.
+              </p>
+              <div class="tags">
+                <span>React</span><span>Next.js</span><span>Redux</span>
+              </div>
+            </div>
+            <div class="tool-card">
+              <span class="num">02</span>
+              <h3>Backend &amp; APIs</h3>
+              <p>
+                REST APIs in Node.js and Express, powering storefronts, admin
+                panels, and mobile clients from one source.
+              </p>
+              <div class="tags"><span>Node.js</span><span>Express</span></div>
+            </div>
+            <div class="tool-card">
+              <span class="num">03</span>
+              <h3>Search &amp; data</h3>
+              <p>
+                MongoDB schema design and Elasticsearch-powered search with
+                filtering and ranking, tuned under load.
+              </p>
+              <div class="tags">
+                <span>MongoDB</span><span>Elasticsearch</span>
+              </div>
+            </div>
+            <div class="tool-card">
+              <span class="num">04</span>
+              <h3>Caching &amp; performance</h3>
+              <p>
+                Redis caching, lazy loading, dynamic imports, and image
+                optimization to keep pages fast.
+              </p>
+              <div class="tags"><span>Redis</span><span>Performance</span></div>
+            </div>
+            <div class="tool-card">
+              <span class="num">05</span>
+              <h3>Cloud &amp; DevOps</h3>
+              <p>
+                Docker-based deployment on AWS behind Nginx, wired into a
+                working CI/CD pipeline.
+              </p>
+              <div class="tags">
+                <span>AWS</span><span>Docker</span><span>Nginx</span>
+              </div>
+            </div>
+            <div class="tool-card">
+              <span class="num">06</span>
+              <h3>System design &amp; tooling</h3>
+              <p>
+                Architecture discussions, documentation, and the everyday tools
+                that keep a team shipping.
+              </p>
+              <div class="tags">
+                <span>System Design</span><span>Linux</span><span>Git</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 04 PROJECT 01 — MERIDIAN ================= -->
+      <section class="ch project" id="ch-proj1">
+        <div class="project-pin">
+          <div class="project-stage">
+            <div class="project-title-fixed">GEMLAY</div>
+            <div class="project-media">
+              <div class="shot website">
+                <img
+                  src="https://picsum.photos/seed/gemlay-website/800/1000"
+                  alt="Gemlay storefront website"
+                /><span class="shot-tag">Website</span>
+              </div>
+              <div class="shot admin">
+                <img
+                  src="https://picsum.photos/seed/gemlay-admin/700/500"
+                  alt="Gemlay admin panel"
+                /><span class="shot-tag">Admin</span>
+              </div>
+              <div class="shot app">
+                <img
+                  src="https://picsum.photos/seed/gemlay-app/700/500"
+                  alt="Gemlay mobile app"
+                /><span class="shot-tag">App</span>
+              </div>
+            </div>
+            <div class="project-copy">
+              <div class="stagewrap">
+                <span class="project-stagelabel">01 — Gemlay</span>
+                <div class="project-block" data-stage="1">
+                  <span class="kicker">The problem</span>
+                  <h3>
+                    A jewellery brand needed catalog to checkout, built to
+                    scale.
+                  </h3>
+                  <p>
+                    No storefront yet — the brand needed SEO-friendly product
+                    pages, fast search across a large catalog, and an admin
+                    system operations could actually run.
+                  </p>
+                </div>
+                <div class="project-block" data-stage="2">
+                  <span class="kicker">The approach</span>
+                  <h3>
+                    SSR storefront, Elasticsearch search, a real admin panel.
+                  </h3>
+                  <p>
+                    Built SEO-optimized storefront pages with Next.js SSR,
+                    Elasticsearch-powered search with filtering and ranking, and
+                    REST APIs serving the storefront, admin panel, and internal
+                    services — then tuned MongoDB indexing for production load.
+                  </p>
+                </div>
+                <div class="project-block" data-stage="3">
+                  <span class="kicker">The result</span>
+                  <h3>A platform operations runs every day.</h3>
+                  <div class="stat">
+                    <div>
+                      <b>8</b><span>admin modules: catalog to analytics</span>
+                    </div>
+                    <div>
+                      <b>0→1</b><span>storefront built end to end</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 05 PROJECT 02 — NORTHBOUND (magazine) ================= -->
+      <section class="ch" id="ch-proj2">
+        <div class="mag-grid">
+          <span class="mag-kicker"
+            >Project 02 — Bullion trading &amp; inventory</span
+          >
+          <h2 class="mag-title reveal-line">BULLION</h2>
+          <div class="mag-mosaic">
+            <div class="shot website">
+              <img
+                src="https://picsum.photos/seed/bullion-website/900/600"
+                alt="Bullion client website"
+              /><span class="shot-tag">Website</span>
+            </div>
+            <div class="shot admin">
+              <img
+                src="https://picsum.photos/seed/bullion-admin/500/500"
+                alt="Bullion admin panel"
+              /><span class="shot-tag">Admin</span>
+            </div>
+            <div class="shot app">
+              <img
+                src="https://picsum.photos/seed/bullion-app/500/500"
+                alt="Bullion mobile app"
+              /><span class="shot-tag">App</span>
+            </div>
+          </div>
+          <div class="mag-copy">
+            <p>
+              A bullion trading business ran inventory and trades through phone
+              calls and spreadsheets — no shared system, no real-time visibility
+              into stock or price.
+            </p>
+            <p>
+              I built the admin panel, client website, and mobile app together:
+              inventory and trading modules with real-time price updates and
+              stock tracking, plus role-based access control and secure
+              authentication across every client.
+            </p>
+            <p>
+              REST APIs power real-time updates and push notifications across
+              web and mobile, containerized with Docker for consistent
+              deployment.
+            </p>
+          </div>
+          <div class="mag-stats">
+            <div><b>3</b><span>surfaces shipped: web, admin, mobile</span></div>
+            <div><b>RT</b><span>real-time price &amp; stock sync</span></div>
+            <div><b>RBAC</b><span>access control across clients</span></div>
+            <div><b>100%</b><span>containerized with Docker</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 06 PROJECT 03 — GLASSHOUSE (freeform + three.js) ================= -->
+      <section class="ch" id="ch-proj3">
+        <canvas id="canvas-arch"></canvas>
+        <div class="freeform">
+          <span class="ff-kicker">Project 03 — Worker hiring platform</span>
+          <h2 class="ff-title">KARI<br />GAR</h2>
+          <span class="ff-tag-float" style="top: 8%; right: 16%" data-float="1"
+            >Admin approval flow</span
+          >
+          <span class="ff-tag-float" style="top: 38%; left: 4%" data-float="2"
+            >Mobile onboarding</span
+          >
+          <span
+            class="ff-tag-float"
+            style="bottom: 10%; right: 30%"
+            data-float="3"
+            >Backend APIs</span
+          >
+          <div class="ff-card">
+            <p>
+              Karigar needed a way to register and hire skilled workers without
+              approvals disappearing into email threads and phone calls.
+            </p>
+            <p style="margin-top: 16px">
+              I built the registration and hiring workflow with admin approval
+              steps and profile verification — an admin dashboard and mobile app
+              for end-to-end management, backed by APIs powering registration,
+              approval, and notification flows.
+            </p>
+            <div class="ff-gallery">
+              <div class="shot">
+                <img
+                  src="https://picsum.photos/seed/karigar-admin/500/650"
+                  alt="Karigar admin dashboard"
+                /><span class="shot-tag">Admin</span>
+              </div>
+              <div class="shot">
+                <img
+                  src="https://picsum.photos/seed/karigar-app/500/650"
+                  alt="Karigar mobile app"
+                /><span class="shot-tag">App</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 07 JOURNEY (horizontal timeline) ================= -->
+      <section class="ch" id="ch-journey">
+        <div class="journey-pin">
+          <canvas id="canvas-journey"></canvas>
+          <div class="journey-head">
+            <span class="kicker">Two years, three platforms</span>
+            <h2>Career journey</h2>
+          </div>
+          <div class="journey-track" id="journeyTrack">
+            <div class="mile">
+              <span class="yr">B.TECH</span>
+              <h4>Mechanical Engineering</h4>
+              <p>
+                Meerut Institute of Technology — then a pivot toward software.
+              </p>
+            </div>
+            <div class="mile">
+              <span class="yr">JOINED</span>
+              <h4>Software Engineer, Vaayro Technologies</h4>
+              <p>Started full-stack, MERN and Next.js from day one.</p>
+            </div>
+            <div class="mile">
+              <span class="yr">KARIGAR</span>
+              <h4>First end-to-end platform</h4>
+              <p>
+                Registration, approval, and notification flows — admin dashboard
+                and mobile app.
+              </p>
+            </div>
+            <div class="mile">
+              <span class="yr">BULLION</span>
+              <h4>Real-time trading platform</h4>
+              <p>Web, admin, and mobile, with RBAC and live price sync.</p>
+            </div>
+            <div class="mile">
+              <span class="yr">GEMLAY</span>
+              <h4>Production-scale e-commerce</h4>
+              <p>
+                SSR storefront, Elasticsearch search, Docker deployment on AWS.
+              </p>
+            </div>
+            <div class="mile">
+              <span class="yr">NOW</span>
+              <h4>Two years in, going deeper</h4>
+              <p>
+                Studying system design fundamentals properly, alongside the
+                day-to-day build.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 08 PROCESS (editorial) ================= -->
+      <section class="ch" id="ch-process">
+        <div class="process-texture"></div>
+        <div class="editorial">
+          <div class="kicker">How the work gets built</div>
+          <h2>Process</h2>
+          <div class="process-row">
+            <span class="step">01</span>
+            <div>
+              <h3>Talk to who'll run it</h3>
+              <p>
+                Admin panels get designed with the operations team that opens
+                them every morning, not just for them.
+              </p>
+            </div>
+          </div>
+          <div class="process-row">
+            <span class="step">02</span>
+            <div>
+              <h3>Design the data model first</h3>
+              <p>
+                Schema, indexes, and query patterns get sketched before a single
+                endpoint exists.
+              </p>
+            </div>
+          </div>
+          <div class="process-row">
+            <span class="step">03</span>
+            <div>
+              <h3>Build end to end</h3>
+              <p>
+                Same person on the API, the admin UI, and the storefront —
+                nothing lost in the handoff.
+              </p>
+            </div>
+          </div>
+          <div class="process-row">
+            <span class="step">04</span>
+            <div>
+              <h3>Ship behind Docker, watch it live</h3>
+              <p>
+                Deployed on AWS behind Nginx, then tuned against real traffic
+                and query logs.
+              </p>
+            </div>
+          </div>
+          <p class="pull-quote">
+            "The most useful thing I've built isn't a feature — it's the admin
+            panel an <span>operations team</span> opens every single morning."
+          </p>
+        </div>
+      </section>
+
+      <!-- ================= 09 HIGHLIGHTS (deep space, image-led grid) ================= -->
+      <section class="ch" id="ch-highlights">
+        <canvas id="canvas-space"></canvas>
+        <div class="recog-head">
+          <span class="kicker">Two years, three platforms shipped</span>
+          <h2>Highlights</h2>
+        </div>
+        <div class="highlight-grid">
+          <div class="highlight-card">
+            <div class="hl-thumb">
+              <span class="hl-num">01</span
+              ><img
+                src="https://picsum.photos/seed/gemlay-highlight/700/440"
+                alt="Gemlay e-commerce platform"
+              />
+            </div>
+            <div class="hl-body">
+              <span class="hl-tag">Gemlay — Vaayro Technologies</span>
+              <p class="hl-text">
+                Built a production-scale jewellery e-commerce platform end to
+                end — SSR storefront, Elasticsearch search, and an 8-module
+                admin panel.
+              </p>
+            </div>
+          </div>
+          <div class="highlight-card">
+            <div class="hl-thumb">
+              <span class="hl-num">02</span
+              ><img
+                src="https://picsum.photos/seed/bullion-highlight/700/440"
+                alt="Bullion Management Platform"
+              />
+            </div>
+            <div class="hl-body">
+              <span class="hl-tag">Bullion Management Platform</span>
+              <p class="hl-text">
+                Shipped real-time trading and inventory tracking across web,
+                admin, and mobile, with role-based access control throughout.
+              </p>
+            </div>
+          </div>
+          <div class="highlight-card">
+            <div class="hl-thumb">
+              <span class="hl-num">03</span
+              ><img
+                src="https://picsum.photos/seed/karigar-highlight/700/440"
+                alt="Karigar worker hiring platform"
+              />
+            </div>
+            <div class="hl-body">
+              <span class="hl-tag">Karigar Platform</span>
+              <p class="hl-text">
+                Took a worker-hiring platform from a registration workflow to a
+                full admin dashboard and mobile app for end-to-end management.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 10 CONTACT (minimal ending) ================= -->
+      <section class="ch" id="ch-contact">
+        <canvas id="canvas-contact"></canvas>
+        <div class="contact-inner">
+          <span class="kicker">10 / 10 — End of the draft</span>
+          <h2>Let's build<br />something<br />that scales.</h2>
+          <a class="contact-link" href="mailto:kapil.rajput9711@gmail.com"
+            >kapil.rajput9711@gmail.com</a
+          >
+          <div class="contact-meta">
+            <a
+              href="https://linkedin.com/in/kapil-rajput-53573326b"
+              target="_blank"
+              rel="noopener"
+              >LinkedIn</a
+            >
+            <a
+              href="https://github.com/Kapil9711"
+              target="_blank"
+              rel="noopener"
+              >GitHub</a
+            >
+            <a
+              href="https://kapil9711.github.io/my-portfolio/"
+              target="_blank"
+              rel="noopener"
+              >kapilrajput.dev</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <footer>© 2026 Kapil Rajput — drafted, not templated.</footer>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <script src="https://unpkg.com/split-type@0.3.4/umd/index.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+      gsap.registerPlugin(ScrollTrigger, Flip);
+
+      /* ---------------- Lenis smooth scroll ---------------- */
+      const lenis = new Lenis({ lerp: 0.11, smoothWheel: true });
+      lenis.on("scroll", ScrollTrigger.update);
+      gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+      });
+      gsap.ticker.lagSmoothing(0);
+
+      /* ---------------- custom cursor ---------------- */
+      const cursorEl = document.getElementById("cursor");
+      const dot = cursorEl.querySelector(".dot");
+      const ring = cursorEl.querySelector(".ring");
+      const coord = cursorEl.querySelector(".coord");
+      let mx = 0,
+        my = 0,
+        rx = 0,
+        ry = 0;
+      window.addEventListener("mousemove", (e) => {
+        mx = e.clientX;
+        my = e.clientY;
+        dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
+        coord.style.transform = `translate(${mx}px,${my}px)`;
+        coord.textContent = `X ${String(mx).padStart(4, "0")} · Y ${String(my).padStart(4, "0")}`;
+      });
+      gsap.ticker.add(() => {
+        rx += (mx - rx) * 0.15;
+        ry += (my - ry) * 0.15;
+        ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`;
+      });
+
+      /* ---------------- progress spine + nav chapter index ---------------- */
+      const chapters = gsap.utils.toArray(".ch");
+      const spineFill = document.getElementById("spineFill");
+      const navChapter = document.getElementById("navChapter");
+      ScrollTrigger.create({
+        trigger: document.body,
+        start: "top top",
+        end: "bottom bottom",
+        onUpdate: (self) => {
+          spineFill.style.height = self.progress * 100 + "%";
+        },
+      });
+      chapters.forEach((c, i) => {
+        ScrollTrigger.create({
+          trigger: c,
+          start: "top center",
+          end: "bottom center",
+          onEnter: () =>
+            (navChapter.textContent = String(i + 1).padStart(2, "0")),
+          onEnterBack: () =>
+            (navChapter.textContent = String(i + 1).padStart(2, "0")),
+        });
+      });
+
+      /* ---------------- HERO: title reveal + wireframe solid ---------------- */
+      gsap.set(".hero-title .line span", { yPercent: 110 });
+      gsap
+        .timeline({ delay: 0.2 })
+        .to(".hero-title .line span", {
+          yPercent: 0,
+          duration: 1.1,
+          stagger: 0.12,
+          ease: "power4.out",
+        })
+        .from(".hero-sub", { opacity: 0, y: 16, duration: 0.8 }, "-=.5")
+        .from(".hero-eyebrow", { opacity: 0, duration: 0.6 }, "-=.9")
+        .from(".dim", { opacity: 0, duration: 0.6, stagger: 0.1 }, "-=.6");
+
+      gsap.to("#ch-hero .blueprint-grid", {
+        backgroundPosition: "48px 48px",
+        scrollTrigger: {
+          trigger: "#ch-hero",
+          start: "top top",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
+      gsap.to(".hero-inner", {
+        yPercent: -30,
+        opacity: 0,
+        scrollTrigger: {
+          trigger: "#ch-hero",
+          start: "top top",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
+
+      (function heroThree() {
+        const canvas = document.getElementById("canvas-hero");
+        const renderer = new THREE.WebGLRenderer({
+          canvas,
+          alpha: true,
+          antialias: true,
+        });
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(
+          45,
+          canvas.clientWidth / canvas.clientHeight,
+          0.1,
+          100,
+        );
+        camera.position.set(0, 0, 7);
+        function size() {
+          const w = canvas.clientWidth,
+            h = canvas.clientHeight;
+          renderer.setSize(w, h, false);
+          renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+          camera.aspect = w / h;
+          camera.updateProjectionMatrix();
+        }
+        const geo = new THREE.IcosahedronGeometry(2.1, 1);
+        const mat = new THREE.MeshBasicMaterial({
+          color: 0x17233b,
+          wireframe: true,
+          transparent: true,
+          opacity: 0.55,
+        });
+        const mesh = new THREE.Mesh(geo, mat);
+        scene.add(mesh);
+        const geo2 = new THREE.IcosahedronGeometry(2.5, 0);
+        const mat2 = new THREE.MeshBasicMaterial({
+          color: 0xff5a1f,
+          wireframe: true,
+          transparent: true,
+          opacity: 0.25,
+        });
+        const mesh2 = new THREE.Mesh(geo2, mat2);
+        scene.add(mesh2);
+        size();
+        window.addEventListener("resize", size);
+        let raf;
+        function animate() {
+          mesh.rotation.x += 0.0022;
+          mesh.rotation.y += 0.0032;
+          mesh2.rotation.x -= 0.0014;
+          mesh2.rotation.y -= 0.0019;
+          renderer.render(scene, camera);
+          raf = requestAnimationFrame(animate);
+        }
+        animate();
+        gsap.to(mesh.rotation, {
+          y: "+=1.4",
+          scrollTrigger: {
+            trigger: "#ch-hero",
+            start: "top top",
+            end: "bottom top",
+            scrub: 1,
+          },
+        });
+      })();
+
+      /* ---------------- ABOUT: reveal lines ---------------- */
+      gsap.utils.toArray(".reveal-line").forEach((el) => {
+        gsap.from(el, {
+          opacity: 0,
+          y: 28,
+          duration: 0.9,
+          ease: "power3.out",
+          scrollTrigger: { trigger: el, start: "top 85%" },
+        });
+      });
+      gsap.from(".spec-list li", {
+        opacity: 0,
+        x: -14,
+        stagger: 0.08,
+        duration: 0.6,
+        scrollTrigger: { trigger: ".spec-list", start: "top 80%" },
+      });
+
+      /* ---------------- TOOL RACK: horizontal scroll gallery ---------------- */
+      (function toolsHorizontal() {
+        const track = document.getElementById("toolsTrack");
+        const pin = document.querySelector(".tools-pin");
+        function getScrollAmount() {
+          return (
+            track.scrollWidth - window.innerWidth + window.innerWidth * 0.06
+          );
+        }
+        let tween = gsap.to(track, {
+          x: () => -getScrollAmount(),
+          ease: "none",
+          scrollTrigger: {
+            trigger: "#ch-tools",
+            start: "top top",
+            end: () => "+=" + getScrollAmount(),
+            scrub: 1,
+            pin: true,
+            invalidateOnRefresh: true,
+          },
+        });
+      })();
+
+      /* ---------------- PROJECT 01 GEMLAY: pinned stage transitions ---------------- */
+      (function projectGemlay() {
+        const blocks = gsap.utils.toArray(".project-block");
+        gsap.set(blocks, { opacity: 0, y: 40 });
+        gsap.set(blocks[0], { opacity: 1, y: 0 });
+        const imgs = document.querySelectorAll(
+          "#ch-proj1 .project-media .shot img",
+        );
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".project-pin",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 1,
+          },
+        });
+        tl.to(imgs, { scale: 1, duration: 1, ease: "none", stagger: 0.05 }, 0);
+        tl.to(blocks[0], { opacity: 0, y: -30, duration: 0.5 }, 0.28)
+          .to(blocks[1], { opacity: 1, y: 0, duration: 0.4 }, 0.3)
+          .to(blocks[1], { opacity: 0, y: -30, duration: 0.5 }, 0.62)
+          .to(blocks[2], { opacity: 1, y: 0, duration: 0.4 }, 0.64)
+          .to(".project-title-fixed", { x: -40, duration: 1, ease: "none" }, 0);
+      })();
+
+      /* ---------------- MAGAZINE (Bullion) mosaic reveal ---------------- */
+      gsap.from(".mag-mosaic .shot", {
+        opacity: 0,
+        y: 40,
+        stagger: 0.1,
+        duration: 0.9,
+        scrollTrigger: { trigger: ".mag-mosaic", start: "top 85%" },
+      });
+      gsap.to(".mag-mosaic .shot.website img", {
+        yPercent: -6,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".mag-mosaic",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
+      gsap.from(".mag-stats > div", {
+        opacity: 0,
+        y: 20,
+        stagger: 0.08,
+        duration: 0.6,
+        scrollTrigger: { trigger: ".mag-stats", start: "top 90%" },
+      });
+
+      /* ---------------- KARIGAR: freeform floats + gallery + three.js wireframe structure ---------------- */
+      gsap.from(".ff-title", {
+        opacity: 0,
+        y: 50,
+        duration: 1,
+        scrollTrigger: { trigger: "#ch-proj3", start: "top 70%" },
+      });
+      gsap.from(".ff-card", {
+        opacity: 0,
+        x: 40,
+        duration: 1,
+        scrollTrigger: { trigger: ".ff-card", start: "top 85%" },
+      });
+      gsap.from(".ff-gallery .shot", {
+        opacity: 0,
+        y: 30,
+        stagger: 0.12,
+        duration: 0.8,
+        scrollTrigger: { trigger: ".ff-gallery", start: "top 90%" },
+      });
+      gsap.utils.toArray(".ff-tag-float").forEach((el, i) => {
+        gsap.from(el, {
+          opacity: 0,
+          y: 20,
+          duration: 0.8,
+          delay: i * 0.15,
+          scrollTrigger: { trigger: "#ch-proj3", start: "top 75%" },
+        });
+        gsap.to(el, {
+          y: "+=14",
+          duration: 2.4 + i * 0.4,
+          yoyo: true,
+          repeat: -1,
+          ease: "sine.inOut",
+        });
+      });
+
+      (function archThree() {
+        const canvas = document.getElementById("canvas-arch");
+        const renderer = new THREE.WebGLRenderer({
+          canvas,
+          alpha: true,
+          antialias: true,
+        });
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(
+          50,
+          canvas.clientWidth / canvas.clientHeight,
+          0.1,
+          100,
+        );
+        camera.position.set(4, 2, 8);
+        camera.lookAt(0, 0, 0);
+        function size() {
+          const w = canvas.clientWidth,
+            h = canvas.clientHeight;
+          renderer.setSize(w, h, false);
+          renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+          camera.aspect = w / h;
+          camera.updateProjectionMatrix();
+        }
+        const group = new THREE.Group();
+        for (let i = 0; i < 5; i++) {
+          const geo = new THREE.BoxGeometry(1.4, 1.4 + i * 0.5, 1.4);
+          const mat = new THREE.MeshBasicMaterial({
+            color: i % 2 === 0 ? 0xede9e0 : 0xff5a1f,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.35,
+          });
+          const mesh = new THREE.Mesh(geo, mat);
+          mesh.position.set((i - 2) * 1.9, 0, Math.sin(i) * 1.4);
+          group.add(mesh);
+        }
+        scene.add(group);
+        size();
+        window.addEventListener("resize", size);
+        function animate() {
+          group.rotation.y += 0.0016;
+          renderer.render(scene, camera);
+          requestAnimationFrame(animate);
+        }
+        animate();
+        gsap.to(group.rotation, {
+          y: "+=1.1",
+          scrollTrigger: {
+            trigger: "#ch-proj3",
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+          },
+        });
+      })();
+
+      /* ---------------- JOURNEY: horizontal timeline + wireframe terrain ---------------- */
+      (function journeyHorizontal() {
+        const track = document.getElementById("journeyTrack");
+        function getScrollAmount() {
+          return (
+            track.scrollWidth - window.innerWidth + window.innerWidth * 0.2
+          );
+        }
+        gsap.to(track, {
+          x: () => -getScrollAmount(),
+          ease: "none",
+          scrollTrigger: {
+            trigger: "#ch-journey",
+            start: "top top",
+            end: () => "+=" + getScrollAmount(),
+            scrub: 1,
+            pin: true,
+            invalidateOnRefresh: true,
+          },
+        });
+        gsap.utils.toArray(".mile").forEach((m) => {
+          gsap.from(m, {
+            opacity: 0,
+            y: 24,
+            duration: 0.6,
+            scrollTrigger: {
+              trigger: m,
+              containerAnimation: gsap.getById ? undefined : undefined,
+              start: "left 90%",
+              horizontal: true,
+            },
+          });
+        });
+      })();
+
+      (function journeyThree() {
+        const canvas = document.getElementById("canvas-journey");
+        const renderer = new THREE.WebGLRenderer({
+          canvas,
+          alpha: true,
+          antialias: true,
+        });
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(
+          55,
+          canvas.clientWidth / canvas.clientHeight,
+          0.1,
+          200,
+        );
+        camera.position.set(0, 5, 14);
+        camera.lookAt(0, 0, 0);
+        function size() {
+          const w = canvas.clientWidth,
+            h = canvas.clientHeight;
+          renderer.setSize(w, h, false);
+          renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+          camera.aspect = w / h;
+          camera.updateProjectionMatrix();
+        }
+        const geo = new THREE.PlaneGeometry(60, 40, 60, 40);
+        geo.rotateX(-Math.PI / 2);
+        const pos = geo.attributes.position;
+        for (let i = 0; i < pos.count; i++) {
+          const x = pos.getX(i),
+            z = pos.getZ(i);
+          pos.setY(i, Math.sin(x * 0.25) * 0.9 + Math.cos(z * 0.3) * 0.7);
+        }
+        const mat = new THREE.MeshBasicMaterial({
+          color: 0x3c4a66,
+          wireframe: true,
+          transparent: true,
+          opacity: 0.5,
+        });
+        const terrain = new THREE.Mesh(geo, mat);
+        terrain.position.y = -2;
+        scene.add(terrain);
+        size();
+        window.addEventListener("resize", size);
+        function animate() {
+          terrain.position.z += 0.01;
+          if (terrain.position.z > 2) terrain.position.z = 0;
+          renderer.render(scene, camera);
+          requestAnimationFrame(animate);
+        }
+        animate();
+        gsap.to(camera.position, {
+          x: 3,
+          y: 3,
+          scrollTrigger: {
+            trigger: "#ch-journey",
+            start: "top top",
+            end: "bottom top",
+            scrub: 1,
+          },
+        });
+      })();
+
+      /* ---------------- PROCESS rows ---------------- */
+      gsap.utils.toArray(".process-row").forEach((row) => {
+        gsap.from(row, {
+          opacity: 0,
+          y: 30,
+          duration: 0.8,
+          scrollTrigger: { trigger: row, start: "top 88%" },
+        });
+      });
+      gsap.from(".pull-quote", {
+        opacity: 0,
+        y: 30,
+        duration: 1,
+        scrollTrigger: { trigger: ".pull-quote", start: "top 88%" },
+      });
+
+      /* ---------------- HIGHLIGHTS: image-led grid reveal + starfield ---------------- */
+      gsap.from(".highlight-card", {
+        opacity: 0,
+        y: 40,
+        stagger: 0.12,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: { trigger: ".highlight-grid", start: "top 85%" },
+      });
+
+      (function spaceThree() {
+        const canvas = document.getElementById("canvas-space");
+        const renderer = new THREE.WebGLRenderer({
+          canvas,
+          alpha: true,
+          antialias: true,
+        });
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(
+          60,
+          canvas.clientWidth / canvas.clientHeight,
+          0.1,
+          100,
+        );
+        camera.position.z = 5;
+        function size() {
+          const w = canvas.clientWidth,
+            h = canvas.clientHeight;
+          renderer.setSize(w, h, false);
+          renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+          camera.aspect = w / h;
+          camera.updateProjectionMatrix();
+        }
+        const count = 700;
+        const geo = new THREE.BufferGeometry();
+        const posArr = new Float32Array(count * 3);
+        for (let i = 0; i < count; i++) {
+          posArr[i * 3] = (Math.random() - 0.5) * 20;
+          posArr[i * 3 + 1] = (Math.random() - 0.5) * 20;
+          posArr[i * 3 + 2] = (Math.random() - 0.5) * 20;
+        }
+        geo.setAttribute("position", new THREE.BufferAttribute(posArr, 3));
+        const mat = new THREE.PointsMaterial({
+          color: 0xf5f6f4,
+          size: 0.03,
+          transparent: true,
+          opacity: 0.7,
+        });
+        const points = new THREE.Points(geo, mat);
+        scene.add(points);
+        size();
+        window.addEventListener("resize", size);
+        function animate() {
+          points.rotation.y += 0.0006;
+          points.rotation.x += 0.0002;
+          renderer.render(scene, camera);
+          requestAnimationFrame(animate);
+        }
+        animate();
+      })();
+
+      /* ---------------- CONTACT: minimal glass sculpture ---------------- */
+      (function contactThree() {
+        const canvas = document.getElementById("canvas-contact");
+        const renderer = new THREE.WebGLRenderer({
+          canvas,
+          alpha: true,
+          antialias: true,
+        });
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(
+          45,
+          canvas.clientWidth / canvas.clientHeight,
+          0.1,
+          100,
+        );
+        camera.position.set(0, 0, 6);
+        function size() {
+          const w = canvas.clientWidth,
+            h = canvas.clientHeight;
+          renderer.setSize(w, h, false);
+          renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+          camera.aspect = w / h;
+          camera.updateProjectionMatrix();
+        }
+        const geo = new THREE.TorusKnotGeometry(1.3, 0.32, 140, 16);
+        const mat = new THREE.MeshBasicMaterial({
+          color: 0x17233b,
+          wireframe: true,
+          transparent: true,
+          opacity: 0.16,
+        });
+        const mesh = new THREE.Mesh(geo, mat);
+        scene.add(mesh);
+        size();
+        window.addEventListener("resize", size);
+        function animate() {
+          mesh.rotation.x += 0.0018;
+          mesh.rotation.y += 0.0026;
+          renderer.render(scene, camera);
+          requestAnimationFrame(animate);
+        }
+        animate();
+      })();
+
+      /* ---------------- refresh on load ---------------- */
+      window.addEventListener("load", () => ScrollTrigger.refresh());
+    </script>
+  </body>
+</html>

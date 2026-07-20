@@ -1,0 +1,2259 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aarav Shah — Software Engineer</title>
+    <meta
+      name="description"
+      content="Aarav Shah — Software Engineer. A documentary of how a mechanical engineer became a builder of resilient software."
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <script src="https://unpkg.com/split-type@0.3.4/umd/index.min.js"></script>
+
+    <style>
+      :root {
+        --void: #08090d;
+        --ink: #f2f3f6;
+        --ink-dim: #9298a8;
+        --ink-faint: #565c6b;
+        --gold: #d9c08a;
+        --azure: #6ea8ff;
+        --violet: #9d8cff;
+        --teal: #6fe3d4;
+        --panel-b: #ffffff14;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        background: var(--void);
+      }
+      body {
+        background: var(--void);
+        color: var(--ink);
+        font-family: "Inter", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: clip;
+        cursor: default;
+      }
+
+      .tech-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 10px 18px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+      }
+
+      .tech-pill:hover {
+        transform: translateY(-3px);
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(56, 189, 248, 0.5);
+      }
+
+      .glass {
+        background: rgba(255, 255, 255, 0.04);
+        backdrop-filter: blur(18px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .mono {
+        font-family: "JetBrains Mono", monospace;
+      }
+      ::selection {
+        background: var(--azure);
+        color: #08090d;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.001ms !important;
+          transition-duration: 0.001ms !important;
+        }
+      }
+
+      .eyebrow {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+      }
+      .eyebrow .n {
+        color: var(--gold);
+      }
+
+      .btn {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        border: 1px solid var(--panel-b);
+        border-radius: 999px;
+        padding: 0.95rem 2rem;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--ink);
+        transition: border-color 0.35s ease;
+      }
+      .btn.solid {
+        background: var(--ink);
+        color: var(--void);
+        border-color: var(--ink);
+      }
+      .btn:hover {
+        border-color: var(--azure);
+      }
+
+      .glass {
+        background: #ffffff08;
+        border: 1px solid var(--panel-b);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+      }
+
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ffffff20;
+        border-radius: 6px;
+      }
+
+      #progress-rail {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          var(--azure),
+          var(--violet),
+          var(--gold)
+        );
+        z-index: 70;
+        width: 0%;
+      }
+
+      #loader {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        background: var(--void);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.2rem;
+      }
+      .loader-ring {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 1px solid var(--panel-b);
+        border-top-color: var(--azure);
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* custom cursor */
+      #cursor {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        border: 1px solid var(--azure);
+        pointer-events: none;
+        z-index: 80;
+        transform: translate(-50%, -50%);
+        mix-blend-mode: difference;
+        transition:
+          width 0.3s ease,
+          height 0.3s ease,
+          background 0.3s ease;
+      }
+      #cursor.grow {
+        width: 56px;
+        height: 56px;
+        background: var(--azure);
+        opacity: 0.2;
+      }
+      @media (max-width: 1023px) {
+        #cursor {
+          display: none;
+        }
+      }
+
+      .split-line {
+        overflow: hidden;
+      }
+
+      section {
+        position: relative;
+      }
+
+      /* ---------- ACT markers ---------- */
+      .act-tag {
+        position: sticky;
+        top: 6.5rem;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+      }
+
+      /* ---------- HERO ---------- */
+      #hero {
+        height: 100vh;
+        overflow: hidden;
+      }
+      .hero-glow {
+        position: absolute;
+        border-radius: 9999px;
+        filter: blur(100px);
+      }
+
+      /* ---------- ABOUT editorial ---------- */
+      .dropcap::first-letter {
+        font-size: 3.4em;
+        float: left;
+        line-height: 0.8;
+        padding-right: 0.1em;
+        padding-top: 0.05em;
+        font-weight: 800;
+        color: var(--gold);
+      }
+
+      /* ---------- JOURNEY pinned ---------- */
+      #journey-pin {
+        height: 600vh;
+        position: relative;
+      }
+      #journey-stage {
+        height: 100vh;
+        position: sticky;
+        top: 0;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .milestone {
+        position: absolute;
+        opacity: 0;
+        max-width: 640px;
+        padding: 0 1.5rem;
+        text-align: center;
+      }
+      .journey-progress {
+        position: absolute;
+        left: 2rem;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        z-index: 10;
+      }
+      .journey-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--panel-b);
+        transition:
+          background 0.4s ease,
+          transform 0.4s ease;
+      }
+      .journey-dot.active {
+        background: var(--gold);
+        transform: scale(1.6);
+      }
+
+      /* ---------- EXPERIENCE full viewport ---------- */
+      .company-screen {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 6rem 1.5rem;
+      }
+
+      /* ---------- PROJECTS sticky mockup ---------- */
+      #project-pin {
+        position: relative;
+      }
+      .project-visual-wrap {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .project-block {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 4rem 0;
+      }
+      .device {
+        width: min(88vw, 460px);
+        aspect-ratio: 4/3;
+        border-radius: 1.25rem;
+        overflow: hidden;
+        border: 1px solid var(--panel-b);
+        background: linear-gradient(160deg, #ffffff0c, #ffffff02);
+        box-shadow: 0 60px 120px -50px #000000cc;
+      }
+
+      /* ---------- PHILOSOPHY ---------- */
+      .pullquote {
+        font-size: clamp(1.6rem, 3.6vw, 2.8rem);
+        line-height: 1.25;
+        font-weight: 300;
+      }
+
+      /* ---------- BOOKS horizontal ---------- */
+      #books-pin {
+        height: 400vh;
+        position: relative;
+      }
+      #books-stage {
+        height: 100vh;
+        position: sticky;
+        top: 0;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+      }
+      #books-track {
+        display: flex;
+        gap: 2.5rem;
+        padding-left: 6vw;
+        will-change: transform;
+      }
+      .book-slide {
+        flex-shrink: 0;
+        width: min(78vw, 340px);
+      }
+      .book-cover {
+        height: 420px;
+        border-radius: 1rem;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--panel-b);
+      }
+
+      /* ---------- LEARNING pinned path ---------- */
+      #learning-pin {
+        height: 280vh;
+        position: relative;
+      }
+      #learning-stage {
+        height: 100vh;
+        position: sticky;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .learn-node {
+        opacity: 0.15;
+        transition: opacity 0.4s ease;
+      }
+      .learn-node.on {
+        opacity: 1;
+      }
+
+      /* ---------- TESTIMONIALS ---------- */
+      .testi-slide {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        padding: 0 1.5rem;
+        text-align: center;
+      }
+
+      /* ---------- MARQUEE ---------- */
+      .marquee-track {
+        display: flex;
+        gap: 4rem;
+        white-space: nowrap;
+        animation: marquee 26s linear infinite;
+      }
+      @keyframes marquee {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      input,
+      textarea {
+        background: #ffffff08;
+        border: 1px solid var(--panel-b);
+        color: var(--ink);
+      }
+      input:focus,
+      textarea:focus {
+        outline: none;
+        border-color: var(--azure);
+      }
+      a:focus-visible,
+      button:focus-visible {
+        outline: 1px solid var(--azure);
+        outline-offset: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loader">
+      <div class="loader-ring"></div>
+      <div class="eyebrow">roll camera</div>
+    </div>
+    <div id="cursor"></div>
+    <div id="progress-rail"></div>
+
+    <header
+      class="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-6 py-6 mix-blend-difference lg:px-10"
+    >
+      <a href="#hero" class="mono text-xs tracking-[.2em]"
+        >AARAV<span style="color: var(--gold)">·</span>SHAH</a
+      >
+      <nav
+        class="mono hidden items-center gap-9 text-[11px] uppercase tracking-[.14em] text-[var(--ink-dim)] lg:flex"
+      >
+        <a href="#journey-pin" class="transition-colors hover:text-white"
+          >Journey</a
+        >
+        <a href="#experience" class="transition-colors hover:text-white"
+          >Experience</a
+        >
+        <a href="#project-pin" class="transition-colors hover:text-white"
+          >Work</a
+        >
+        <a href="#skills" class="transition-colors hover:text-white">Skills</a>
+        <a href="#contact" class="transition-colors hover:text-white"
+          >Contact</a
+        >
+      </nav>
+      <a href="#contact" class="btn hidden sm:inline-flex">Say Hello</a>
+    </header>
+
+    <!-- ============================================================ ACT 1 — HERO ============================================================ -->
+    <section
+      id="hero"
+      class="relative min-h-screen overflow-hidden bg-[#06080d]"
+    >
+      <!-- Aurora -->
+      <div class="absolute inset-0 overflow-hidden">
+        <div
+          class="absolute -left-40 top-0 h-[700px] w-[700px] rounded-full opacity-40 blur-[140px]"
+          style="
+            background: radial-gradient(circle, #2563eb 0%, transparent 70%);
+          "
+        ></div>
+
+        <div
+          class="absolute right-[-200px] top-[150px] h-[650px] w-[650px] rounded-full opacity-30 blur-[180px]"
+          style="
+            background: radial-gradient(circle, #9333ea 0%, transparent 70%);
+          "
+        ></div>
+
+        <div
+          class="absolute bottom-[-250px] left-1/2 h-[800px] w-[800px] -translate-x-1/2 rounded-full opacity-30 blur-[180px]"
+          style="
+            background: radial-gradient(circle, #0ea5e9 0%, transparent 70%);
+          "
+        ></div>
+      </div>
+
+      <!-- Noise -->
+      <div
+        class="absolute inset-0 opacity-[0.04]"
+        style="
+          background-image: url(&quot;https://www.transparenttextures.com/patterns/noise.png&quot;);
+        "
+      ></div>
+
+      <!-- Navbar -->
+
+      <header
+        class="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-black/10 backdrop-blur-xl"
+      >
+        <div
+          class="mx-auto flex max-w-7xl items-center justify-between px-8 py-6"
+        >
+          <h2 class="text-xl font-bold uppercase tracking-[0.3em] text-white">
+            VAIBHAV
+          </h2>
+
+          <nav class="hidden gap-10 text-sm text-white/70 lg:flex">
+            <a href="#about">About</a>
+
+            <a href="#experience">Experience</a>
+
+            <a href="#projects">Projects</a>
+
+            <a href="#skills">Skills</a>
+
+            <a href="#contact">Contact</a>
+          </nav>
+
+          <a
+            href="#contact"
+            class="rounded-full bg-white px-6 py-3 font-semibold text-black transition hover:scale-105"
+          >
+            Hire Me
+          </a>
+        </div>
+      </header>
+
+      <div
+        class="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center px-8"
+      >
+        <div class="grid w-full items-center gap-20 lg:grid-cols-2">
+          <!-- LEFT -->
+
+          <div>
+            <p class="mb-6 text-sm uppercase tracking-[0.4em] text-sky-400">
+              SOFTWARE ENGINEER
+            </p>
+
+            <h1
+              class="text-[70px] font-black leading-none text-white lg:text-[110px]"
+            >
+              Vaibhav
+
+              <br />
+
+              Singh
+            </h1>
+
+            <p class="mt-10 max-w-xl text-xl leading-9 text-white/70">
+              I build scalable web, mobile and desktop applications focused on
+              performance, developer experience and clean architecture.
+            </p>
+
+            <div class="mt-12 flex flex-wrap gap-5">
+              <a
+                href="#projects"
+                class="rounded-full bg-white px-8 py-4 font-semibold text-black"
+              >
+                Explore Projects
+              </a>
+
+              <a
+                href="#contact"
+                class="rounded-full border border-white/20 px-8 py-4 text-white"
+              >
+                Let's Talk
+              </a>
+            </div>
+
+            <div class="mt-20 grid grid-cols-3 gap-10">
+              <div>
+                <h3 class="text-5xl font-bold text-white">2+</h3>
+
+                <p class="mt-2 text-white/60">Years</p>
+              </div>
+
+              <div>
+                <h3 class="text-5xl font-bold text-white">15+</h3>
+
+                <p class="mt-2 text-white/60">Projects</p>
+              </div>
+
+              <div>
+                <h3 class="text-5xl font-bold text-white">100%</h3>
+
+                <p class="mt-2 text-white/60">Passion</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT -->
+
+          <div class="relative flex justify-center">
+            <div
+              class="absolute h-[600px] w-[600px] rounded-full bg-sky-500/20 blur-[120px]"
+            ></div>
+
+            <div
+              class="relative overflow-hidden rounded-[40px] border border-white/10 bg-white/5 p-5 backdrop-blur-xl"
+            >
+              <!-- Replace with your uploaded image -->
+              <img src="images/profile.jpg" class="w-[460px] rounded-[28px]" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="absolute bottom-10 left-1/2 -translate-x-1/2">
+        <div class="flex flex-col items-center">
+          <span class="mb-4 text-sm text-white/60"> Scroll </span>
+
+          <div
+            class="h-20 w-[1px] bg-gradient-to-b from-white to-transparent"
+          ></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+ABOUT
+=========================================================== -->
+
+    <section
+      id="about"
+      class="relative overflow-hidden bg-gradient-to-b from-[#06080d] via-[#0b0f18] to-[#06080d] py-32"
+    >
+      <div
+        class="absolute left-0 top-0 h-[500px] w-[500px] rounded-full opacity-20 blur-[160px]"
+        style="background: #2563eb"
+      ></div>
+
+      <div
+        class="absolute bottom-0 right-0 h-[500px] w-[500px] rounded-full opacity-20 blur-[160px]"
+        style="background: #9333ea"
+      ></div>
+
+      <div class="relative mx-auto max-w-7xl px-8">
+        <div class="grid items-center gap-24 lg:grid-cols-[1fr_1.2fr]">
+          <!-- LEFT -->
+
+          <div>
+            <p class="mb-5 text-sm uppercase tracking-[0.4em] text-sky-400">
+              ABOUT ME
+            </p>
+
+            <h2
+              class="text-6xl font-black leading-tight text-white lg:text-7xl"
+            >
+              Building products
+
+              <br />
+
+              people actually use.
+            </h2>
+
+            <div
+              class="mt-10 h-[2px] w-32 bg-gradient-to-r from-sky-400 to-transparent"
+            ></div>
+          </div>
+
+          <!-- RIGHT -->
+
+          <div>
+            <p class="text-xl leading-10 text-white/75">
+              I'm <strong class="text-white">Vaibhav Singh</strong>, a Software
+              Engineer with over two years of experience building
+              production-ready web, mobile, and desktop applications. I enjoy
+              transforming business ideas into scalable products with clean
+              architecture, excellent user experience, and maintainable code.
+            </p>
+
+            <p class="mt-8 text-lg leading-9 text-white/60">
+              At Vaayro Technologies I've contributed to multiple large-scale
+              platforms including a jewellery e-commerce ecosystem, bullion
+              management software, and a workforce marketplace. My work spans
+              frontend, backend, DevOps, databases, search infrastructure, and
+              developer tooling.
+            </p>
+
+            <div class="mt-12 grid gap-6 md:grid-cols-2">
+              <div
+                class="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl"
+              >
+                <h3 class="text-4xl font-bold text-white">2+</h3>
+
+                <p class="mt-3 text-white/60">
+                  Years building production software
+                </p>
+              </div>
+
+              <div
+                class="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl"
+              >
+                <h3 class="text-4xl font-bold text-white">MERN</h3>
+
+                <p class="mt-3 text-white/60">Full Stack Development</p>
+              </div>
+
+              <div
+                class="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl"
+              >
+                <h3 class="text-4xl font-bold text-white">React</h3>
+
+                <p class="mt-3 text-white/60">Web • Mobile • Desktop</p>
+              </div>
+
+              <div
+                class="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl"
+              >
+                <h3 class="text-4xl font-bold text-white">AWS</h3>
+
+                <p class="mt-3 text-white/60">Docker • Nginx • CI/CD</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+FEATURE STRIP
+=========================================================== -->
+
+    <section class="relative bg-[#05070c] py-24">
+      <div class="mx-auto max-w-7xl px-8">
+        <div class="grid gap-8 lg:grid-cols-3">
+          <div
+            class="group rounded-[32px] border border-white/10 bg-white/[0.04] p-10 backdrop-blur-xl transition hover:border-sky-500"
+          >
+            <div class="text-sm uppercase tracking-[0.3em] text-sky-400">
+              Frontend
+            </div>
+
+            <h3 class="mt-6 text-3xl font-bold text-white">
+              Beautiful user experiences.
+            </h3>
+
+            <p class="mt-6 leading-8 text-white/60">
+              Next.js, React, React Native, Tailwind CSS, animations, SSR,
+              responsive UI, premium interfaces.
+            </p>
+          </div>
+
+          <div
+            class="group rounded-[32px] border border-white/10 bg-white/[0.04] p-10 backdrop-blur-xl transition hover:border-purple-500"
+          >
+            <div class="text-sm uppercase tracking-[0.3em] text-purple-400">
+              Backend
+            </div>
+
+            <h3 class="mt-6 text-3xl font-bold text-white">
+              Reliable architecture.
+            </h3>
+
+            <p class="mt-6 leading-8 text-white/60">
+              REST APIs, MongoDB, Express, Elasticsearch, Authentication, RBAC,
+              Docker.
+            </p>
+          </div>
+
+          <div
+            class="group rounded-[32px] border border-white/10 bg-white/[0.04] p-10 backdrop-blur-xl transition hover:border-emerald-500"
+          >
+            <div class="text-sm uppercase tracking-[0.3em] text-emerald-400">
+              DevOps
+            </div>
+
+            <h3 class="mt-6 text-3xl font-bold text-white">
+              Deploy with confidence.
+            </h3>
+
+            <p class="mt-6 leading-8 text-white/60">
+              AWS, Docker, Nginx, Linux, Git, CI/CD, Production deployment.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+CAREER JOURNEY
+=========================================================== -->
+
+    <section id="journey" class="relative bg-[#05070c]">
+      <!-- Timeline -->
+
+      <div class="sticky top-0 h-screen overflow-hidden">
+        <div
+          class="absolute left-16 top-1/2 hidden -translate-y-1/2 flex-col gap-6 xl:flex"
+        >
+          <div class="journey-dot active"></div>
+          <div class="journey-dot"></div>
+          <div class="journey-dot"></div>
+          <div class="journey-dot"></div>
+          <div class="journey-dot"></div>
+          <div class="journey-dot"></div>
+        </div>
+
+        <!-- SCREEN 1 -->
+
+        <div class="journey-slide flex h-screen items-center">
+          <div
+            class="mx-auto grid max-w-7xl items-center gap-24 px-8 lg:grid-cols-2"
+          >
+            <div>
+              <p class="text-sm uppercase tracking-[0.35em] text-sky-400">
+                CHAPTER 01
+              </p>
+
+              <h2 class="mt-6 text-7xl font-black leading-none text-white">
+                Mechanical
+
+                <br />
+
+                Engineer
+              </h2>
+            </div>
+
+            <div>
+              <p class="text-xl leading-10 text-white/70">
+                My journey started with Mechanical Engineering, where I
+                developed a problem-solving mindset, learned systematic
+                thinking, and understood how complex systems are designed.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- SCREEN 2 -->
+
+        <div class="journey-slide flex h-screen items-center">
+          <div
+            class="mx-auto grid max-w-7xl items-center gap-24 px-8 lg:grid-cols-2"
+          >
+            <div>
+              <p class="text-sm uppercase tracking-[0.35em] text-purple-400">
+                CHAPTER 02
+              </p>
+
+              <h2 class="mt-6 text-7xl font-black leading-none text-white">
+                Learning
+
+                <br />
+
+                Programming
+              </h2>
+            </div>
+
+            <div>
+              <p class="text-xl leading-10 text-white/70">
+                Curiosity pushed me toward software. I started learning
+                JavaScript, React, Node.js, databases, and backend architecture,
+                eventually becoming a full-stack developer.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- SCREEN 3 -->
+
+        <div class="journey-slide flex h-screen items-center">
+          <div
+            class="mx-auto grid max-w-7xl items-center gap-24 px-8 lg:grid-cols-2"
+          >
+            <div>
+              <p class="text-sm uppercase tracking-[0.35em] text-emerald-400">
+                CHAPTER 03
+              </p>
+
+              <h2 class="mt-6 text-7xl font-black leading-none text-white">
+                Vaayro
+
+                <br />
+
+                Technologies
+              </h2>
+            </div>
+
+            <div>
+              <p class="text-xl leading-10 text-white/70">
+                Joined Vaayro Technologies where I started building production
+                software used by thousands of users and business teams.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- SCREEN 4 -->
+
+        <div class="journey-slide flex h-screen items-center">
+          <div
+            class="mx-auto grid max-w-7xl items-center gap-24 px-8 lg:grid-cols-2"
+          >
+            <div>
+              <p class="text-sm uppercase tracking-[0.35em] text-yellow-400">
+                CHAPTER 04
+              </p>
+
+              <h2 class="mt-6 text-7xl font-black leading-none text-white">
+                Gemlay
+              </h2>
+            </div>
+
+            <div>
+              <img
+                src="images/gemlay-home.png"
+                class="rounded-3xl border border-white/10 shadow-2xl"
+              />
+
+              <p class="mt-8 text-lg leading-8 text-white/60">
+                Built SEO optimized Next.js storefront, Elasticsearch search,
+                scalable APIs, admin dashboard, AWS deployment, and optimized
+                performance across the platform.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- SCREEN 5 -->
+
+        <div class="journey-slide flex h-screen items-center">
+          <div
+            class="mx-auto grid max-w-7xl items-center gap-24 px-8 lg:grid-cols-2"
+          >
+            <div>
+              <p class="text-sm uppercase tracking-[0.35em] text-red-400">
+                CHAPTER 05
+              </p>
+
+              <h2 class="mt-6 text-7xl font-black leading-none text-white">
+                Bullion
+
+                <br />
+
+                Platform
+              </h2>
+            </div>
+
+            <div>
+              <p class="text-xl leading-10 text-white/70">
+                Developed inventory, order management, admin dashboard,
+                authentication, RBAC, real-time updates, APIs and deployment.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- SCREEN 6 -->
+
+        <div class="journey-slide flex h-screen items-center">
+          <div
+            class="mx-auto grid max-w-7xl items-center gap-24 px-8 lg:grid-cols-2"
+          >
+            <div>
+              <p class="text-sm uppercase tracking-[0.35em] text-cyan-400">
+                TODAY
+              </p>
+
+              <h2 class="mt-6 text-7xl font-black leading-none text-white">
+                Building
+
+                <br />
+
+                Better Software
+              </h2>
+            </div>
+
+            <div>
+              <p class="text-xl leading-10 text-white/70">
+                Today I'm focused on building scalable web, mobile, desktop
+                applications, developer tools, and cloud-native systems while
+                constantly learning better software architecture.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+EXPERIENCE
+=========================================================== -->
+
+    <section
+      id="experience"
+      class="relative overflow-hidden bg-[#06070a] py-40"
+    >
+      <div class="mx-auto max-w-7xl px-8">
+        <div class="text-center">
+          <p class="text-sm uppercase tracking-[0.35em] text-sky-400">
+            EXPERIENCE
+          </p>
+
+          <h2 class="mt-6 text-7xl font-black text-white">
+            Building Products
+            <br />
+            That Scale.
+          </h2>
+        </div>
+
+        <div class="mt-24">
+          <div class="glass rounded-[40px] border border-white/10 p-12">
+            <div class="flex flex-wrap items-start justify-between gap-8">
+              <div>
+                <h3 class="text-5xl font-bold text-white">
+                  Vaayro Technologies
+                </h3>
+
+                <p class="mt-5 text-sky-400">Software Engineer</p>
+              </div>
+
+              <div class="text-right">
+                <h4 class="text-3xl font-bold text-white">2+ Years</h4>
+
+                <p class="mt-2 text-white/60">Full Stack Development</p>
+              </div>
+            </div>
+
+            <div class="mt-20 grid gap-8 lg:grid-cols-3">
+              <!-- Gemlay -->
+
+              <div
+                class="rounded-3xl border border-white/10 bg-white/[0.04] p-8 transition hover:border-sky-500"
+              >
+                <div class="text-xs uppercase tracking-[0.3em] text-sky-400">
+                  Project 01
+                </div>
+
+                <h3 class="mt-6 text-3xl font-bold text-white">Gemlay</h3>
+
+                <p class="mt-6 leading-8 text-white/60">
+                  Production jewellery e-commerce platform built with Next.js,
+                  Elasticsearch, REST APIs, MongoDB, Docker, AWS, and a
+                  comprehensive admin dashboard.
+                </p>
+
+                <div class="mt-8 flex flex-wrap gap-2">
+                  <span class="badge">Next.js</span>
+                  <span class="badge">MongoDB</span>
+                  <span class="badge">Docker</span>
+                  <span class="badge">AWS</span>
+                </div>
+              </div>
+
+              <!-- Bullion -->
+
+              <div
+                class="rounded-3xl border border-white/10 bg-white/[0.04] p-8 transition hover:border-yellow-500"
+              >
+                <div class="text-xs uppercase tracking-[0.3em] text-yellow-400">
+                  Project 02
+                </div>
+
+                <h3 class="mt-6 text-3xl font-bold text-white">
+                  Bullion Platform
+                </h3>
+
+                <p class="mt-6 leading-8 text-white/60">
+                  Inventory management, trading dashboard, role-based
+                  authentication, real-time updates, mobile app, admin panel,
+                  and backend APIs.
+                </p>
+
+                <div class="mt-8 flex flex-wrap gap-2">
+                  <span class="badge">RBAC</span>
+                  <span class="badge">REST API</span>
+                  <span class="badge">Docker</span>
+                </div>
+              </div>
+
+              <!-- Karigar -->
+
+              <div
+                class="rounded-3xl border border-white/10 bg-white/[0.04] p-8 transition hover:border-emerald-500"
+              >
+                <div
+                  class="text-xs uppercase tracking-[0.3em] text-emerald-400"
+                >
+                  Project 03
+                </div>
+
+                <h3 class="mt-6 text-3xl font-bold text-white">Karigar</h3>
+
+                <p class="mt-6 leading-8 text-white/60">
+                  Worker marketplace platform with onboarding, profile
+                  verification, hiring workflow, admin dashboard, React Native
+                  application, and backend services.
+                </p>
+
+                <div class="mt-8 flex flex-wrap gap-2">
+                  <span class="badge">React Native</span>
+                  <span class="badge">Node.js</span>
+                  <span class="badge">MongoDB</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+FEATURED PROJECT - GEMLAY
+=========================================================== -->
+
+    <section id="projects" class="relative overflow-hidden bg-[#040507] py-40">
+      <div
+        class="absolute inset-0 bg-[radial-gradient(circle_at_center,#0f172a55,transparent_70%)]"
+      ></div>
+
+      <div class="relative mx-auto max-w-7xl px-8">
+        <div class="mx-auto max-w-4xl text-center">
+          <p class="text-sm uppercase tracking-[0.4em] text-yellow-400">
+            FEATURED PRODUCT
+          </p>
+
+          <h2
+            class="mt-6 text-7xl font-black leading-none text-white lg:text-8xl"
+          >
+            Gemlay
+          </h2>
+
+          <p class="mt-10 text-xl leading-10 text-white/60">
+            A production-scale jewellery e-commerce platform engineered for
+            performance, SEO, scalability, and premium customer experience.
+          </p>
+        </div>
+
+        <div class="mt-24">
+          <div
+            class="overflow-hidden rounded-[40px] border border-white/10 bg-white/[0.04] shadow-[0_40px_120px_rgba(0,0,0,.5)] backdrop-blur-xl"
+          >
+            <img src="images/gemlay-home.png" class="block w-full" />
+          </div>
+        </div>
+
+        <div class="mt-24 grid gap-16 lg:grid-cols-2">
+          <div>
+            <h3 class="text-4xl font-bold text-white">The Challenge</h3>
+
+            <p class="mt-8 text-lg leading-9 text-white/60">
+              Build a premium jewellery platform capable of handling product
+              discovery, SEO, order management, inventory, payments, promotions,
+              and administration from a single scalable architecture.
+            </p>
+          </div>
+
+          <div>
+            <h3 class="text-4xl font-bold text-white">What I Built</h3>
+
+            <div class="mt-8 grid gap-5">
+              <div class="glass rounded-2xl p-6">Next.js SSR storefront</div>
+
+              <div class="glass rounded-2xl p-6">
+                Elasticsearch Search Engine
+              </div>
+
+              <div class="glass rounded-2xl p-6">Admin Dashboard</div>
+
+              <div class="glass rounded-2xl p-6">Product Management</div>
+
+              <div class="glass rounded-2xl p-6">Inventory Management</div>
+
+              <div class="glass rounded-2xl p-6">Coupon System</div>
+
+              <div class="glass rounded-2xl p-6">Notification System</div>
+
+              <div class="glass rounded-2xl p-6">Docker + AWS Deployment</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-28 grid gap-8 md:grid-cols-4">
+          <div class="rounded-3xl border border-white/10 bg-white/[0.04] p-8">
+            <h3 class="text-5xl font-black text-white">SSR</h3>
+
+            <p class="mt-4 text-white/60">SEO Optimized</p>
+          </div>
+
+          <div class="rounded-3xl border border-white/10 bg-white/[0.04] p-8">
+            <h3 class="text-5xl font-black text-white">REST</h3>
+
+            <p class="mt-4 text-white/60">API Architecture</p>
+          </div>
+
+          <div class="rounded-3xl border border-white/10 bg-white/[0.04] p-8">
+            <h3 class="text-5xl font-black text-white">AWS</h3>
+
+            <p class="mt-4 text-white/60">Production Deployment</p>
+          </div>
+
+          <div class="rounded-3xl border border-white/10 bg-white/[0.04] p-8">
+            <h3 class="text-5xl font-black text-white">ES</h3>
+
+            <p class="mt-4 text-white/60">Elasticsearch</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ ACT 4 — ENGINEERING PHILOSOPHY ============================================================ -->
+    <section class="px-6 py-40 lg:px-10">
+      <div class="mx-auto max-w-4xl text-center">
+        <div class="act-tag mb-8">act four — how i solve problems</div>
+        <p class="pullquote reveal-up">
+          "I design software the way I was taught to design machines —
+          <span style="color: var(--gold)">define the failure modes first</span
+          >, then build the thing that survives them."
+        </p>
+        <div class="mt-16 grid gap-6 text-left sm:grid-cols-3">
+          <div class="reveal-up">
+            <div class="eyebrow mb-2">01</div>
+            <h4 class="mb-2 font-semibold">Tolerances before elegance</h4>
+            <p class="text-sm text-[var(--ink-dim)]">
+              A beautiful abstraction that breaks under real load isn't
+              beautiful — it's a liability with good taste.
+            </p>
+          </div>
+          <div class="reveal-up">
+            <div class="eyebrow mb-2">02</div>
+            <h4 class="mb-2 font-semibold">Reversible over clever</h4>
+            <p class="text-sm text-[var(--ink-dim)]">
+              Small, undoable decisions compound faster than one brilliant
+              irreversible one.
+            </p>
+          </div>
+          <div class="reveal-up">
+            <div class="eyebrow mb-2">03</div>
+            <h4 class="mb-2 font-semibold">Design for the 2am page</h4>
+            <p class="text-sm text-[var(--ink-dim)]">
+              If it can't be debugged half-asleep, it isn't done — it's just not
+              broken yet.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+ENGINEERING STACK
+=========================================================== -->
+
+    <section id="skills" class="relative overflow-hidden bg-[#040507] py-40">
+      <div
+        class="absolute inset-0 bg-[radial-gradient(circle_at_top,#1e3a8a22,transparent_70%)]"
+      ></div>
+
+      <div class="relative mx-auto max-w-7xl px-8">
+        <div class="mx-auto max-w-4xl text-center">
+          <p class="text-sm uppercase tracking-[0.35em] text-cyan-400">
+            ENGINEERING STACK
+          </p>
+
+          <h2 class="mt-6 text-7xl font-black text-white">
+            Technologies I Build With
+          </h2>
+
+          <p class="mt-8 text-xl leading-10 text-white/60">
+            From responsive frontends to scalable backend systems, search
+            infrastructure, cloud deployment, and developer tooling.
+          </p>
+        </div>
+
+        <div class="mt-24 grid gap-8 lg:grid-cols-2">
+          <!-- Frontend -->
+
+          <div class="glass rounded-[32px] p-10">
+            <div class="flex items-center justify-between">
+              <h3 class="text-3xl font-bold text-white">Frontend</h3>
+
+              <span class="text-sky-400"> UI / UX </span>
+            </div>
+
+            <div class="mt-10 flex flex-wrap gap-4">
+              <span class="tech-pill">React</span>
+              <span class="tech-pill">Next.js</span>
+              <span class="tech-pill">TypeScript</span>
+              <span class="tech-pill">Tailwind CSS</span>
+              <span class="tech-pill">React Native</span>
+              <span class="tech-pill">Electron</span>
+              <span class="tech-pill">Framer Motion</span>
+            </div>
+          </div>
+
+          <!-- Backend -->
+
+          <div class="glass rounded-[32px] p-10">
+            <div class="flex items-center justify-between">
+              <h3 class="text-3xl font-bold text-white">Backend</h3>
+
+              <span class="text-emerald-400"> APIs </span>
+            </div>
+
+            <div class="mt-10 flex flex-wrap gap-4">
+              <span class="tech-pill">Node.js</span>
+              <span class="tech-pill">Express</span>
+              <span class="tech-pill">REST API</span>
+              <span class="tech-pill">JWT</span>
+              <span class="tech-pill">RBAC</span>
+            </div>
+          </div>
+
+          <!-- Database -->
+
+          <div class="glass rounded-[32px] p-10">
+            <div class="flex items-center justify-between">
+              <h3 class="text-3xl font-bold text-white">Data</h3>
+
+              <span class="text-yellow-400"> Storage </span>
+            </div>
+
+            <div class="mt-10 flex flex-wrap gap-4">
+              <span class="tech-pill">MongoDB</span>
+              <span class="tech-pill">Mongoose</span>
+              <span class="tech-pill">Elasticsearch</span>
+            </div>
+          </div>
+
+          <!-- DevOps -->
+
+          <div class="glass rounded-[32px] p-10">
+            <div class="flex items-center justify-between">
+              <h3 class="text-3xl font-bold text-white">DevOps</h3>
+
+              <span class="text-purple-400"> Deployment </span>
+            </div>
+
+            <div class="mt-10 flex flex-wrap gap-4">
+              <span class="tech-pill">Docker</span>
+              <span class="tech-pill">AWS</span>
+              <span class="tech-pill">Linux</span>
+              <span class="tech-pill">Git</span>
+              <span class="tech-pill">Nginx</span>
+              <span class="tech-pill">CI/CD</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-20 grid gap-8 md:grid-cols-4">
+          <div class="glass rounded-3xl p-8 text-center">
+            <h3 class="text-5xl font-black text-white">Full Stack</h3>
+
+            <p class="mt-4 text-white/60">Web Development</p>
+          </div>
+
+          <div class="glass rounded-3xl p-8 text-center">
+            <h3 class="text-5xl font-black text-white">Mobile</h3>
+
+            <p class="mt-4 text-white/60">React Native</p>
+          </div>
+
+          <div class="glass rounded-3xl p-8 text-center">
+            <h3 class="text-5xl font-black text-white">Desktop</h3>
+
+            <p class="mt-4 text-white/60">Electron Apps</p>
+          </div>
+
+          <div class="glass rounded-3xl p-8 text-center">
+            <h3 class="text-5xl font-black text-white">Cloud</h3>
+
+            <p class="mt-4 text-white/60">Docker + AWS</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+DEVELOPER TOOLKIT
+=========================================================== -->
+
+    <section id="toolkit" class="relative overflow-hidden bg-[#07090f] py-40">
+      <div
+        class="absolute left-1/2 top-0 h-[700px] w-[700px] -translate-x-1/2 rounded-full opacity-20 blur-[180px]"
+        style="background: #2563eb"
+      ></div>
+
+      <div class="relative mx-auto max-w-7xl px-8">
+        <div class="mx-auto max-w-4xl text-center">
+          <p class="text-sm uppercase tracking-[0.35em] text-sky-400">
+            DEVELOPER TOOLKIT
+          </p>
+
+          <h2 class="mt-6 text-7xl font-black text-white">
+            Beyond Applications.
+
+            <br />
+
+            I Build Developer Tools.
+          </h2>
+
+          <p class="mt-10 text-xl leading-10 text-white/60">
+            Alongside production software, I enjoy building tools that improve
+            developer productivity, debugging, monitoring, and workflow
+            automation.
+          </p>
+        </div>
+
+        <div class="mt-24 grid gap-10 lg:grid-cols-2">
+          <!-- Electron -->
+
+          <div
+            class="overflow-hidden rounded-[36px] border border-white/10 bg-white/[0.04] backdrop-blur-xl"
+          >
+            <div
+              class="flex items-center gap-3 border-b border-white/10 px-8 py-5"
+            >
+              <span class="h-3 w-3 rounded-full bg-red-500"></span>
+              <span class="h-3 w-3 rounded-full bg-yellow-500"></span>
+              <span class="h-3 w-3 rounded-full bg-green-500"></span>
+
+              <div class="ml-6 text-sm text-white/60">
+                Electron Debug Desktop
+              </div>
+            </div>
+
+            <div class="p-10">
+              <h3 class="text-4xl font-bold text-white">Electron Debug Tool</h3>
+
+              <p class="mt-8 leading-8 text-white/60">
+                Desktop debugging application built using Electron, React,
+                Express and MongoDB for monitoring, inspecting, logging, and
+                managing API requests.
+              </p>
+
+              <div class="mt-10 flex flex-wrap gap-3">
+                <span class="tech-pill">Electron</span>
+                <span class="tech-pill">React</span>
+                <span class="tech-pill">Node.js</span>
+                <span class="tech-pill">MongoDB</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- CLI -->
+
+          <div
+            class="overflow-hidden rounded-[36px] border border-white/10 bg-[#0b1220]"
+          >
+            <div class="border-b border-white/10 px-8 py-5 text-white/60">
+              Terminal
+            </div>
+
+            <pre
+              class="overflow-x-auto p-8 text-[15px] leading-8 text-green-400"
+            ><code>$ vh --help
+
+✔ Project Scanner
+
+✔ Git Status
+
+✔ Docker Information
+
+✔ Runtime Metrics
+
+✔ System Health
+
+✔ Process Monitor
+
+✔ Project Discovery
+
+✔ Node Diagnostics
+
+$ vh status
+
+Running...
+
+Everything looks healthy.
+</code></pre>
+          </div>
+        </div>
+
+        <div class="mt-16 grid gap-8 md:grid-cols-3">
+          <div class="glass rounded-3xl p-8">
+            <h3 class="text-2xl font-bold text-white">Desktop Apps</h3>
+
+            <p class="mt-5 leading-8 text-white/60">
+              Native-feeling desktop experiences powered by Electron, React,
+              Express, and modern web technologies.
+            </p>
+          </div>
+
+          <div class="glass rounded-3xl p-8">
+            <h3 class="text-2xl font-bold text-white">Developer Experience</h3>
+
+            <p class="mt-5 leading-8 text-white/60">
+              Building tooling that reduces repetitive work, improves debugging,
+              and increases developer productivity.
+            </p>
+          </div>
+
+          <div class="glass rounded-3xl p-8">
+            <h3 class="text-2xl font-bold text-white">System Design</h3>
+
+            <p class="mt-5 leading-8 text-white/60">
+              Designing scalable architectures, APIs, deployment pipelines, and
+              maintainable software systems.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ ACT 6 — BOOKS (true horizontal scroll) ============================================================ -->
+    <section id="books-pin">
+      <div id="books-stage">
+        <div class="act-tag absolute left-6 top-10 z-10 lg:left-10">
+          the bookstore
+        </div>
+        <div id="books-track">
+          <div class="book-slide">
+            <div
+              class="book-cover"
+              style="background: linear-gradient(160deg, #6ea8ff, #1c2f5c)"
+            ></div>
+            <h4 class="mt-5 font-semibold">
+              Designing Data-Intensive Applications
+            </h4>
+            <p class="mt-1 text-xs text-[var(--ink-faint)]">Martin Kleppmann</p>
+            <p class="mt-3 max-w-xs text-sm text-[var(--ink-dim)]">
+              Reshaped how I think about guarantees — replication trade-offs
+              generalize far beyond databases.
+            </p>
+          </div>
+          <div class="book-slide">
+            <div
+              class="book-cover"
+              style="background: linear-gradient(160deg, #6fe3d4, #134b45)"
+            ></div>
+            <h4 class="mt-5 font-semibold">The Pragmatic Programmer</h4>
+            <p class="mt-1 text-xs text-[var(--ink-faint)]">
+              Hunt &amp; Thomas
+            </p>
+            <p class="mt-3 max-w-xs text-sm text-[var(--ink-dim)]">
+              Small, reversible decisions compound. DRY isn't a rule — it's risk
+              management.
+            </p>
+          </div>
+          <div class="book-slide">
+            <div
+              class="book-cover"
+              style="background: linear-gradient(160deg, #d9c08a, #5c4a20)"
+            ></div>
+            <h4 class="mt-5 font-semibold">A Philosophy of Software Design</h4>
+            <p class="mt-1 text-xs text-[var(--ink-faint)]">John Ousterhout</p>
+            <p class="mt-3 max-w-xs text-sm text-[var(--ink-dim)]">
+              Complexity is incremental. The goal is deep modules with simple
+              interfaces.
+            </p>
+          </div>
+          <div class="book-slide">
+            <div
+              class="book-cover"
+              style="background: linear-gradient(160deg, #9d8cff, #332966)"
+            ></div>
+            <h4 class="mt-5 font-semibold">Thinking in Systems</h4>
+            <p class="mt-1 text-xs text-[var(--ink-faint)]">Donella Meadows</p>
+            <p class="mt-3 max-w-xs text-sm text-[var(--ink-dim)]">
+              Feedback loops explain behavior flowcharts can't — my mental model
+              for machines and teams alike.
+            </p>
+          </div>
+          <div class="book-slide">
+            <div
+              class="book-cover"
+              style="background: linear-gradient(160deg, #565c6b, #161822)"
+            ></div>
+            <h4 class="mt-5 font-semibold">Staff Engineer</h4>
+            <p class="mt-1 text-xs text-[var(--ink-faint)]">Will Larson</p>
+            <p class="mt-3 max-w-xs text-sm text-[var(--ink-dim)]">
+              On the shelf now — recommended for its take on scope without
+              management.
+            </p>
+          </div>
+          <div class="book-slide flex items-center pr-10">
+            <p class="text-sm text-[var(--ink-faint)]">— end of shelf —</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ ACT 6 cont. — LEARNING pinned roadmap ============================================================ -->
+    <section id="learning-pin">
+      <div id="learning-stage" class="px-6">
+        <div class="act-tag mb-10">act six — what i'm learning now</div>
+        <div class="flex max-w-3xl flex-wrap justify-center gap-6">
+          <div
+            class="learn-node glass rounded-2xl px-6 py-5 text-center"
+            data-i="0"
+          >
+            <div class="eyebrow mb-1">65%</div>
+            <div class="text-sm font-semibold">Kubernetes Internals</div>
+          </div>
+          <div
+            class="learn-node glass rounded-2xl px-6 py-5 text-center"
+            data-i="1"
+          >
+            <div class="eyebrow mb-1">80%</div>
+            <div class="text-sm font-semibold">System Design at Scale</div>
+          </div>
+          <div
+            class="learn-node glass rounded-2xl px-6 py-5 text-center"
+            data-i="2"
+          >
+            <div class="eyebrow mb-1">40%</div>
+            <div class="text-sm font-semibold">React Native</div>
+          </div>
+          <div
+            class="learn-node glass rounded-2xl px-6 py-5 text-center"
+            data-i="3"
+          >
+            <div class="eyebrow mb-1">25%</div>
+            <div class="text-sm font-semibold">Electron</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ ACT 5 — TESTIMONIALS (full screen) ============================================================ -->
+    <section
+      id="testimonials"
+      class="relative flex h-screen items-center justify-center overflow-hidden"
+    >
+      <div class="act-tag absolute left-1/2 top-10 -translate-x-1/2">
+        act five — what people say
+      </div>
+      <div id="testi-wrap" class="relative h-full w-full">
+        <div class="testi-slide">
+          <p class="pullquote max-w-2xl">
+            "Aarav is the engineer you want holding the pager during a real
+            incident. He designs for the failure case first."
+          </p>
+          <div class="eyebrow mt-8">
+            Priya Nair — Eng Manager, Northbeam Systems
+          </div>
+        </div>
+        <div class="testi-slide">
+          <p class="pullquote max-w-2xl">
+            "He rebuilt our ingestion pipeline without a single day of downtime
+            across twelve plants."
+          </p>
+          <div class="eyebrow mt-8">
+            Daniel Osei — Director of Engineering, Fieldstone Analytics
+          </div>
+        </div>
+        <div class="testi-slide">
+          <p class="pullquote max-w-2xl">
+            "Every design doc reads like he already fought the argument in his
+            head and wrote down the winner."
+          </p>
+          <div class="eyebrow mt-8">
+            Meera Iyer — Staff Engineer, Northbeam Systems
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ ACT 7 — CONTACT (documentary ending) ============================================================ -->
+    <section
+      id="contact"
+      class="flex min-h-screen items-center justify-center px-6 py-32"
+    >
+      <div class="max-w-2xl text-center">
+        <div class="act-tag mb-8 justify-self-center">
+          act seven — let's build together
+        </div>
+        <h2
+          class="reveal-up text-[clamp(2.2rem,6vw,4.4rem)] font-extrabold leading-[1.02]"
+        >
+          Roll credits.<br />Then let's talk.
+        </h2>
+        <p class="reveal-up mt-8 leading-relaxed text-[var(--ink-dim)]">
+          Open to senior backend and platform roles, and select consulting
+          engagements. I read every message myself.
+        </p>
+        <div class="reveal-up mt-12 flex flex-wrap justify-center gap-4">
+          <a href="mailto:aarav.shah@example.com" class="btn solid"
+            >aarav.shah@example.com</a
+          >
+          <a href="#" class="btn">LinkedIn</a>
+          <a href="#" class="btn">GitHub</a>
+        </div>
+
+        <form
+          id="contact-form"
+          class="glass reveal-up mt-16 space-y-4 rounded-2xl p-8 text-left"
+        >
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label class="eyebrow mb-2 block" for="cf-name">Name</label
+              ><input
+                id="cf-name"
+                required
+                type="text"
+                class="w-full rounded-lg px-4 py-3 text-sm"
+                placeholder="Jordan Lee"
+              />
+            </div>
+            <div>
+              <label class="eyebrow mb-2 block" for="cf-email">Email</label
+              ><input
+                id="cf-email"
+                required
+                type="email"
+                class="w-full rounded-lg px-4 py-3 text-sm"
+                placeholder="jordan@company.com"
+              />
+            </div>
+          </div>
+          <div>
+            <label class="eyebrow mb-2 block" for="cf-msg">Message</label
+            ><textarea
+              id="cf-msg"
+              required
+              rows="4"
+              class="w-full resize-none rounded-lg px-4 py-3 text-sm"
+              placeholder="What are you building?"
+            ></textarea>
+          </div>
+          <button type="submit" class="btn solid w-full justify-center">
+            Send Message
+          </button>
+          <p
+            id="cf-success"
+            class="hidden text-center text-sm"
+            style="color: var(--teal)"
+          >
+            Thanks — I'll get back to you within a day.
+          </p>
+        </form>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+ENTER MY WORKSPACE
+=========================================================== -->
+
+    <section id="workspace" class="relative overflow-hidden bg-black py-48">
+      <!-- Background -->
+
+      <div class="absolute inset-0">
+        <div
+          class="absolute left-1/2 top-1/2 h-[900px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-20 blur-[180px]"
+          style="background: radial-gradient(circle, #2563eb, transparent 70%)"
+        ></div>
+
+        <div
+          class="absolute inset-0 opacity-[0.03]"
+          style="
+            background-image: url(&quot;https://www.transparenttextures.com/patterns/noise.png&quot;);
+          "
+        ></div>
+      </div>
+
+      <div class="relative mx-auto max-w-7xl px-8">
+        <div class="mx-auto max-w-5xl text-center">
+          <p class="text-sm uppercase tracking-[0.45em] text-sky-400">
+            INTERACTIVE EXPERIENCE
+          </p>
+
+          <h2
+            class="mt-8 text-7xl font-black leading-none text-white lg:text-8xl"
+          >
+            Enter My
+
+            <br />
+
+            Workspace
+          </h2>
+
+          <p class="mt-10 text-xl leading-10 text-white/65">
+            Instead of scrolling through screenshots, explore my projects the
+            same way I build them. Open applications. Browse source code. Launch
+            demos. Read documentation. Navigate an interactive macOS-inspired
+            desktop.
+          </p>
+        </div>
+
+        <!-- Preview -->
+
+        <div class="relative mt-24">
+          <div
+            class="overflow-hidden rounded-[40px] border border-white/10 bg-white/[0.04] shadow-[0_60px_150px_rgba(0,0,0,.55)] backdrop-blur-xl"
+          >
+            <img src="images/workspace-preview.png" class="block w-full" />
+          </div>
+        </div>
+
+        <!-- Features -->
+
+        <div class="mt-20 grid gap-8 md:grid-cols-4">
+          <div class="glass rounded-3xl p-8">
+            <h3 class="text-2xl font-bold text-white">Projects</h3>
+
+            <p class="mt-5 leading-8 text-white/60">
+              Browse every production application.
+            </p>
+          </div>
+
+          <div class="glass rounded-3xl p-8">
+            <h3 class="text-2xl font-bold text-white">Resume</h3>
+
+            <p class="mt-5 leading-8 text-white/60">
+              View or download my latest resume.
+            </p>
+          </div>
+
+          <div class="glass rounded-3xl p-8">
+            <h3 class="text-2xl font-bold text-white">Terminal</h3>
+
+            <p class="mt-5 leading-8 text-white/60">
+              Interactive developer terminal.
+            </p>
+          </div>
+
+          <div class="glass rounded-3xl p-8">
+            <h3 class="text-2xl font-bold text-white">Contact</h3>
+
+            <p class="mt-5 leading-8 text-white/60">
+              Email, GitHub, LinkedIn and more.
+            </p>
+          </div>
+        </div>
+
+        <!-- CTA -->
+
+        <div class="mt-24 flex justify-center">
+          <button
+            id="enter-workspace"
+            class="group relative overflow-hidden rounded-full bg-white px-12 py-6 text-xl font-bold text-black transition duration-300 hover:scale-105"
+          >
+            <span class="relative z-10"> Launch Workspace </span>
+
+            <span
+              class="absolute inset-0 translate-y-full bg-gradient-to-r from-sky-400 to-cyan-300 transition duration-500 group-hover:translate-y-0"
+            >
+            </span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      gsap.registerPlugin(ScrollTrigger);
+
+      /* ---------- LENIS smooth scroll wired to ScrollTrigger ---------- */
+      const lenis = new Lenis({
+        duration: 1.05,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      });
+      lenis.on("scroll", ScrollTrigger.update);
+      gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+      });
+      gsap.ticker.lagSmoothing(0);
+
+      /* ---------- LOADER ---------- */
+      window.addEventListener("load", () => {
+        gsap.to("#loader", {
+          opacity: 0,
+          duration: 0.7,
+          delay: 0.3,
+          onComplete: () => {
+            document.getElementById("loader").style.display = "none";
+          },
+        });
+      });
+
+      /* ---------- CUSTOM CURSOR ---------- */
+      const cursor = document.getElementById("cursor");
+      window.addEventListener("mousemove", (e) => {
+        gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.15 });
+      });
+      document
+        .querySelectorAll("a, button, .book-slide, .project-device")
+        .forEach((el) => {
+          el.addEventListener("mouseenter", () => cursor.classList.add("grow"));
+          el.addEventListener("mouseleave", () =>
+            cursor.classList.remove("grow"),
+          );
+        });
+
+      /* ---------- PROGRESS RAIL ---------- */
+      gsap.to("#progress-rail", {
+        width: "100%",
+        ease: "none",
+        scrollTrigger: {
+          trigger: document.body,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: true,
+        },
+      });
+
+      /* ---------- HERO entrance + parallax ---------- */
+      const heroTl = gsap.timeline({ delay: 0.4 });
+      if (window.SplitType) {
+        const split = new SplitType("#hero-title", { types: "chars" });
+        gsap.set(split.chars, { yPercent: 120, opacity: 0 });
+        heroTl
+          .to(split.chars, {
+            yPercent: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power4.out",
+            stagger: 0.02,
+          })
+          .to("#hero-eyebrow", { opacity: 1, duration: 0.6 }, 0)
+          .to("#hero-sub", { opacity: 1, duration: 0.8 }, "-=0.4")
+          .to("#hero-cta", { opacity: 1, duration: 0.8 }, "-=0.5")
+          .to("#hero-scroll", { opacity: 1, duration: 0.8 }, "-=0.4");
+      } else {
+        heroTl.to(
+          "#hero-title, #hero-eyebrow, #hero-sub, #hero-cta, #hero-scroll",
+          { opacity: 1, duration: 1 },
+        );
+      }
+      window.addEventListener(
+        "mousemove",
+        (e) => {
+          const x = (e.clientX / window.innerWidth - 0.5) * 20;
+          const y = (e.clientY / window.innerHeight - 0.5) * 20;
+          gsap.to("#hero-parallax", {
+            x,
+            y,
+            duration: 0.6,
+            ease: "power2.out",
+          });
+        },
+        { passive: true },
+      );
+
+      /* ---------- HEADLINE split reveal (about) ---------- */
+      if (window.SplitType) {
+        document.querySelectorAll(".split-headline").forEach((h) => {
+          const s = new SplitType(h, { types: "lines" });
+          s.lines.forEach((l) => {
+            l.style.overflow = "hidden";
+          });
+          gsap.from(s.lines, {
+            yPercent: 110,
+            opacity: 0,
+            duration: 1,
+            ease: "power4.out",
+            stagger: 0.1,
+            scrollTrigger: { trigger: h, start: "top 85%" },
+          });
+        });
+      }
+
+      /* ---------- GENERIC reveal-up ---------- */
+      document.querySelectorAll(".reveal-up").forEach((el) => {
+        gsap.fromTo(
+          el,
+          { opacity: 0, y: 32 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.9,
+            ease: "power3.out",
+            scrollTrigger: { trigger: el, start: "top 88%" },
+          },
+        );
+      });
+
+      /* ---------- JOURNEY pinned milestones ---------- */
+      (function () {
+        const milestones = gsap.utils.toArray(".milestone");
+        const dots = gsap.utils.toArray(".journey-dot");
+        const bgColors = [
+          "#08090d",
+          "#0a0d16",
+          "#0d0b16",
+          "#0b0f14",
+          "#100d0a",
+          "#08090d",
+        ];
+
+        milestones.forEach((m, i) => {
+          gsap.set(m, { opacity: 0, y: i % 2 === 0 ? 60 : -60 });
+        });
+        gsap.set(milestones[0], { opacity: 1, y: 0 });
+        dots[0].classList.add("active");
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: "#journey-pin",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 0.6,
+            pin: "#journey-stage",
+          },
+        });
+
+        milestones.forEach((m, i) => {
+          if (i > 0) {
+            tl.to(milestones[i - 1], { opacity: 0, y: -40, duration: 0.4 }, i)
+              .to(m, { opacity: 1, y: 0, duration: 0.4 }, i)
+              .call(
+                () => {
+                  dots.forEach((d) => d.classList.remove("active"));
+                  dots[i].classList.add("active");
+                },
+                null,
+                i,
+              )
+              .to(
+                "#journey-stage",
+                { backgroundColor: bgColors[i], duration: 0.4 },
+                i,
+              );
+          }
+        });
+      })();
+
+      /* ---------- PROJECTS sticky mockup swap ---------- */
+      (function () {
+        const blocks = gsap.utils.toArray(".project-block");
+        const devices = [
+          "device-ledgerline",
+          "device-sensorforge",
+          "device-flagworks",
+        ];
+        blocks.forEach((b, i) => {
+          ScrollTrigger.create({
+            trigger: b,
+            start: "top center",
+            end: "bottom center",
+            onEnter: () => swap(i),
+            onEnterBack: () => swap(i),
+          });
+        });
+        function swap(i) {
+          devices.forEach((id, idx) => {
+            const el = document.getElementById(id);
+            if (idx === i) {
+              el.classList.remove("hidden");
+              gsap.fromTo(
+                el,
+                { opacity: 0, scale: 0.95 },
+                { opacity: 1, scale: 1, duration: 0.5 },
+              );
+            } else {
+              el.classList.add("hidden");
+            }
+          });
+        }
+      })();
+
+      /* ---------- BOOKS horizontal scroll ---------- */
+      (function () {
+        const track = document.getElementById("books-track");
+        function getScrollAmount() {
+          return -(track.scrollWidth - window.innerWidth + 80);
+        }
+        gsap.to(track, {
+          x: getScrollAmount,
+          ease: "none",
+          scrollTrigger: {
+            trigger: "#books-pin",
+            start: "top top",
+            end: () => "+=" + track.scrollWidth,
+            scrub: 0.6,
+            pin: "#books-stage",
+            invalidateOnRefresh: true,
+          },
+        });
+      })();
+
+      /* ---------- LEARNING pinned nodes ---------- */
+      (function () {
+        const nodes = gsap.utils.toArray(".learn-node");
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: "#learning-pin",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 0.5,
+            pin: "#learning-stage",
+          },
+        });
+        nodes.forEach((n, i) => {
+          tl.call(() => n.classList.add("on"), null, i * 0.9);
+        });
+      })();
+
+      /* ---------- TESTIMONIALS crossfade pinned ---------- */
+      (function () {
+        const slides = gsap.utils.toArray(".testi-slide");
+        gsap.set(slides[0], { opacity: 1 });
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: "#testimonials",
+            start: "top top",
+            end: "+=200%",
+            scrub: 0.6,
+            pin: true,
+          },
+        });
+        slides.forEach((s, i) => {
+          if (i > 0) {
+            tl.to(slides[i - 1], { opacity: 0, duration: 0.4 }).to(
+              s,
+              { opacity: 1, duration: 0.4 },
+              "<",
+            );
+          }
+        });
+      })();
+
+      /* ---------- SKILLS constellation ---------- */
+      (function () {
+        const canvas = document.getElementById("skills-canvas");
+        const ctx = canvas.getContext("2d");
+        let w, h, dpr;
+        const nodes = [
+          { name: "Go", g: "#6ea8ff" },
+          { name: "Python", g: "#6ea8ff" },
+          { name: "Node.js", g: "#6ea8ff" },
+          { name: "gRPC", g: "#6ea8ff" },
+          { name: "Postgres", g: "#d9c08a" },
+          { name: "Redis", g: "#d9c08a" },
+          { name: "TimescaleDB", g: "#d9c08a" },
+          { name: "Kafka", g: "#d9c08a" },
+          { name: "React", g: "#6fe3d4" },
+          { name: "Next.js", g: "#6fe3d4" },
+          { name: "TypeScript", g: "#6fe3d4" },
+          { name: "Tailwind", g: "#6fe3d4" },
+          { name: "Docker", g: "#9d8cff" },
+          { name: "Kubernetes", g: "#9d8cff" },
+          { name: "Terraform", g: "#9d8cff" },
+          { name: "AWS", g: "#9d8cff" },
+        ];
+        const links = [
+          [0, 4],
+          [0, 7],
+          [1, 5],
+          [1, 7],
+          [2, 9],
+          [2, 10],
+          [3, 0],
+          [4, 5],
+          [5, 6],
+          [6, 7],
+          [8, 9],
+          [9, 10],
+          [10, 11],
+          [12, 13],
+          [13, 14],
+          [14, 15],
+          [3, 12],
+        ];
+        function resize() {
+          dpr = Math.min(window.devicePixelRatio || 1, 2);
+          w = canvas.clientWidth;
+          h = canvas.clientHeight;
+          canvas.width = w * dpr;
+          canvas.height = h * dpr;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        new ResizeObserver(resize).observe(canvas);
+        resize();
+        nodes.forEach((n) => {
+          n.x = Math.random() * w;
+          n.y = Math.random() * h;
+          n.vx = (Math.random() - 0.5) * 0.2;
+          n.vy = (Math.random() - 0.5) * 0.2;
+        });
+        let mouse = { x: -9999, y: -9999 };
+        canvas.addEventListener("mousemove", (e) => {
+          const r = canvas.getBoundingClientRect();
+          mouse.x = e.clientX - r.left;
+          mouse.y = e.clientY - r.top;
+        });
+        canvas.addEventListener("mouseleave", () => {
+          mouse.x = -9999;
+          mouse.y = -9999;
+        });
+        function draw() {
+          requestAnimationFrame(draw);
+          ctx.clearRect(0, 0, w, h);
+          nodes.forEach((n) => {
+            n.x += n.vx;
+            n.y += n.vy;
+            if (n.x < 16 || n.x > w - 16) n.vx *= -1;
+            if (n.y < 16 || n.y > h - 16) n.vy *= -1;
+            const dx = mouse.x - n.x,
+              dy = mouse.y - n.y,
+              d = Math.hypot(dx, dy);
+            if (d < 120) {
+              n.x -= dx * 0.012;
+              n.y -= dy * 0.012;
+            }
+          });
+          links.forEach(([a, b]) => {
+            const na = nodes[a],
+              nb = nodes[b];
+            const near =
+              Math.hypot(mouse.x - na.x, mouse.y - na.y) < 150 ||
+              Math.hypot(mouse.x - nb.x, mouse.y - nb.y) < 150;
+            ctx.strokeStyle = near ? "#ffffff50" : "#ffffff12";
+            ctx.lineWidth = near ? 1.1 : 0.6;
+            ctx.beginPath();
+            ctx.moveTo(na.x, na.y);
+            ctx.lineTo(nb.x, nb.y);
+            ctx.stroke();
+          });
+          nodes.forEach((n) => {
+            const near = Math.hypot(mouse.x - n.x, mouse.y - n.y) < 120;
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, near ? 4.5 : 3, 0, Math.PI * 2);
+            ctx.fillStyle = n.g;
+            ctx.globalAlpha = near ? 1 : 0.8;
+            ctx.fill();
+            ctx.globalAlpha = 1;
+            if (near) {
+              ctx.font = "11px JetBrains Mono, monospace";
+              ctx.fillStyle = "#f2f3f6";
+              ctx.fillText(n.name, n.x + 9, n.y - 9);
+            }
+          });
+        }
+        draw();
+      })();
+
+      /* ---------- CONTACT FORM ---------- */
+      document
+        .getElementById("contact-form")
+        .addEventListener("submit", (e) => {
+          e.preventDefault();
+          document.getElementById("cf-success").classList.remove("hidden");
+          e.target
+            .querySelectorAll("input,textarea")
+            .forEach((i) => (i.value = ""));
+        });
+
+      /* ---------- MOBILE: reduce pin scrub intensity ---------- */
+      if (window.innerWidth < 768) {
+        ScrollTrigger.config({ ignoreMobileResize: true });
+      }
+    </script>
+  </body>
+</html>

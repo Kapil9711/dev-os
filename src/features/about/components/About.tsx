@@ -5,6 +5,8 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { DEV, SKILL_GROUPS } from "@/constants/dev";
 
+import MarkdownFilePreview from "@/features/markdownPreview/components/MarkdownPreviewFile";
+
 type Tab = "code" | "photo" | "skills" | "contact";
 
 const FILES: { id: Tab; label: string }[] = [
@@ -25,9 +27,17 @@ export function About() {
           onClick={() => setTab("photo")}
           className="mb-2.5 flex w-full items-center gap-2 rounded-[10px] border border-white/10 bg-white/[0.06] p-2 text-left transition hover:bg-white/10"
         >
-          <Image src={DEV.photo} alt={DEV.name} width={34} height={34} className="rounded-[9px] border border-white/10 object-cover" />
+          <Image
+            src={DEV.photo}
+            alt={DEV.name}
+            width={34}
+            height={34}
+            className="rounded-[9px] border border-white/10 object-cover"
+          />
           <div>
-            <div className="text-[11.5px] font-bold leading-tight">{DEV.name}</div>
+            <div className="text-[11.5px] font-bold leading-tight">
+              {DEV.name}
+            </div>
             <div className="text-[10px] text-[var(--text-2)]">{DEV.role}</div>
           </div>
         </button>
@@ -42,13 +52,17 @@ export function About() {
             onClick={() => setTab(f.id)}
             className={cn(
               "flex w-full items-center gap-1.5 rounded-md px-2 py-1.5 text-left",
-              tab === f.id ? "bg-white/[0.06] text-[var(--text-1)]" : "text-[var(--text-2)]",
+              tab === f.id
+                ? "bg-white/[0.06] text-[var(--text-1)]"
+                : "text-[var(--text-2)]",
             )}
           >
             {f.label}
           </button>
         ))}
       </div>
+
+      <MarkdownFilePreview />
 
       <div className="flex-1 overflow-auto">
         {tab === "code" && <CodeTab />}
@@ -65,7 +79,8 @@ function CodeTab() {
     <div className="p-4 px-5 font-mono text-[13px] leading-[1.85]">
       <div className="italic text-[#5b5e70]">{"// about me"}</div>
       <div>
-        <span className="text-accent-3">const</span> <span className="text-accent-2">developer</span> ={" "}
+        <span className="text-accent-3">const</span>{" "}
+        <span className="text-accent-2">developer</span> ={" "}
         <span className="text-[var(--text-2)]">{"{"}</span>
       </div>
       <div className="pl-4">
@@ -75,7 +90,8 @@ function CodeTab() {
         role: <span className="text-success">&quot;{DEV.role}&quot;</span>,
       </div>
       <div className="pl-4">
-        experience: <span className="text-success">&quot;{DEV.experience}&quot;</span>,
+        experience:{" "}
+        <span className="text-success">&quot;{DEV.experience}&quot;</span>,
       </div>
       <div className="pl-4">
         stack: <span className="text-[var(--text-2)]">[</span>
@@ -87,7 +103,10 @@ function CodeTab() {
       ))}
       <div className="pl-4 text-[var(--text-2)]">],</div>
       <div className="pl-4">
-        focus: <span className="text-success">&quot;end-to-end ownership, performance, clean docs&quot;</span>
+        focus:{" "}
+        <span className="text-success">
+          &quot;end-to-end ownership, performance, clean docs&quot;
+        </span>
       </div>
       <div className="text-[var(--text-2)]">{"}"}</div>
     </div>
@@ -130,7 +149,10 @@ function SkillsTab() {
           </div>
           <div className="flex flex-wrap gap-2">
             {g.items.map((s) => (
-              <span key={s} className="rounded-full border border-white/10 bg-white/[0.06] px-3 py-1.5 text-xs">
+              <span
+                key={s}
+                className="rounded-full border border-white/10 bg-white/[0.06] px-3 py-1.5 text-xs"
+              >
                 {s}
               </span>
             ))}
@@ -146,17 +168,25 @@ function ContactTab() {
     <div className="p-4 px-5 font-mono text-[13px] leading-[1.85]">
       <div className="italic text-[#5b5e70]">{"// reach out"}</div>
       <div>
-        <span className="text-accent-3">export const</span> <span className="text-accent-2">contact</span> ={" "}
+        <span className="text-accent-3">export const</span>{" "}
+        <span className="text-accent-2">contact</span> ={" "}
         <span className="text-[var(--text-2)]">{"{"}</span>
       </div>
       <div className="pl-4">
         email: <span className="text-success">&quot;{DEV.email}&quot;</span>,
       </div>
       <div className="pl-4">
-        github: <span className="text-success">&quot;{DEV.github.replace("https://", "")}&quot;</span>,
+        github:{" "}
+        <span className="text-success">
+          &quot;{DEV.github.replace("https://", "")}&quot;
+        </span>
+        ,
       </div>
       <div className="pl-4">
-        linkedin: <span className="text-success">&quot;{DEV.linkedin.replace("https://", "")}&quot;</span>
+        linkedin:{" "}
+        <span className="text-success">
+          &quot;{DEV.linkedin.replace("https://", "")}&quot;
+        </span>
       </div>
       <div className="text-[var(--text-2)]">{"}"}</div>
     </div>

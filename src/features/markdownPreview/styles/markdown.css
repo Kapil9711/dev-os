@@ -1,0 +1,169 @@
+.markdown-preview {
+  color: inherit;
+  line-height: 1.75;
+  word-break: break-word;
+}
+
+/* Paragraphs */
+.markdown-preview p {
+  margin: 1rem 0;
+}
+
+/* Links */
+.markdown-preview a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.markdown-preview a:hover {
+  text-decoration: underline;
+}
+
+/* Lists */
+.markdown-preview ul,
+.markdown-preview ol {
+  margin: 1rem 0;
+  padding-left: 1.75rem;
+}
+
+.markdown-preview li {
+  margin: 0.35rem 0;
+}
+
+.markdown-preview li > ul,
+.markdown-preview li > ol {
+  margin-top: 0.35rem;
+}
+
+/* Task List */
+.markdown-preview input[type="checkbox"] {
+  margin-right: 0.5rem;
+}
+
+/* Horizontal Rule */
+.markdown-preview hr {
+  margin: 2rem 0;
+  border: 0;
+  border-top: 1px solid rgb(229 231 235);
+}
+
+.dark .markdown-preview hr {
+  border-color: rgb(64 64 64);
+}
+
+/* Inline Code */
+.markdown-preview :not(pre) > code {
+  padding: 0.15rem 0.4rem;
+  border-radius: 6px;
+  background: rgb(243 244 246);
+  font-size: 0.875rem;
+  font-family: SFMono-Regular, Consolas, Monaco, monospace;
+}
+
+.dark .markdown-preview :not(pre) > code {
+  background: rgb(38 38 38);
+}
+
+/* Pre */
+.markdown-preview pre {
+  margin: 0;
+}
+
+/* Table */
+
+.markdown-preview table {
+  width: 100%;
+}
+
+.markdown-preview thead {
+  background: rgb(249 250 251);
+}
+
+.dark .markdown-preview thead {
+  background: rgb(38 38 38);
+}
+
+.markdown-preview th,
+.markdown-preview td {
+  padding: 0.75rem 1rem;
+  border: 1px solid rgb(229 231 235);
+  text-align: left;
+}
+
+.dark .markdown-preview th,
+.dark .markdown-preview td {
+  border-color: rgb(64 64 64);
+}
+
+.markdown-preview tbody tr:nth-child(even) {
+  background: rgb(250 250 250);
+}
+
+.dark .markdown-preview tbody tr:nth-child(even) {
+  background: rgb(23 23 23);
+}
+
+/* Images */
+
+.markdown-preview img {
+  display: block;
+  max-width: 100%;
+}
+
+/* Blockquote */
+
+.markdown-preview blockquote p:first-child {
+  margin-top: 0;
+}
+
+.markdown-preview blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* Headings */
+
+.markdown-preview h1:first-child {
+  margin-top: 0;
+}
+
+/* Keyboard */
+
+.markdown-preview kbd {
+  padding: 0.15rem 0.45rem;
+  border: 1px solid rgb(209 213 219);
+  border-radius: 4px;
+  background: rgb(249 250 251);
+  font-size: 0.875rem;
+  font-family: SFMono-Regular, Consolas, Monaco, monospace;
+}
+
+.dark .markdown-preview kbd {
+  border-color: rgb(64 64 64);
+  background: rgb(38 38 38);
+}
+
+/* Selection */
+
+.markdown-preview ::selection {
+  background: rgb(191 219 254);
+}
+
+.dark .markdown-preview ::selection {
+  background: rgb(30 64 175);
+}
+
+/* Mermaid */
+
+.markdown-preview .mermaid {
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .markdown-preview table {
+    min-width: 650px;
+  }
+}

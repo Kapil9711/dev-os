@@ -53,7 +53,7 @@ function DesktopShell({ booted }: { booted: boolean }) {
     if (!booted) return;
     const t = setTimeout(() => {
       if (!isMobile) {
-        openWindow("about");
+        // openWindow("about");
         openWindow("terminal");
         openWindow("monitor");
 

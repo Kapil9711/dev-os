@@ -175,28 +175,26 @@ function HeroMesh() {
 
 export default function AuroraBackground() {
   return (
-    <div className="hidden md:block">
-      <Canvas
-        camera={{
-          position: [0, 0, 5],
-          fov: 45,
-        }}
-        dpr={[1, 2]}
-        gl={{
-          antialias: true,
-          alpha: true,
-        }}
-      >
-        {/* <color attach="b /> */}
+    <Canvas
+      camera={{
+        position: [0, 0, 5],
+        fov: 45,
+      }}
+      dpr={[1, 2]}
+      gl={{
+        antialias: true,
+        alpha: true,
+      }}
+    >
+      {/* <color attach="b /> */}
 
-        <ambientLight intensity={0.5} />
+      <ambientLight intensity={0.5} />
 
-        <directionalLight position={[5, 5, 5]} intensity={2} />
+      <directionalLight position={[5, 5, 5]} intensity={2} />
 
-        <directionalLight position={[-5, -3, -2]} intensity={0.6} />
+      <directionalLight position={[-5, -3, -2]} intensity={0.6} />
 
-        <HeroMesh />
-      </Canvas>
-    </div>
+      <HeroMesh />
+    </Canvas>
   );
 }

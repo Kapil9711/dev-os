@@ -13,7 +13,7 @@ export function DesktopIcons() {
   const { openWindow } = useWindowManager();
 
   return (
-    <div className="fixed right-5 top-14 z-20 flex flex-col items-center gap-2 max-[720px]:hidden">
+    <div className="fixed right-5 top-14 z-10 flex flex-col items-center gap-2 max-[720px]:hidden">
       {DESKTOP_APPS.map((id) => {
         const app = APP_REGISTRY[id];
 

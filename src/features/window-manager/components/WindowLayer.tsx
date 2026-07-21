@@ -32,7 +32,7 @@ export function WindowLayer() {
   const { openOrder } = useWindowManager();
 
   return (
-    <div className="absolute inset-0 z-10">
+    <div className="absolute z-50">
       <AnimatePresence mode="popLayout">
         {openOrder.map((id) => {
           const Content = APP_CONTENT[id];

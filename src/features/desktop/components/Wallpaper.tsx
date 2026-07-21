@@ -15,7 +15,7 @@ export function Wallpaper() {
           "linear-gradient(160deg, #060812 0%, #0a0d1b 50%, #070914 100%)",
       }}
     >
-      {/* <AuroraBackground /> */}
+      <AuroraBackground />
 
       <div
         className="absolute animate-drift rounded-full opacity-55 blur-[60px]"

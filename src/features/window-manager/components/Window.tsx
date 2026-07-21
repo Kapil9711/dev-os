@@ -88,7 +88,7 @@ export function Window({ id, children }: WindowProps) {
         "window-shell",
         isFocused ? "is-focused" : "is-unfocused",
         win.maximized && "!rounded-none",
-        "z-50 max-[720px]:!inset-0 max-[720px]:!h-full max-[720px]:!w-full max-[720px]:!rounded-none max-[720px]:!border-none",
+        "z-50 max-[720px]:!inset-0 max-[720px]:h-screen max-[720px]:!w-screen max-[720px]:!rounded-none max-[720px]:!border-none",
       )}
       style={{
         left: win.rect.x,

@@ -242,7 +242,7 @@ export function WindowManagerProvider({
                   : win.rect.width,
               height:
                 typeof window !== "undefined"
-                  ? window.innerHeight - 40
+                  ? window.innerHeight - 0
                   : win.rect.height,
             },
           },

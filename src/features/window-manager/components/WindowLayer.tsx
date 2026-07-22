@@ -14,7 +14,7 @@ import { Contact } from "@/features/contact/components/Contact";
 import { Settings } from "@/features/settings/components/Settings";
 
 import type { AppId } from "@/constants/apps";
-import { Portfolio } from "@/features/portfolio/Portfolio";
+import Portfolio from "@/features/portfolio/PortfolioPage";
 
 const APP_CONTENT: Record<AppId, React.ComponentType> = {
   about: About,

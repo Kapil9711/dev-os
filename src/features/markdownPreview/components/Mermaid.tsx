@@ -94,7 +94,10 @@ export default function Mermaid({ chart }: MermaidProps) {
     async function renderChart() {
       if (!containerRef.current) return;
 
-      const id = `mermaid-${crypto.randomUUID()}`;
+      const id =
+        typeof crypto !== "undefined" && "randomUUID" in crypto
+          ? `mermaid-${crypto.randomUUID()}`
+          : `mermaid-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
       try {
         const { svg } = await mermaid.render(id, chart.trim());

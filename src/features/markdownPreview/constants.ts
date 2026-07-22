@@ -12,7 +12,7 @@ export const LANGUAGE_PREFIX = "language-";
 /**
  * Default Mermaid theme.
  */
-export const MERMAID_THEME = "base";
+export const MERMAID_THEME = "dark";
 
 /**
  * Root container class.

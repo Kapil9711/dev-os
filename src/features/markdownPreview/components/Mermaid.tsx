@@ -15,7 +15,71 @@ function initializeMermaid() {
   mermaid.initialize({
     startOnLoad: false,
     securityLevel: "loose",
-    theme: MERMAID_THEME,
+    theme: "redux-dark-color",
+    themeVariables: {
+      background: "#0B1020",
+
+      primaryColor: "#182235",
+      primaryBorderColor: "#3B82F6",
+      primaryTextColor: "#F8FAFC",
+
+      secondaryColor: "#111827",
+      tertiaryColor: "#0F172A",
+
+      textColor: "#F8FAFC",
+
+      lineColor: "#5FA8FF",
+
+      clusterBkg: "#151E2E",
+      clusterBorder: "#3B82F6",
+
+      edgeLabelBackground: "#0B1020",
+
+      noteBkgColor: "#1E293B",
+      noteBorderColor: "#60A5FA",
+
+      fontFamily: "Inter",
+      fontSize: "15px",
+
+      // Sequence Diagram
+      actorBkg: "#182235",
+      actorBorder: "#3B82F6",
+      actorTextColor: "#F8FAFC",
+
+      activationBkgColor: "#3B82F6",
+      activationBorderColor: "#60A5FA",
+
+      signalColor: "#60A5FA",
+      signalTextColor: "#F8FAFC",
+
+      labelBoxBkgColor: "#182235",
+      labelBoxBorderColor: "#3B82F6",
+
+      loopTextColor: "#F8FAFC",
+
+      // Class Diagram
+      classBkg: "#182235",
+      classBorder: "#3B82F6",
+      classText: "#F8FAFC",
+
+      // State Diagram
+      stateBkg: "#182235",
+      stateBorder: "#3B82F6",
+
+      // Journey
+      fillType0: "#3B82F6",
+      fillType1: "#8B5CF6",
+      fillType2: "#06B6D4",
+      fillType3: "#10B981",
+      fillType4: "#F59E0B",
+
+      // Pie
+      pie1: "#3B82F6",
+      pie2: "#8B5CF6",
+      pie3: "#06B6D4",
+      pie4: "#10B981",
+      pie5: "#F59E0B",
+    },
   });
 
   initialized = true;

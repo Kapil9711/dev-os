@@ -226,6 +226,11 @@ export function WindowManagerProvider({
     setWindows((prev) => {
       const win = prev[id];
       if (!win) return prev;
+      console.log(
+        typeof window !== "undefined" ? window.innerWidth : win.rect.width,
+
+        typeof window !== "undefined" ? window.innerHeight : win.rect.height,
+      );
       if (!win.maximized) {
         return {
           ...prev,

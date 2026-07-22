@@ -15,7 +15,7 @@ export const DEV = {
   linkedin: "https://linkedin.com/in/kapil-rajput-53573326b",
   linkedinHandle: "Kapil Rajput",
   website: "https://kapil9711.github.io/my-portfolio/",
-  photo: "/images/profile.svg",
+  photo: "/images/profile.jpeg",
   stack: [
     "React",
     "Next.js",

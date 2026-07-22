@@ -158,3 +158,13 @@ button:focus-visible,
     left: 0;
   }
 }
+.dark\:bg-neutral-950 {
+  background-color: transparent !important;
+}
+
+#mermaid-4911e68d-a0d5-4874-a8f9-8ed47c1fef83 .node rect {
+  fill: transparent !important;
+  stroke: #ffffff;
+  stroke-width: 1px !important;
+  border-radius: 6px;
+}

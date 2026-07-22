@@ -10,7 +10,7 @@ import MarkdownFilePreview from "@/features/markdownPreview/components/MarkdownP
 type Tab = "code" | "photo" | "skills" | "contact";
 
 const FILES: { id: Tab; label: string }[] = [
-  { id: "code", label: "📄 developer.ts" },
+  { id: "code", label: "📄 developer.md" },
   { id: "photo", label: "🖼️ profile.jpg" },
   { id: "skills", label: "📄 skills.ts" },
   { id: "contact", label: "📄 contact.ts" },
@@ -20,7 +20,7 @@ export function About() {
   const [tab, setTab] = useState<Tab>("code");
 
   return (
-    <div className="flex h-full bg-[#0d1017]">
+    <div className="flex h-full">
       <div className="w-[170px] shrink-0 border-r border-white/10 px-2 py-3 text-[12.5px]">
         <button
           type="button"
@@ -61,9 +61,6 @@ export function About() {
           </button>
         ))}
       </div>
-
-      <MarkdownFilePreview />
-
       <div className="flex-1 overflow-auto">
         {tab === "code" && <CodeTab />}
         {tab === "photo" && <PhotoTab />}
@@ -76,61 +73,88 @@ export function About() {
 
 function CodeTab() {
   return (
-    <div className="p-4 px-5 font-mono text-[13px] leading-[1.85]">
-      <div className="italic text-[#5b5e70]">{"// about me"}</div>
-      <div>
-        <span className="text-accent-3">const</span>{" "}
-        <span className="text-accent-2">developer</span> ={" "}
-        <span className="text-[var(--text-2)]">{"{"}</span>
-      </div>
-      <div className="pl-4">
-        name: <span className="text-success">&quot;{DEV.name}&quot;</span>,
-      </div>
-      <div className="pl-4">
-        role: <span className="text-success">&quot;{DEV.role}&quot;</span>,
-      </div>
-      <div className="pl-4">
-        experience:{" "}
-        <span className="text-success">&quot;{DEV.experience}&quot;</span>,
-      </div>
-      <div className="pl-4">
-        stack: <span className="text-[var(--text-2)]">[</span>
-      </div>
-      {DEV.stack.map((s) => (
-        <div key={s} className="pl-8">
-          <span className="text-success">&quot;{s}&quot;</span>,
-        </div>
-      ))}
-      <div className="pl-4 text-[var(--text-2)]">],</div>
-      <div className="pl-4">
-        focus:{" "}
-        <span className="text-success">
-          &quot;end-to-end ownership, performance, clean docs&quot;
-        </span>
-      </div>
-      <div className="text-[var(--text-2)]">{"}"}</div>
-    </div>
+    <MarkdownFilePreview path="/docs/about.md" />
+    // <div className="p-4 px-5 font-mono text-[13px] leading-[1.85]">
+    //   <div className="italic text-[#5b5e70]">{"// about me"}</div>
+    //   <div>
+    //     <span className="text-accent-3">const</span>{" "}
+    //     <span className="text-accent-2">developer</span> ={" "}
+    //     <span className="text-[var(--text-2)]">{"{"}</span>
+    //   </div>
+    //   <div className="pl-4">
+    //     name: <span className="text-success">&quot;{DEV.name}&quot;</span>,
+    //   </div>
+    //   <div className="pl-4">
+    //     role: <span className="text-success">&quot;{DEV.role}&quot;</span>,
+    //   </div>
+    //   <div className="pl-4">
+    //     experience:{" "}
+    //     <span className="text-success">&quot;{DEV.experience}&quot;</span>,
+    //   </div>
+    //   <div className="pl-4">
+    //     stack: <span className="text-[var(--text-2)]">[</span>
+    //   </div>
+    //   {DEV.stack.map((s) => (
+    //     <div key={s} className="pl-8">
+    //       <span className="text-success">&quot;{s}&quot;</span>,
+    //     </div>
+    //   ))}
+    //   <div className="pl-4 text-[var(--text-2)]">],</div>
+    //   <div className="pl-4">
+    //     focus:{" "}
+    //     <span className="text-success">
+    //       &quot;end-to-end ownership, performance, clean docs&quot;
+    //     </span>
+    //   </div>
+    //   <div className="text-[var(--text-2)]">{"}"}</div>
+    // </div>
   );
 }
 
 function PhotoTab() {
   return (
     <div
-      className="flex h-full flex-col items-center justify-center p-6"
+      className="relative flex h-full items-center justify-center overflow-hidden p-4 sm:p-6 lg:p-8"
       style={{
         background:
-          "repeating-conic-gradient(#0F1219 0% 25%, #0D0F16 0% 50%) 0 0/16px 16px",
+          "repeating-conic-gradient(#0F1219 0% 25%, #0D0F16 0% 50%) center/18px 18px",
       }}
     >
-      <Image
-        src={DEV.photo}
-        alt={DEV.name}
-        width={220}
-        height={220}
-        className="max-h-[78%] rounded-xl border border-white/10 object-cover shadow-2xl"
-      />
-      <div className="mt-3.5 font-mono text-[11.5px] text-[var(--text-2)]">
-        profile.svg · {DEV.name}
+      {/* Ambient Glow */}
+      <div className="absolute h-[420px] w-[420px] rounded-full bg-[#5B8CFF]/15 blur-[120px]" />
+
+      <div className="relative w-full max-w-[520px] animate-[float_6s_ease-in-out_infinite]">
+        {/* Accent Border */}
+        <div className="absolute -inset-1 rounded-[28px] bg-gradient-to-br from-blue-400/30 via-indigo-400/10 to-cyan-400/20 blur-xl" />
+
+        {/* Glass Card */}
+        <div className="relative rounded-[28px] border border-white/10 bg-white/[0.04] p-3 backdrop-blur-2xl">
+          <Image
+            src={DEV.photo}
+            alt={DEV.name}
+            width={700}
+            height={900}
+            priority
+            className="w-full rounded-[22px] object-cover shadow-[0_30px_80px_rgba(0,0,0,.55)]"
+          />
+        </div>
+
+        {/* Caption */}
+        <div className="mt-5 rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 backdrop-blur-xl">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <h3 className="text-lg font-semibold text-white">{DEV.name}</h3>
+
+              <p className="mt-1 text-sm text-[var(--text-2)]">
+                Software Engineer
+              </p>
+            </div>
+
+            <div className="rounded-lg border border-blue-400/20 bg-blue-500/10 px-3 py-1 font-mono text-xs text-blue-300">
+              profile.jpg
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -138,28 +162,30 @@ function PhotoTab() {
 
 function SkillsTab() {
   return (
-    <div className="p-5">
-      <div className="mb-4 font-mono text-[11.5px] text-[var(--text-2)]">
-        {"// same stack, rendered visually"}
-      </div>
-      {SKILL_GROUPS.map((g) => (
-        <div key={g.group} className="mb-[18px]">
-          <div className="mb-2 flex items-center gap-1.5 text-xs font-bold">
-            {g.icon} {g.group}
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {g.items.map((s) => (
-              <span
-                key={s}
-                className="rounded-full border border-white/10 bg-white/[0.06] px-3 py-1.5 text-xs"
-              >
-                {s}
-              </span>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
+    <MarkdownFilePreview path="/docs/skills.md" />
+
+    // <div className="p-5">
+    //   <div className="mb-4 font-mono text-[11.5px] text-[var(--text-2)]">
+    //     {"// same stack, rendered visually"}
+    //   </div>
+    //   {SKILL_GROUPS.map((g) => (
+    //     <div key={g.group} className="mb-[18px]">
+    //       <div className="mb-2 flex items-center gap-1.5 text-xs font-bold">
+    //         {g.icon} {g.group}
+    //       </div>
+    //       <div className="flex flex-wrap gap-2">
+    //         {g.items.map((s) => (
+    //           <span
+    //             key={s}
+    //             className="rounded-full border border-white/10 bg-white/[0.06] px-3 py-1.5 text-xs"
+    //           >
+    //             {s}
+    //           </span>
+    //         ))}
+    //       </div>
+    //     </div>
+    //   ))}
+    // </div>
   );
 }
 

@@ -1,29 +1,22 @@
 export interface ProjectImage {
-  id: string;
-
-  title: string;
-
   image: string;
+  alt: string;
 }
 
 export interface Project {
   id: string;
-
   title: string;
-
-  slug: string;
-
-  shortDescription: string;
+  subtitle: string;
+  year: string;
+  featured: boolean;
 
   description: string;
-
+  shortDescription?: string; // falls back to `description` if omitted
+  responsibilities: string[];
   technologies: string[];
+  architecture: string[];
 
-  images: ProjectImage[];
-
-  github?: string;
-
+  images: ProjectImage[]; // images[0] = big hero image, rest = small thumbnails
   website?: string;
-
-  featured: boolean;
+  github?: string;
 }

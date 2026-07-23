@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { EXPERIENCES } from "../../data";
 
@@ -18,9 +18,12 @@ export default function Journey() {
 
   const [visibleIds, setVisibleIds] = useState<Set<string>>(new Set());
   const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  // Created once, persisted across renders — cards attach to *this same*
+  // instance the moment they mount, so there's no window where a card
+  // exists in the DOM but hasn't been handed to the observer yet.
+  const revealObserverRef = useRef<IntersectionObserver | null>(null);
 
-  // Scroll-progress loop feeding the Three.js beam. Ref-driven, not state —
-  // this needs to update ~60x/sec and must never trigger a React re-render.
+  // Scroll-progress loop feeding the Three.js beam — unchanged.
   useEffect(() => {
     const el = timelineRef.current;
     if (!el) return;
@@ -52,29 +55,47 @@ export default function Journey() {
     };
   }, []);
 
-  // Per-card reveal-on-scroll — one shared observer for every card.
+  // Create the reveal observer once. It does NOT scan cardRefs.current —
+  // cards register themselves via setCardRef below, as soon as they exist.
   useEffect(() => {
-    const entries = Object.values(cardRefs.current).filter(
-      (el): el is HTMLDivElement => Boolean(el),
-    );
-    if (entries.length === 0) return;
-
-    const observer = new IntersectionObserver(
-      (observed) => {
-        observed.forEach((entry) => {
+    revealObserverRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
+
           const id = entry.target.getAttribute("data-experience-id");
           if (!id) return;
-          setVisibleIds((prev) =>
-            prev.has(id) ? prev : new Set(prev).add(id),
-          );
+
+          revealObserverRef.current?.unobserve(entry.target);
+
+          setVisibleIds((prev) => {
+            if (prev.has(id)) return prev;
+            const next = new Set(prev);
+            next.add(id);
+            return next;
+          });
         });
       },
-      { threshold: 0.2, rootMargin: "0px 0px 0% 0px" },
+      {
+        threshold: 0.1,
+        // Reveal as a card enters from the bottom, not once it's already
+        // most of the way up the screen.
+        rootMargin: "0px 0px -30% 0px",
+      },
     );
 
-    entries.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+    return () => revealObserverRef.current?.disconnect();
+  }, []);
+
+  const setCardRef = useCallback((id: string) => {
+    return (el: HTMLDivElement | null) => {
+      cardRefs.current[id] = el;
+      if (el) {
+        // Safe to call even if this card was already being observed —
+        // per spec, observe() on an already-observed target is a no-op.
+        revealObserverRef.current?.observe(el);
+      }
+    };
   }, []);
 
   return (
@@ -87,13 +108,10 @@ export default function Journey() {
         />
 
         <div ref={timelineRef} className="relative mt-16 sm:mt-20">
-          {/* Three.js beam — only where the line is centered (lg:) so it
-              actually aligns with something instead of floating unattached */}
           <div className="pointer-events-none absolute inset-0 -z-10 hidden lg:block">
             <JourneyScene progressRef={progressRef} />
           </div>
 
-          {/* Timeline line */}
           <div
             className="absolute left-4 top-0 h-full w-px lg:left-1/2 lg:-translate-x-1/2"
             style={{ background: "var(--line)" }}
@@ -107,13 +125,8 @@ export default function Journey() {
               return (
                 <div
                   key={experience.id}
-                  data-experience-id={experience.id}
-                  ref={(el) => {
-                    cardRefs.current[experience.id] = el;
-                  }}
                   className={`relative flex w-full ${isLeft ? "lg:justify-start" : "lg:justify-end"}`}
                 >
-                  {/* Timeline dot */}
                   <div
                     className="absolute left-4 top-8 z-10 h-4 w-4 -translate-x-1/2 rounded-full border-4 transition-shadow duration-700 lg:left-1/2"
                     style={{
@@ -126,6 +139,8 @@ export default function Journey() {
                   />
 
                   <div
+                    data-experience-id={experience.id}
+                    ref={setCardRef(experience.id)}
                     className="ml-12 w-full transition-all duration-700 ease-out lg:ml-0 lg:w-[46%]"
                     style={{
                       opacity: isVisible ? 1 : 0,

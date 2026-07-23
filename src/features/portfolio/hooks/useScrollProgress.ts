@@ -6,17 +6,29 @@ export default function useScrollProgress() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const update = () => {
-      const total = document.documentElement.scrollHeight - window.innerHeight;
+    let ticking = false;
 
-      setProgress((window.scrollY / total) * 100);
-    };
+    function update() {
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      const next = total > 0 ? (window.scrollY / total) * 100 : 0;
+      setProgress(Math.min(100, Math.max(0, next)));
+      ticking = false;
+    }
+
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    }
 
     update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", update);
 
-    window.addEventListener("scroll", update);
-
-    return () => window.removeEventListener("scroll", update);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", update);
+    };
   }, []);
 
   return progress;

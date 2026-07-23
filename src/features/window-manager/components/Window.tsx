@@ -153,7 +153,10 @@ export function Window({ id, children }: WindowProps) {
         </div>
       </div>
 
-      <div className="wbody-scroll relative flex-1 overflow-auto">
+      <div
+        id={"window-container-" + id}
+        className="wbody-scroll @container relative w-full flex-1 overflow-auto"
+      >
         {children}
       </div>
 

@@ -1,7 +1,8 @@
 import type { Config } from "tailwindcss";
+import containerQueries from "@tailwindcss/container-queries";
 
 const config: Config = {
-  content: ["./src/**/*.{ts,tsx}"],
+  content: ["./src/**/*.{ts,tsx}", "./components/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     extend: {
       colors: {
@@ -53,7 +54,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [containerQueries],
 };
 
 export default config;

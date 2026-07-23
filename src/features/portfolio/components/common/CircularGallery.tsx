@@ -1,3 +1,4 @@
+import { useWindowManager } from "@/features/window-manager";
 import {
   Camera,
   Mesh,
@@ -855,6 +856,7 @@ export default function CircularGallery({
   scrollEase = 0.05,
 }: CircularGalleryProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { hasMaximizedWindow } = useWindowManager();
   useEffect(() => {
     if (!containerRef.current) return;
     let app: App | undefined;
@@ -884,6 +886,7 @@ export default function CircularGallery({
     fontUrl,
     scrollSpeed,
     scrollEase,
+    hasMaximizedWindow,
   ]);
   return (
     <div

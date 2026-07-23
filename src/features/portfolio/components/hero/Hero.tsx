@@ -14,6 +14,7 @@ import Paragraph from "../common/Paragraph";
 import Section from "../common/Section";
 import HeroScene from "../three/HeroScene";
 import LightRays from "../common/LightRays";
+import TextType from "../common/TextType";
 
 export default function Hero() {
   return (

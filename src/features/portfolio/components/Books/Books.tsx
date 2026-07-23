@@ -4,18 +4,36 @@ import { books } from "../../constants/books";
 import PrismaticBurst from "../common/PrismaBurst";
 import SideRays from "../common/SideRays";
 import LightRays from "../common/LightRays";
+import { useWindowManager } from "@/features/window-manager";
 
 export const Books = () => {
+  const { hasMaximizedWindow } = useWindowManager();
   return (
     <section className="py-5">
       <div style={{ width: "100%", height: "700px", position: "absolute" }}>
         <SideRays
-          speed={2.5}
-          rayColor1="#EAB308"
-          rayColor2="#96c8ff"
+          speed={2}
+          rayColor1="#9b7eff"
+          rayColor2="#9b7eff"
           intensity={2}
-          spread={2}
+          spread={2.5}
           origin="top-right"
+          tilt={0}
+          saturation={1.5}
+          blend={0.75}
+          falloff={1.6}
+          opacity={1}
+        />
+      </div>
+
+      <div style={{ width: "100%", height: "700px", position: "absolute" }}>
+        <SideRays
+          speed={2}
+          rayColor1="#6c63ff"
+          rayColor2="#9b7eff"
+          intensity={2}
+          spread={2.5}
+          origin="top-left"
           tilt={0}
           saturation={1.5}
           blend={0.75}
@@ -53,7 +71,7 @@ export const Books = () => {
           </p>
         </div>
 
-        <div className="mx-auto mt-8 flex h-[420px] w-full max-w-6xl items-center justify-center border border-white sm:h-[480px] lg:h-[520px]">
+        <div className="mx-auto mt-8 flex h-[420px] w-full max-w-6xl items-center justify-center sm:h-[480px] lg:h-[520px]">
           <CircularGallery
             items={books}
             bend={3}

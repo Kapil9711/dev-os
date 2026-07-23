@@ -26,22 +26,16 @@ sequenceDiagram
 # 💡 Business Discovery
 
 ```mermaid
-mindmap
-root((Business))
+flowchart LR
 
-  Problem
+    A[Business Idea] --> B[Problem]
+    A --> C[Users]
+    A --> D[Goals]
+    A --> E[MVP]
 
-  Users
-
-  Goals
-
-  Budget
-
-  Timeline
-
-  Success Metrics
-
-  MVP
+    E --> F[Timeline]
+    E --> G[Budget]
+    E --> H[Success Metrics]
 ```
 
 ---
@@ -49,22 +43,18 @@ root((Business))
 # 🔍 Product Research
 
 ```mermaid
-mindmap
-root((Research))
+graph TD
 
-  Competitors
+    A[Research]
 
-  Market
+    A --> B[Market]
+    A --> C[Competitor Analysis]
+    A --> D[User Research]
 
-  User Research
-
-  Features
-
-  Risks
-
-  Tech Stack
-
-  Pricing
+    D --> E[Feature Planning]
+    E --> F[Technology]
+    E --> G[Pricing]
+    E --> H[Risk Analysis]
 ```
 
 ---
@@ -72,24 +62,16 @@ root((Research))
 # 🏗️ Engineering Design
 
 ```mermaid
-mindmap
-root((Engineering))
+flowchart LR
 
- Backend
+    A[Research] --> B[Market]
+    A --> C[Competitors]
+    A --> D[User Research]
 
- Frontend
-
- Mobile
-
- Admin
-
- APIs
-
- Database
-
- Queue
-
- Cache
+    D --> E[Features]
+    E --> F[Tech Stack]
+    E --> G[Pricing]
+    E --> H[Risks]
 ```
 
 ---
@@ -99,11 +81,132 @@ root((Engineering))
 ```mermaid
 erDiagram
 
-USER ||--o{ ORDER : places
+    USER {
+        string id PK
+        string name
+        string email
+        string phone
+        string role
+        boolean isVerified
+    }
 
-ORDER ||--|{ ORDER_ITEM : contains
+    ADDRESS {
+        string id PK
+        string userId FK
+        string title
+        string city
+        string state
+        string country
+        string pincode
+    }
 
-PRODUCT ||--o{ ORDER_ITEM : purchased
+    CATEGORY {
+        string id PK
+        string name
+        string slug
+    }
+
+    BRAND {
+        string id PK
+        string name
+        string logo
+    }
+
+    PRODUCT {
+        string id PK
+        string categoryId FK
+        string brandId FK
+        string title
+        float price
+        int stock
+        boolean active
+    }
+
+    PRODUCT_IMAGE {
+        string id PK
+        string productId FK
+        string imageUrl
+        boolean primary
+    }
+
+    CART {
+        string id PK
+        string userId FK
+    }
+
+    CART_ITEM {
+        string id PK
+        string cartId FK
+        string productId FK
+        int quantity
+    }
+
+    ORDER {
+        string id PK
+        string userId FK
+        string addressId FK
+        float total
+        string status
+        datetime createdAt
+    }
+
+    ORDER_ITEM {
+        string id PK
+        string orderId FK
+        string productId FK
+        float price
+        int quantity
+    }
+
+    PAYMENT {
+        string id PK
+        string orderId FK
+        string provider
+        string status
+        string transactionId
+    }
+
+    REVIEW {
+        string id PK
+        string userId FK
+        string productId FK
+        int rating
+        string comment
+    }
+
+    WISHLIST {
+        string id PK
+        string userId FK
+    }
+
+    WISHLIST_ITEM {
+        string id PK
+        string wishlistId FK
+        string productId FK
+    }
+
+    USER ||--o{ ADDRESS : has
+    USER ||--|| CART : owns
+    USER ||--|| WISHLIST : owns
+    USER ||--o{ ORDER : places
+    USER ||--o{ REVIEW : writes
+
+    CATEGORY ||--o{ PRODUCT : categorizes
+    BRAND ||--o{ PRODUCT : manufactures
+
+    PRODUCT ||--o{ PRODUCT_IMAGE : contains
+    PRODUCT ||--o{ REVIEW : receives
+    PRODUCT ||--o{ CART_ITEM : added_to
+    PRODUCT ||--o{ ORDER_ITEM : purchased
+    PRODUCT ||--o{ WISHLIST_ITEM : saved
+
+    CART ||--|{ CART_ITEM : contains
+
+    WISHLIST ||--|{ WISHLIST_ITEM : contains
+
+    ORDER ||--|{ ORDER_ITEM : contains
+    ORDER ||--|| PAYMENT : paid_by
+    ADDRESS ||--o{ ORDER : ships_to
 ```
 
 ---
@@ -111,37 +214,21 @@ PRODUCT ||--o{ ORDER_ITEM : purchased
 # 🔌 API Lifecycle
 
 ```mermaid
-flowchart TD
+sequenceDiagram
+    participant Client
+    participant Controller
+    participant Service
+    participant Repository
+    participant Database
 
-Request
-
--->
-
-Validation
-
--->
-
-Authentication
-
--->
-
-Controller
-
--->
-
-Service
-
--->
-
-Repository
-
--->
-
-Database
-
--->
-
-Response
+    Client->>Controller: HTTP Request
+    Controller->>Service: Validate & Process
+    Service->>Repository: Fetch Data
+    Repository->>Database: Query
+    Database-->>Repository: Result
+    Repository-->>Service: Entity
+    Service-->>Controller: DTO
+    Controller-->>Client: HTTP Response
 ```
 
 ---
@@ -149,26 +236,28 @@ Response
 # 📁 Project Structure
 
 ```mermaid
-mindmap
-root((Project))
+flowchart LR
 
- App
+UI["App / Pages"]
 
- Features
+UI --> Features
 
- Components
+Features --> Components
+Features --> Hooks
+Features --> Services
+Features --> Utils
+Features --> Types
 
- Hooks
+Services --> API
+Services --> Utils
 
- Services
+Components --> Hooks
+Components --> Types
 
- Utils
+Hooks --> Services
+Hooks --> Utils
 
- Types
-
- Assets
-
- Config
+Types --> SharedModels
 ```
 
 ---
@@ -176,22 +265,31 @@ root((Project))
 # 🧪 Quality Assurance
 
 ```mermaid
-mindmap
-  root((Testing))
+flowchart TD
 
-    Unit
+Testing["🧪 Testing"]
 
-    Integration
+Testing --> Unit["📦 Unit Testing"]
+Testing --> Integration["🔗 Integration Testing"]
+Testing --> API["🌐 API Testing"]
+Testing --> E2E["💻 End-to-End"]
+Testing --> Manual["👤 Manual QA"]
+Testing --> Performance["⚡ Performance"]
+Testing --> Security["🔒 Security"]
 
-    API
+Unit --- U["Functions<br/>Components<br/>Services"]
 
-    E2E
+Integration --- I["Database<br/>External APIs<br/>Microservices"]
 
-    Manual QA
+API --- A["REST<br/>GraphQL<br/>Authentication<br/>Validation"]
 
-    Performance
+E2E --- E["User Flow<br/>Browser Automation<br/>Cross Browser"]
 
-    Security
+Manual --- M["Exploratory<br/>Regression<br/>UAT"]
+
+Performance --- P["Load<br/>Stress<br/>Spike<br/>Endurance"]
+
+Security --- S["Authentication<br/>Authorization<br/>OWASP<br/>Vulnerability Scan"]
 ```
 
 # 🔒 Security

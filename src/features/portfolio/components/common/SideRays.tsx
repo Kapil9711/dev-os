@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import { Renderer, Program, Triangle, Mesh } from "ogl";
+import { useWindowManager } from "@/features/window-manager";
 
 type Origin = "top-right" | "top-left" | "bottom-right" | "bottom-left";
 
@@ -88,6 +89,8 @@ const SideRays = ({
       }
     };
   }, []);
+
+  const { hasMaximizedWindow } = useWindowManager();
 
   useEffect(() => {
     if (!isVisible || !containerRef.current) return;
@@ -280,6 +283,7 @@ void main() {
     blend,
     falloff,
     opacity,
+    hasMaximizedWindow,
   ]);
 
   useEffect(() => {

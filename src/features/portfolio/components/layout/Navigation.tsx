@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { NAVIGATION } from "../../constants";
 import Container from "../common/Container";
 import NavigationItem from "./NavigationItem";
+import { useWindowManager } from "@/features/window-manager";
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
@@ -14,10 +15,21 @@ export default function Navigation() {
     left: number;
     width: number;
   } | null>(null);
+  const [visible, setVisible] = useState(true);
 
   const sentinelRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const rowRef = useRef<HTMLDivElement>(null);
+
+  // Smooth-scrolls to a section regardless of which element is actually
+  // the scrollable ancestor (window, or a custom container like
+  // #window-container-portfolio) — scrollIntoView resolves that for us.
+  const scrollToSection = useCallback((id: string) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.history.replaceState(null, "", `#${id}`);
+  }, []);
 
   // scroll-aware header background — sentinel-based, no scroll listener
   useEffect(() => {
@@ -26,9 +38,7 @@ export default function Navigation() {
 
     const observer = new IntersectionObserver(
       ([entry]: any) => setScrolled(!entry.isIntersecting),
-      {
-        threshold: 0,
-      },
+      { threshold: 0 },
     );
     observer.observe(sentinel);
     return () => observer.disconnect();
@@ -43,10 +53,10 @@ export default function Navigation() {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        const visible = entries
+        const visibleEntry = entries
           .filter((entry) => entry.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) setActiveId(visible.target.id);
+        if (visibleEntry) setActiveId(visibleEntry.target.id);
       },
       { rootMargin: "-40% 0px -50% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] },
     );
@@ -75,40 +85,39 @@ export default function Navigation() {
     return () => window.removeEventListener("keydown", handleKey);
   }, []);
 
-  const [visible, setVisible] = useState(true);
-
+  // hide header on scroll-down, show on scroll-up, within the custom
+  // window-manager scroll container
   useEffect(() => {
-    let lastScrollY = window.scrollY;
+    const scrollContainer = document.getElementById(
+      "window-container-portfolio",
+    );
+    if (!scrollContainer) return;
+
+    let lastScrollTop = scrollContainer.scrollTop;
     const THRESHOLD = 10;
 
     const handleScroll = () => {
-      const current = window.scrollY;
-      const diff = current - lastScrollY;
+      const current = scrollContainer.scrollTop;
+      const diff = current - lastScrollTop;
 
       if (current < 80) {
         setVisible(true);
-        lastScrollY = current;
+        lastScrollTop = current;
         return;
       }
 
       if (Math.abs(diff) < THRESHOLD) return;
 
-      if (diff > 0) {
-        setVisible(false);
-      } else {
-        setVisible(true);
-      }
-
-      lastScrollY = current;
+      setVisible(diff <= 0);
+      lastScrollTop = current;
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => window.removeEventListener("scroll", handleScroll);
+    scrollContainer.addEventListener("scroll", handleScroll, { passive: true });
+    return () => scrollContainer.removeEventListener("scroll", handleScroll);
   }, []);
+
   return (
     <>
-      {/* 1px sentinel sits above the page content; header styles react to it going offscreen */}
       <div
         ref={sentinelRef}
         className="absolute top-0 h-px w-full"
@@ -117,13 +126,11 @@ export default function Navigation() {
 
       <header
         className="sticky top-0 z-50 pt-4 transition-transform duration-300"
-        style={{
-          transform: visible ? "translateY(0)" : "translateY(-150%) hidden",
-        }}
+        style={{ transform: visible ? "translateY(0)" : "translateY(-150%)" }}
       >
         <Container>
           <nav
-            className="relative flex h-16 items-center justify-between rounded-full border px-4 transition-[background-color,border-color,box-shadow] duration-500 sm:px-6"
+            className="@sm:px-6 relative flex h-16 items-center justify-between rounded-full border px-4 transition-[background-color,border-color,box-shadow] duration-500"
             style={{
               background: scrolled ? "var(--glass-strong)" : "var(--glass)",
               borderColor: "var(--line)",
@@ -136,7 +143,11 @@ export default function Navigation() {
           >
             <a
               href="#hero"
-              className="shrink-0 text-lg font-bold tracking-wide transition-opacity hover:opacity-80"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection("hero");
+              }}
+              className="shrink-0 text-lg font-bold tracking-wide transition-all duration-300 hover:scale-105 hover:opacity-80"
               style={{ color: "var(--text-1)" }}
             >
               VS<span style={{ color: "var(--accent)" }}>.</span>
@@ -145,11 +156,11 @@ export default function Navigation() {
             {/* ---------------- Desktop nav ---------------- */}
             <div
               ref={rowRef}
-              className="relative hidden items-center gap-1 lg:flex"
+              className="@3xl:flex relative hidden items-center gap-1.5"
             >
               {indicator && (
                 <span
-                  className="absolute top-1/2 h-9 -translate-y-1/2 rounded-full transition-all duration-300 ease-out"
+                  className="absolute top-1/2 h-10 -translate-y-1/2 rounded-full transition-all duration-300 ease-out"
                   style={{
                     left: indicator.left,
                     width: indicator.width,
@@ -165,16 +176,12 @@ export default function Navigation() {
                   ref={(el) => {
                     itemRefs.current[item.id] = el;
                   }}
-                  className="relative z-10 px-1"
+                  className="relative z-10"
                 >
-                  <NavigationItem item={item} />
-                  <span
-                    className="absolute -bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full transition-all duration-300"
-                    style={{
-                      background: "var(--accent)",
-                      opacity: activeId === item.id ? 1 : 0,
-                      transform: `translateX(-50%) scale(${activeId === item.id ? 1 : 0})`,
-                    }}
+                  <NavigationItem
+                    item={item}
+                    isActive={activeId === item.id}
+                    onClick={() => scrollToSection(item.id)}
                   />
                 </div>
               ))}
@@ -184,7 +191,11 @@ export default function Navigation() {
 
             <a
               href="#contact"
-              className="hidden shrink-0 items-center rounded-full px-5 py-2 text-sm font-medium transition-all duration-300 hover:-translate-y-0.5 lg:inline-flex"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection("contact");
+              }}
+              className="@3xl:inline-flex hidden shrink-0 items-center rounded-full px-5 py-2 text-sm font-medium transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_28px_-10px_var(--accent)]"
               style={{
                 background:
                   "linear-gradient(135deg, var(--accent), var(--accent-2))",
@@ -200,7 +211,7 @@ export default function Navigation() {
               aria-label="Toggle menu"
               aria-expanded={mobileOpen}
               onClick={() => setMobileOpen((open) => !open)}
-              className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-colors lg:hidden"
+              className="@3xl:hidden relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-all duration-300 hover:scale-105 hover:[background:var(--glass-strong)]"
               style={{ borderColor: "var(--line)", background: "var(--glass)" }}
             >
               <span className="relative flex h-4 w-4 flex-col items-center justify-center">
@@ -235,7 +246,7 @@ export default function Navigation() {
 
           {/* ---------------- Mobile panel ---------------- */}
           <div
-            className="duration-400 grid overflow-hidden transition-[grid-template-rows,opacity,margin-top] ease-out lg:hidden"
+            className="duration-400 @lg:hidden grid overflow-hidden transition-[grid-template-rows,opacity,margin-top] ease-out"
             style={{
               gridTemplateRows: mobileOpen ? "1fr" : "0fr",
               opacity: mobileOpen ? 1 : 0,
@@ -256,8 +267,12 @@ export default function Navigation() {
                   <a
                     key={item.id}
                     href={`#${item.id}`}
-                    onClick={() => setMobileOpen(false)}
-                    className="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-medium transition-colors"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setMobileOpen(false);
+                      scrollToSection(item.id);
+                    }}
+                    className="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-medium transition-all duration-300 hover:[background:var(--glass)]"
                     style={{
                       color:
                         activeId === item.id
@@ -279,8 +294,12 @@ export default function Navigation() {
 
                 <a
                   href="#contact"
-                  onClick={() => setMobileOpen(false)}
-                  className="mt-2 flex items-center justify-center rounded-2xl px-4 py-3 text-sm font-medium"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setMobileOpen(false);
+                    scrollToSection("contact");
+                  }}
+                  className="mt-2 flex items-center justify-center rounded-2xl px-4 py-3 text-sm font-medium transition-transform duration-300 hover:-translate-y-0.5"
                   style={{
                     background:
                       "linear-gradient(135deg, var(--accent), var(--accent-2))",

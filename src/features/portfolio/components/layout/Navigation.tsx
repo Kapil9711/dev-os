@@ -75,6 +75,37 @@ export default function Navigation() {
     return () => window.removeEventListener("keydown", handleKey);
   }, []);
 
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+    const THRESHOLD = 10;
+
+    const handleScroll = () => {
+      const current = window.scrollY;
+      const diff = current - lastScrollY;
+
+      if (current < 80) {
+        setVisible(true);
+        lastScrollY = current;
+        return;
+      }
+
+      if (Math.abs(diff) < THRESHOLD) return;
+
+      if (diff > 0) {
+        setVisible(false);
+      } else {
+        setVisible(true);
+      }
+
+      lastScrollY = current;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   return (
     <>
       {/* 1px sentinel sits above the page content; header styles react to it going offscreen */}
@@ -84,7 +115,12 @@ export default function Navigation() {
         aria-hidden="true"
       />
 
-      <header className="sticky top-0 z-50 pt-4">
+      <header
+        className="sticky top-0 z-50 pt-4 transition-transform duration-300"
+        style={{
+          transform: visible ? "translateY(0)" : "translateY(-150%) hidden",
+        }}
+      >
         <Container>
           <nav
             className="relative flex h-16 items-center justify-between rounded-full border px-4 transition-[background-color,border-color,box-shadow] duration-500 sm:px-6"

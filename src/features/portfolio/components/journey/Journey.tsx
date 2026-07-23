@@ -9,6 +9,7 @@ import GlassCard from "../common/GlassCard";
 import Section from "../common/Section";
 import SectionHeading from "../common/SectionHeading";
 import JourneyScene from "../three/JourneyScene";
+import Galaxy from "../common/GalaxyBackground";
 
 export default function Journey() {
   const timelineRef = useRef<HTMLDivElement>(null);
@@ -97,6 +98,8 @@ export default function Journey() {
       }
     };
   }, []);
+
+  const sectionRef = useRef(null as any);
 
   return (
     <Section id="journey">

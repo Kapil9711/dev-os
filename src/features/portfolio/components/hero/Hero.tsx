@@ -13,6 +13,7 @@ import Heading from "../common/Heading";
 import Paragraph from "../common/Paragraph";
 import Section from "../common/Section";
 import HeroScene from "../three/HeroScene";
+import LightRays from "../common/LightRays";
 
 export default function Hero() {
   return (
@@ -23,6 +24,7 @@ export default function Hero() {
       {/* Three.js background — desktop/tablet only. Skipped below sm: costs
           GPU/battery for no real payoff at that size, and reads as noise
           rather than depth on a small dark canvas. */}
+
       <div className="pointer-events-none absolute inset-0 -z-10 block opacity-80">
         <HeroScene />
       </div>

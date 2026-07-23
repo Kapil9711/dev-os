@@ -8,7 +8,7 @@ type SectionProps = PropsWithChildren<{
 
 export default function Section({ id, children, className }: SectionProps) {
   return (
-    <section id={id} className={clsx("relative py-24 lg:py-32", className)}>
+    <section id={id} className={clsx("relative py-10 lg:py-12", className)}>
       {children}
     </section>
   );

@@ -6,19 +6,23 @@
 sequenceDiagram
     actor Client
     participant Team
-    participant Product
+    participant QA
+    participant Production
     participant Users
 
-    Client->>Team: Business Discussion
-    Team->>Team: Research & Planning
-    Team->>Team: System Design
-    Team->>Team: UI/UX Design
-    Team->>Team: Development
-    Team->>Team: Testing
-    Team->>Product: Deploy
-    Product-->>Users: Release
+    Client->>Team: Share requirements
+    Team->>Team: Design & Development
+    Team->>QA: Submit build
+
+    alt Tests Passed
+        QA->>Production: Approve deployment
+        Production-->>Users: Release application
+    else Tests Failed
+        QA-->>Team: Report issues
+        Team->>Team: Fix & rebuild
+    end
+
     Users-->>Team: Feedback
-    Team->>Team: Continuous Improvement
 ```
 
 ---
@@ -26,16 +30,40 @@ sequenceDiagram
 # 💡 Business Discovery
 
 ```mermaid
-flowchart LR
+flowchart TD
 
-    A[Business Idea] --> B[Problem]
-    A --> C[Users]
-    A --> D[Goals]
-    A --> E[MVP]
+    Start([💡 Business Idea])
 
-    E --> F[Timeline]
-    E --> G[Budget]
-    E --> H[Success Metrics]
+    Start --> A{Problem Worth Solving?}
+
+    A -- No --> End1([Discard Idea])
+
+    A -- Yes --> B{Target Users Identified?}
+
+    B -- No --> UserResearch[Conduct User Research]
+    UserResearch --> B
+
+    B -- Yes --> C{Market Demand Exists?}
+
+    C -- No --> Pivot[Pivot Idea]
+    Pivot --> A
+
+    C -- Yes --> D{MVP Defined?}
+
+    D -- No --> Features[Prioritize Features]
+    Features --> D
+
+    D -- Yes --> E{Budget Approved?}
+
+    E -- No --> Funding[Rework Budget]
+    Funding --> E
+
+    E -- Yes --> F{Timeline Feasible?}
+
+    F -- No --> Planning[Adjust Scope]
+    Planning --> F
+
+    F -- Yes --> Launch([🚀 Start Development])
 ```
 
 ---
@@ -43,18 +71,76 @@ flowchart LR
 # 🔍 Product Research
 
 ```mermaid
-graph TD
+flowchart TD
 
-    A[Research]
+    Start([💡 New Product Idea])
 
-    A --> B[Market]
-    A --> C[Competitor Analysis]
-    A --> D[User Research]
+    Start --> A{Problem Clearly Defined?}
 
-    D --> E[Feature Planning]
-    E --> F[Technology]
-    E --> G[Pricing]
-    E --> H[Risk Analysis]
+    A -- No --> A1[Conduct Problem Discovery]
+    A1 --> A
+
+    A -- Yes --> B[Market Research]
+
+    B --> C1[Market Size]
+    B --> C2[Industry Trends]
+    B --> C3[Competitor Analysis]
+    B --> C4[Customer Interviews]
+
+    C1 --> D
+    C2 --> D
+    C3 --> D
+    C4 --> D
+
+    D{Market Opportunity?}
+
+    D -- No --> Pivot[Pivot or Drop Idea]
+    Pivot --> Start
+
+    D -- Yes --> E[User Research]
+
+    E --> E1[Personas]
+    E --> E2[Pain Points]
+    E --> E3[User Journey]
+    E --> E4[Feature Requests]
+
+    E1 --> F
+    E2 --> F
+    E3 --> F
+    E4 --> F
+
+    F[Product Planning]
+
+    F --> G1[MVP Definition]
+    F --> G2[Feature Prioritization]
+    F --> G3[Pricing Strategy]
+    F --> G4[Technology Selection]
+    F --> G5[Risk Assessment]
+
+    G1 --> H
+    G2 --> H
+    G3 --> H
+    G4 --> H
+    G5 --> H
+
+    H{Business Feasible?}
+
+    H -- No --> Rework[Revisit Research & Planning]
+    Rework --> F
+
+    H -- Yes --> I[Roadmap Creation]
+
+    I --> J[Budget Estimation]
+    I --> K[Timeline Planning]
+    I --> L[Resource Planning]
+
+    J --> M
+
+    K --> M
+
+    L --> M
+
+    M([🚀 Ready for Engineering])
 ```
 
 ---
@@ -62,16 +148,82 @@ graph TD
 # 🏗️ Engineering Design
 
 ```mermaid
-flowchart LR
+flowchart TD
 
-    A[Research] --> B[Market]
-    A --> C[Competitors]
-    A --> D[User Research]
+    Start([🔍 Start Research])
 
-    D --> E[Features]
-    E --> F[Tech Stack]
-    E --> G[Pricing]
-    E --> H[Risks]
+    Start --> A[Market Research]
+
+    A --> B1[Market Size]
+    A --> B2[Industry Trends]
+    A --> B3[Customer Segments]
+    A --> B4[Competitor Analysis]
+
+    B1 --> C
+    B2 --> C
+    B3 --> C
+    B4 --> C
+
+    C{Market Opportunity?}
+
+    C -- No --> C1[Refine Business Idea]
+    C1 --> A
+
+    C -- Yes --> D[User Research]
+
+    D --> D1[Interviews]
+    D --> D2[Surveys]
+    D --> D3[Pain Points]
+    D --> D4[User Journey]
+
+    D1 --> E
+    D2 --> E
+    D3 --> E
+    D4 --> E
+
+    E[Requirement Analysis]
+
+    E --> F1[Core Features]
+    E --> F2[Nice-to-Have Features]
+    E --> F3[MVP Scope]
+
+    F1 --> G
+    F2 --> G
+    F3 --> G
+
+    G{Technically Feasible?}
+
+    G -- No --> G1[Rework Requirements]
+    G1 --> E
+
+    G -- Yes --> H[Technology Selection]
+
+    H --> H1[Frontend]
+    H --> H2[Backend]
+    H --> H3[Database]
+    H --> H4[Infrastructure]
+
+    H1 --> I
+    H2 --> I
+    H3 --> I
+    H4 --> I
+
+    I[Business Planning]
+
+    I --> J[Pricing Strategy]
+    I --> K[Risk Assessment]
+    I --> L[Budget]
+    I --> M[Timeline]
+
+    J --> N
+
+    K --> N
+
+    L --> N
+
+    M --> N
+
+    N([🚀 Ready for Product Development])
 ```
 
 ---
@@ -295,22 +447,48 @@ Security --- S["Authentication<br/>Authorization<br/>OWASP<br/>Vulnerability Sca
 # 🔒 Security
 
 ```mermaid
-mindmap
-root((Security))
+flowchart LR
+A([🛡️ Security])
 
- Authentication
+    A --> B[🔐 Identity & Access]
+    A --> C[🛠️ Data Protection]
+    A --> D[🌐 API Security]
+    A --> E[🏗️ Infrastructure]
+    A --> F[📊 Monitoring]
+    A --> G[🚀 DevSecOps]
 
- Authorization
+    B --> B1(Authentication)
+    B --> B2(Authorization)
+    B --> B3(MFA)
+    B --> B4(RBAC)
 
- Validation
+    C --> C1(Validation)
+    C --> C2(Encryption)
+    C --> C3(Hashing)
+    C --> C4(Secrets Management)
 
- Encryption
+    D --> D1(Rate Limiting)
+    D --> D2(CORS)
+    D --> D3(CSRF Protection)
+    D --> D4(XSS Prevention)
+    D --> D5(SQL/NoSQL Injection)
 
- Rate Limiting
+    E --> E1(HTTPS / TLS)
+    E --> E2(Security Headers)
+    E --> E3(WAF)
+    E --> E4(Reverse Proxy)
 
- HTTPS
+    F --> F1(Logging)
+    F --> F2(Audit Trail)
+    F --> F3(Alerting)
+    F --> F4(Intrusion Detection)
 
- Secrets
+    G --> G1(SAST)
+    G --> G2(DAST)
+    G --> G3(Dependency Scanning)
+    G --> G4(Container Scanning)
+    G --> G5(CI/CD Security)
+
 ```
 
 ---
@@ -318,33 +496,22 @@ root((Security))
 # 🚀 Deployment
 
 ```mermaid
-flowchart TD
+sequenceDiagram
+    participant Dev as 👨‍💻 Developer
+    participant Git as GitHub
+    participant CI as CI/CD Pipeline
+    participant Docker as Docker
+    participant AWS as AWS
+    participant CDN as CloudFront
+    participant User as Users
 
-Developer
-
--->
-
-GitHub
-
--->
-
-CI/CD
-
--->
-
-Docker
-
--->
-
-AWS
-
--->
-
-CloudFront
-
--->
-
-Users
+    Dev->>Git: Push code
+    Git->>CI: Trigger workflow
+    CI->>CI: Run tests & lint
+    CI->>Docker: Build Docker image
+    Docker->>AWS: Deploy application
+    AWS->>CDN: Update distribution
+    CDN-->>User: Serve latest version
 ```
 
 ---
@@ -352,24 +519,55 @@ Users
 # 🧠 Engineering Principles
 
 ```mermaid
-mindmap
-  root((Engineering))
+flowchart TD
+    Start([💡 New Feature Request])
 
-    Scalability
+    Start --> A{Business Requirement Clear?}
 
-    Maintainability
+    A -- No --> A1[Discuss with Stakeholders]
+    A1 --> A
 
-    Performance
+    A -- Yes --> B{Simple Solution Exists?}
 
-    Security
+    B -- No --> B1[Design Architecture]
+    B -- Yes --> C[Implement Simpler Solution]
 
-    Simplicity
+    B1 --> D{Scalable?}
 
-    Documentation
+    D -- No --> D1[Refactor Design]
+    D1 --> D
 
-    Testing
+    D -- Yes --> E{Secure?}
 
-    Automation
+    E -- No --> E1[Add Authentication<br/>Authorization<br/>Validation]
+    E1 --> E
 
-    User First
+    E -- Yes --> F{Performance Acceptable?}
+
+    F -- No --> F1[Optimize Queries<br/>Caching<br/>Indexes]
+    F1 --> F
+
+    F -- Yes --> G{Maintainable?}
+
+    G -- No --> G1[Reduce Complexity<br/>Follow SOLID]
+    G1 --> G
+
+    G -- Yes --> H{Documented?}
+
+    H -- No --> H1[Write API Docs<br/>Architecture Docs]
+    H1 --> H
+
+    H -- Yes --> I{Tests Passing?}
+
+    I -- No --> I1[Unit Tests]
+    I1 --> I2[Integration Tests]
+    I2 --> I3[E2E Tests]
+    I3 --> I
+
+    I -- Yes --> J{Automated Deployment?}
+
+    J -- No --> J1[Configure CI/CD]
+    J1 --> J
+
+    J -- Yes --> K([🚀 Deploy to Production])
 ```

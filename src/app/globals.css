@@ -168,3 +168,9 @@ button:focus-visible,
   stroke-width: 1px !important;
   border-radius: 6px;
 }
+
+@keyframes border-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -7,7 +7,7 @@ import { Window } from "./Window";
 import { About } from "@/features/about/components/About";
 import { Experience } from "@/features/experience/components/Experience";
 import { Projects } from "@/features/projects/components/Projects";
-import { Terminal } from "@/features/terminal/components/Terminal";
+import Terminal from "@/features/terminal/components/Terminal";
 import { Resume } from "@/features/resume/components/Resume";
 import { Monitor } from "@/features/monitor/components/Monitor";
 import { Contact } from "@/features/contact/components/Contact";
@@ -19,11 +19,11 @@ import Portfolio from "@/features/portfolio/PortfolioPage";
 const APP_CONTENT: Record<AppId, React.ComponentType> = {
   about: About,
   experience: Experience,
-  projects: Projects,
+  // projects: Projects,
   terminal: Terminal,
   resume: Resume,
   monitor: Monitor,
-  contact: Contact,
+  // contact: Contact,
   settings: Settings,
   portfolio: Portfolio,
 };

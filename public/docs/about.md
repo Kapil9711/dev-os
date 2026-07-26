@@ -1,142 +1,98 @@
-# Kapil Rajput
+# 👋 Hi, I'm Kapil Rajput
 
-> Full Stack Software Engineer passionate about building scalable applications with modern web technologies.
+> **Full Stack Software Engineer** specializing in modern web and mobile applications, scalable backend systems, and developer-focused architecture.
+
+<div align="center">
+
+**React • Next.js • React Native • Node.js • TypeScript • MongoDB • Elasticsearch • Docker**
+
+</div>
 
 ---
 
-## 👨‍💻 Profile
+# 🚀 About Me
+
+I'm a **Full Stack Software Engineer** with **2+ years of professional experience** building production-ready web and mobile applications.
+
+I enjoy turning ideas into reliable software—from crafting intuitive user interfaces to designing scalable backend systems and maintaining clean, well-documented codebases.
+
+My focus is on building applications that are:
+
+- ⚡ Fast and performant
+- 🏗 Scalable and maintainable
+- 📱 User-friendly across platforms
+- 🔒 Secure and reliable
+- 📖 Well documented and easy to extend
+
+I believe that great software comes from balancing technical excellence with a strong understanding of product goals and user needs.
+
+---
+
+# 👨‍💻 Engineering Snapshot
 
 ```mermaid
-flowchart LR
+flowchart TD
 
 A["👨‍💻 Kapil Rajput"]
 
-A --> B["💼 Software Engineer"]
+A --> B["💼 Full Stack Software Engineer"]
 A --> C["⏳ 2+ Years Experience"]
-A --> D["📍 India"]
-A --> E["🎯 End-to-end ownership"]
-A --> F["⚡ Performance"]
+A --> D["🌐 Web Development"]
+A --> E["📱 Mobile Development"]
+A --> F["⚡ Performance Focus"]
 A --> G["🏗 Clean Architecture"]
 A --> H["📖 Documentation"]
-
+A --> I["🚀 Product Engineering"]
 ```
 
 ---
 
-## 🚀 Engineering Focus
+# 💼 What I Do
+
+- 🌐 Build modern web applications
+- 📱 Develop cross-platform mobile applications
+- 🔥 Design scalable backend services and REST APIs
+- 🏗 Create reusable and maintainable architectures
+- ⚡ Optimize application performance
+- 📖 Write technical documentation and engineering guides
+- 🚀 Deliver end-to-end product features from concept to deployment
+
+---
+
+# 🎯 My Engineering Focus
 
 ```mermaid
 mindmap
-  root((Engineering))
-    Frontend
-      React
-      Next.js
-      React Native
-    Backend
-      Node.js
-      Express
-      REST APIs
-    Database
-      MongoDB
-      Elasticsearch
-    DevOps
-      Docker
-      CI/CD
-    Quality
-      Testing
-      Documentation
-      Performance
+  root((Focus))
+    Scalability
+    Performance
+    Clean Architecture
+    Developer Experience
+    Product Quality
+    Documentation
+    Continuous Learning
 ```
 
 ---
 
-## 🛠 Tech Stack
+# ❤️ Engineering Philosophy
 
-```mermaid
-flowchart LR
+> **Write code that is easy to understand, maintain, and extend.**
 
-Frontend --> React
-Frontend --> NextJS
-Frontend --> TypeScript
+> **Performance should be part of the design, not an afterthought.**
 
-Backend --> NodeJS
-Backend --> Express
+> **Documentation is a feature of great software.**
 
-Database --> MongoDB
-Database --> Elasticsearch
+> **Simple, clean solutions scale better than unnecessary complexity.**
 
-DevOps --> Docker
-```
+> **Continuous learning leads to continuous improvement.**
 
 ---
 
-## 📈 Experience Journey
+<div align="center">
 
-```mermaid
-timeline
-    title Software Engineering Journey
+### ⭐ Building scalable software with clean architecture and great developer experience.
 
-    2024 : Frontend Development
-         : React
-         : JavaScript
+_"Great software is built one thoughtful commit at a time."_
 
-    2025 : Full Stack Development
-         : MERN Stack
-         : Docker
-
-    2026 : Performance Optimization
-         : System Design
-         : React Native
-```
-
----
-
-## 💡 Core Strengths
-
-- ⚡ Performance Optimization
-- 📦 Clean Architecture
-- 📱 Responsive UI
-- 🔥 Developer Experience
-- 📖 Documentation
-- 🚀 Product Ownership
-
----
-
-## 🎯 Current Interests
-
-- React Native
-- Next.js
-- Docker
-- Elasticsearch
-- System Design
-- Clean Architecture
-
----
-
-## 📊 Workflow
-
-```mermaid
-flowchart LR
-
-Idea --> Design
-
-Design --> Development
-
-Development --> Testing
-
-Testing --> Deployment
-
-Deployment --> Monitoring
-
-Monitoring --> Improvements
-```
-
----
-
-## ❤️ Philosophy
-
-> Write code that your teammates can understand six months later.
-
-> Simplicity scales better than complexity.
-
-> Documentation is part of the product.
+</div>

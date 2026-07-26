@@ -12,7 +12,7 @@ type Tab = "code" | "photo" | "skills" | "contact";
 const FILES: { id: Tab; label: string }[] = [
   { id: "code", label: "📄 developer.md" },
   { id: "photo", label: "🖼️ profile.jpg" },
-  { id: "skills", label: "📄 skills.ts" },
+  { id: "skills", label: "📄 skills.md" },
   { id: "contact", label: "📄 contact.ts" },
 ];
 
@@ -20,8 +20,8 @@ export function About() {
   const [tab, setTab] = useState<Tab>("code");
 
   return (
-    <div className="flex h-full">
-      <div className="w-[170px] shrink-0 border-r border-white/10 px-2 py-3 text-[12.5px]">
+    <div className="flex h-full pb-10 sm:pb-0">
+      <div className="hidden w-[170px] shrink-0 border-r border-white/10 px-2 py-3 text-[12.5px] @3xl:block">
         <button
           type="button"
           onClick={() => setTab("photo")}
@@ -61,11 +61,18 @@ export function About() {
           </button>
         ))}
       </div>
-      <div className="flex-1 overflow-auto">
+      <div className="hidden flex-1 overflow-auto px-3 @3xl:block">
         {tab === "code" && <CodeTab />}
         {tab === "photo" && <PhotoTab />}
         {tab === "skills" && <SkillsTab />}
         {tab === "contact" && <ContactTab />}
+      </div>
+
+      <div className="block flex-1 overflow-auto p-2 @3xl:hidden">
+        <CodeTab />
+        <PhotoTab />
+        <SkillsTab />
+        <ContactTab />
       </div>
     </div>
   );
@@ -84,7 +91,7 @@ function PhotoTab() {
           "repeating-conic-gradient(#0F1219 0% 25%, #0D0F16 0% 50%) center/18px 18px",
       }}
     >
-      <div className="relative flex min-h-full items-center justify-center p-4 sm:p-6 lg:p-8">
+      <div className="relative flex min-h-full items-center justify-center p-4 @3xl:p-6 @5xl:p-8">
         {/* Ambient Glow */}
         <div className="absolute h-[420px] w-[420px] rounded-full bg-[#5B8CFF]/15 blur-[120px]" />
 
@@ -100,12 +107,12 @@ function PhotoTab() {
               width={700}
               height={900}
               priority
-              className="mx-auto h-auto max-h-[50vh] w-auto max-w-full rounded-[22px] object-contain shadow-[0_30px_80px_rgba(0,0,0,.55)] sm:max-h-[58vh] md:max-h-[62vh] lg:max-h-[68vh] xl:max-h-[720px]"
+              className="mx-auto h-auto max-h-[50vh] w-auto max-w-full rounded-[22px] object-contain shadow-[0_30px_80px_rgba(0,0,0,.55)] @3xl:max-h-[58vh] @4xl:max-h-[62vh] @5xl:max-h-[68vh] @7xl:max-h-[720px]"
             />
           </div>
 
           {/* Caption */}
-          <div className="mt-5 rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 backdrop-blur-xl">
+          <div className="mt-5 hidden rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 backdrop-blur-xl @3xl:block">
             <div className="flex items-center justify-between gap-4">
               <div>
                 <h3 className="text-lg font-semibold text-white">{DEV.name}</h3>
@@ -168,17 +175,11 @@ function ContactTab() {
         email: <span className="text-success">&quot;{DEV.email}&quot;</span>,
       </div>
       <div className="pl-4">
-        github:{" "}
-        <span className="text-success">
-          &quot;{DEV.github.replace("https://", "")}&quot;
-        </span>
-        ,
+        github: <span className="text-success">&quot;{DEV.github}&quot;</span>,
       </div>
       <div className="pl-4">
         linkedin:{" "}
-        <span className="text-success">
-          &quot;{DEV.linkedin.replace("https://", "")}&quot;
-        </span>
+        <span className="text-success">&quot;{DEV.linkedin}&quot;</span>
       </div>
       <div className="text-[var(--text-2)]">{"}"}</div>
     </div>

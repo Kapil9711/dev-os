@@ -2,10 +2,16 @@
 
 interface Options {
   onResize: (dw: number, dh: number) => void;
+  onResizeStart?: () => void;
+  onResizeEnd?: () => void;
 }
 
 /** Returns pointer-down handler for a corner resize-handle. */
-export function useResizable({ onResize }: Options) {
+export function useResizable({
+  onResize,
+  onResizeStart,
+  onResizeEnd,
+}: Options) {
   function onPointerDown(e: React.PointerEvent) {
     e.preventDefault();
     e.stopPropagation();
@@ -14,6 +20,8 @@ export function useResizable({ onResize }: Options) {
 
     let lastX = e.clientX;
     let lastY = e.clientY;
+
+    onResizeStart?.();
 
     function onMove(ev: PointerEvent) {
       const dw = ev.clientX - lastX;
@@ -26,6 +34,8 @@ export function useResizable({ onResize }: Options) {
     }
 
     function onUp() {
+      onResizeEnd?.();
+
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
     }

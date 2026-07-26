@@ -55,7 +55,7 @@ function nextRect(
       x: 0,
       y: 0,
       width: window.innerWidth,
-      height: window.innerHeight - 120,
+      height: window.innerHeight - 0,
     };
   return {
     x: 260 + (index % 5) * 30,

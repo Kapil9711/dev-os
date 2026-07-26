@@ -32,7 +32,7 @@ export function MobileHome({
         onClick={onOpenSpotlight}
         className="glass-panel mb-[26px] flex items-center gap-2.5 rounded-[28px] px-4 py-3 text-left text-[13.5px] text-[var(--text-2)]"
       >
-        🔍 Search vaibOS…
+        🔍 Search kapOS…
       </button>
 
       <div className="grid grid-cols-4 gap-x-2 gap-y-[22px]">

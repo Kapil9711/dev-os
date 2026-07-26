@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     description,
   },
   icons: {
-    icon: "/images/profile.svg",
+    icon: "/images/profile.jpeg",
   },
 };
 

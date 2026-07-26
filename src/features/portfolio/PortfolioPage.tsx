@@ -16,32 +16,10 @@ import { HowIBuild } from "./components/HowIBuild/HowIBuild";
 import Highlights from "./components/Highlights/Highlights";
 import LightRays from "./components/common/LightRays";
 import About from "./components/About/About";
-import StackedCards from "./components/common/StackedCard";
+
 import Projects from "./components/projects/Projects";
 
 export default function Portfolio() {
-  const cardData = [
-    {
-      sub: "Simplified",
-      content: "Complex tasks are now simple",
-      background: "rgb(64, 122, 255)",
-    },
-    {
-      sub: "Boost Productivity",
-      content: "Perform tasks in less time",
-      background: "rgb(221, 62, 88)",
-    },
-    {
-      sub: "Facilitated Learning",
-      content: "Train anyone from anywhere",
-      background: "rgb(186, 113, 245)",
-    },
-    {
-      sub: "Support",
-      content: "Now it's 24/7 support",
-      background: "rgb(247, 92, 208)",
-    },
-  ];
   return (
     <>
       <Loader />

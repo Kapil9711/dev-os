@@ -14,11 +14,11 @@ import {
 export type AppId =
   | "about"
   | "experience"
-  | "projects"
+  // | "projects"
   | "terminal"
   | "resume"
   | "monitor"
-  | "contact"
+  // | "contact"
   | "settings"
   | "portfolio";
 
@@ -46,8 +46,8 @@ export const APP_REGISTRY: Record<AppId, AppMeta> = {
     title: "About — developer.ts",
     icon: UserRound,
     accent: "#4C8DFF",
-    width: 450,
-    height: 350,
+    width: 800,
+    height: 600,
   },
   experience: {
     id: "experience",
@@ -57,14 +57,14 @@ export const APP_REGISTRY: Record<AppId, AppMeta> = {
     width: 560,
     height: 350,
   },
-  projects: {
-    id: "projects",
-    title: "Projects — File Explorer",
-    icon: FolderTree,
-    accent: "#EAB308",
-    width: 680,
-    height: 460,
-  },
+  // projects: {
+  //   id: "projects",
+  //   title: "Projects — File Explorer",
+  //   icon: FolderTree,
+  //   accent: "#EAB308",
+  //   width: 680,
+  //   height: 460,
+  // },
   terminal: {
     id: "terminal",
     title: "Terminal",
@@ -89,14 +89,14 @@ export const APP_REGISTRY: Record<AppId, AppMeta> = {
     width: 660,
     height: 480,
   },
-  contact: {
-    id: "contact",
-    title: "Mail — New Message",
-    icon: Mail,
-    accent: "#3B82F6",
-    width: 640,
-    height: 420,
-  },
+  // contact: {
+  //   id: "contact",
+  //   title: "Mail — New Message",
+  //   icon: Mail,
+  //   accent: "#3B82F6",
+  //   width: 640,
+  //   height: 420,
+  // },
   settings: {
     id: "settings",
     title: "Settings",
@@ -110,12 +110,12 @@ export const APP_REGISTRY: Record<AppId, AppMeta> = {
 export const DOCK_APPS: AppId[] = [
   "about",
   "experience",
-  "projects",
+  // "projects",
   "terminal",
   "resume",
   "monitor",
-  "contact",
+  // "contact",
   "portfolio",
 ];
 
-export const DESKTOP_APPS: AppId[] = ["resume", "projects", "contact"];
+export const DESKTOP_APPS: AppId[] = ["resume", "portfolio", "terminal"];

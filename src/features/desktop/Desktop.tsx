@@ -57,7 +57,7 @@ function DesktopShell({ booted }: { booted: boolean }) {
         // openWindow("terminal");
         // openWindow("monitor");
 
-        openWindow("portfolio");
+        // openWindow("portfolio");
       }
     }, 300);
     return () => clearTimeout(t);

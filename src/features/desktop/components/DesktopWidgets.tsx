@@ -108,7 +108,7 @@ export function DesktopWidgets() {
           }
         />
         <StatRow k="Experience" v={DEV.experience} />
-        <StatRow k="Projects" v={String(PROJECTS.length)} />
+        <StatRow k="Projects" v={String(20)} />
       </div>
     </div>
   );

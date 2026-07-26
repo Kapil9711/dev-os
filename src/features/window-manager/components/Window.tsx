@@ -31,6 +31,7 @@ export function Window({ id, children }: WindowProps) {
   const isFocused = focusedId === id;
 
   const [isDragging, setIsDragging] = useState(false);
+  const [isResizing, setIsResizing] = useState(false);
 
   const { onPointerDown: onDragStart } = useDraggable({
     disabled: win?.maximized,
@@ -44,6 +45,8 @@ export function Window({ id, children }: WindowProps) {
   });
 
   const { onPointerDown: onResizeStart } = useResizable({
+    onResizeStart: () => setIsResizing(true),
+    onResizeEnd: () => setIsResizing(false),
     onResize: (dw, dh) =>
       updateRect(id, (prev) => ({
         width: Math.max(320, prev.width + dw),
@@ -124,6 +127,7 @@ export function Window({ id, children }: WindowProps) {
                 y: 0,
               }
       }
+
       onAnimationComplete={() => {
         if (win.status === "closing") {
           finalizeCloseWindow(id);
@@ -208,7 +212,7 @@ export function Window({ id, children }: WindowProps) {
         transition={{ duration: 0.2 }}
         onAnimationComplete={() => setShowContent(true)}
         id={"window-container-" + id}
-        className="wbody-scroll relative w-full flex-1 overflow-auto @container"
+        className="wbody-scroll relative w-full flex-1 overflow-auto pb-5 @container sm:pb-0"
       >
         {showContent ? children : null}
       </motion.div>

@@ -2,7 +2,7 @@ import { EXPERIENCE } from "../data/experience";
 
 export function Experience() {
   return (
-    <div className="p-[18px] font-mono text-[12.5px]">
+    <div className="p-[18px] pb-10 font-mono text-[12.5px] sm:pb-0">
       {EXPERIENCE.map((role) => (
         <div key={role.company}>
           {/* Root commit — the role */}

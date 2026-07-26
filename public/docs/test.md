@@ -98,11 +98,11 @@ _**Bold + Italic**_
 
 ## Table
 
-| Name    | Role              | Experience |
-| ------- | ----------------- | ---------: |
-| Vaibhav | Software Engineer |    2 Years |
-| John    | Backend Engineer  |    5 Years |
-| Alex    | Designer          |    4 Years |
+| Name  | Role              | Experience |
+| ----- | ----------------- | ---------: |
+| Kapil | Software Engineer |    2 Years |
+| John  | Backend Engineer  |    5 Years |
+| Alex  | Designer          |    4 Years |
 
 ---
 
@@ -126,7 +126,7 @@ interface User {
 
 const user: User = {
   id: 1,
-  name: "Vaibhav",
+  name: "Kapil",
 };
 
 console.log(user);

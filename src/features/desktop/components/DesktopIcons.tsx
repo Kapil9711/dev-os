@@ -5,8 +5,8 @@ import { useWindowManager } from "@/features/window-manager/context/WindowManage
 
 const LABELS: Record<string, string> = {
   resume: "Resume.pdf",
-  projects: "Projects",
-  contact: "Contact.app",
+  portfolio: "Portfolio",
+  terminal: "Terminal",
 };
 
 export function DesktopIcons() {

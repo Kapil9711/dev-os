@@ -36,6 +36,17 @@ export function Resume() {
 
     document.body.appendChild(iframe);
   }
+
+  function handleDownloadResume() {
+    const link = document.createElement("a");
+
+    link.href = "/docs/resume.pdf";
+    link.download = "Kapil-Rajput-Resume.pdf";
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
   const { windows } = useWindowManager();
   const win = windows?.["resume"];
 
@@ -49,17 +60,23 @@ export function Resume() {
   }, [win?.state]);
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col pb-10 sm:pb-0">
       <div className="flex items-center gap-1 border-b border-white/10 px-2 py-2 print:hidden">
         <TabButton active={tab === "md"} onClick={() => setTab("md")}>
           📘 Resume.md
         </TabButton>
-        <TabButton active={tab === "pdf"} onClick={() => setTab("pdf")}>
+        <TabButton
+          className="hidden @3xl:block"
+          active={tab === "pdf"}
+          onClick={() => setTab("pdf")}
+        >
           📄 Resume.pdf
         </TabButton>
         <div className="ml-auto flex gap-2">
-          <Button onClick={downloadMarkdown}>⬇ .md</Button>
-          <Button variant="primary" onClick={handlePrintResume}>
+          <Button className="hidden @3xl:block" onClick={downloadMarkdown}>
+            ⬇ .md
+          </Button>
+          <Button variant="primary" onClick={handleDownloadResume}>
             ⬇ Download PDF
           </Button>
         </div>
@@ -75,10 +92,12 @@ function TabButton({
   active,
   onClick,
   children,
+  className,
 }: {
   active: boolean;
   onClick: () => void;
   children: React.ReactNode;
+  className?: string;
 }) {
   return (
     <button
@@ -89,6 +108,7 @@ function TabButton({
         active
           ? "bg-white/[0.06] font-semibold text-[var(--text-1)]"
           : "text-[var(--text-2)]",
+        className,
       )}
     >
       {children}

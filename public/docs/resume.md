@@ -303,8 +303,9 @@ mindmap
 
 # Contact
 
-- 📍 Bijnor, Uttar Pradesh
+- 📍 Noida, Uttar Pradesh
 - 📧 kapil.rajput9711@gmail.com
-- 💼 LinkedIn
+
+<!-- - 💼 LinkedIn
 - 🐙 GitHub
-- 🌐 Portfolio
+- 🌐 Portfolio -->

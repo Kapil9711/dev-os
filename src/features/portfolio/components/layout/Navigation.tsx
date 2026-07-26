@@ -124,11 +124,13 @@ export default function Navigation() {
 
       <header
         className="sticky top-0 z-50 pt-4 transition-transform duration-300"
-        style={{ transform: visible ? "translateY(0)" : "translateY(-150%)" }}
+        style={{
+          transform: visible ? "translateY(0)" : " @3xl:translateY(-150%)",
+        }}
       >
         <Container>
           <nav
-            className="@sm:px-6 relative flex h-16 items-center justify-between rounded-full border px-4 transition-[background-color,border-color,box-shadow] duration-500"
+            className="relative flex h-16 items-center justify-between rounded-full border px-4 transition-[background-color,border-color,box-shadow] duration-500 @sm:px-6"
             style={{
               background: scrolled ? "var(--glass-strong)" : "var(--glass)",
               borderColor: "var(--line)",
@@ -154,7 +156,7 @@ export default function Navigation() {
             {/* ---------------- Desktop nav ---------------- */}
             <div
               ref={rowRef}
-              className="@3xl:flex relative hidden items-center gap-1.5"
+              className="relative hidden items-center gap-1.5 @3xl:flex"
             >
               {indicator && (
                 <span
@@ -193,7 +195,7 @@ export default function Navigation() {
                 e.preventDefault();
                 scrollToSection("contact");
               }}
-              className="@3xl:inline-flex hidden shrink-0 items-center rounded-full px-5 py-2 text-sm font-medium transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_28px_-10px_var(--accent)]"
+              className="hidden shrink-0 items-center rounded-full px-5 py-2 text-sm font-medium transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_28px_-10px_var(--accent)] @3xl:inline-flex"
               style={{
                 background:
                   "linear-gradient(135deg, var(--accent), var(--accent-2))",
@@ -209,7 +211,7 @@ export default function Navigation() {
               aria-label="Toggle menu"
               aria-expanded={mobileOpen}
               onClick={() => setMobileOpen((open) => !open)}
-              className="@3xl:hidden relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-all duration-300 hover:scale-105 hover:[background:var(--glass-strong)]"
+              className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-all duration-300 hover:scale-105 hover:[background:var(--glass-strong)] @3xl:hidden"
               style={{ borderColor: "var(--line)", background: "var(--glass)" }}
             >
               <span className="relative flex h-4 w-4 flex-col items-center justify-center">
@@ -244,7 +246,7 @@ export default function Navigation() {
 
           {/* ---------------- Mobile panel ---------------- */}
           <div
-            className="duration-400 @lg:hidden grid overflow-hidden transition-[grid-template-rows,opacity,margin-top] ease-out"
+            className="duration-400 grid overflow-hidden transition-[grid-template-rows,opacity,margin-top] ease-out @3xl:hidden"
             style={{
               gridTemplateRows: mobileOpen ? "1fr" : "0fr",
               opacity: mobileOpen ? 1 : 0,

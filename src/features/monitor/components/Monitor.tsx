@@ -75,7 +75,7 @@ export function Monitor() {
   }, []);
 
   return (
-    <div className="space-y-4 p-5">
+    <div className="space-y-4 p-5 pb-10 sm:pb-0">
       <SystemOverview mounted={mounted} />
 
       <TechRadar mounted={mounted} />

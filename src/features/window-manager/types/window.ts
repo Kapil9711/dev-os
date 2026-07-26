@@ -19,4 +19,8 @@ export interface WindowState {
 
   maximized: boolean;
   prevRect: WindowRect | null;
+
+  // Optional data passed when opening the window
+  query?: Record<string, string>;
+  state?: unknown;
 }

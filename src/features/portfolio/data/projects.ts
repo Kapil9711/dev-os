@@ -1,142 +1,243 @@
-import { Project } from "../types";
+// import { Project } from "../types";
+
+// export const PROJECTS: Project[] = [
+//   {
+//     id: "gemlay",
+//     title: "Gemlay",
+//     subtitle: "Jewellery E-commerce Platform",
+//     year: "2024 - Present",
+//     featured: true,
+
+//     description:
+//       "Production-scale jewellery e-commerce platform built with a scalable MERN architecture, supporting SEO, advanced product discovery, inventory management, and a complete admin ecosystem.",
+//     shortDescription:
+//       "Production-scale jewellery e-commerce platform with SEO-optimized storefront, Elasticsearch search, and a full admin ecosystem.",
+
+//     responsibilities: [
+//       "Developed SEO-optimized storefront using Next.js SSR.",
+//       "Designed scalable REST APIs for web and admin applications.",
+//       "Implemented Elasticsearch-powered product search and filtering.",
+//       "Built complete Admin Panel for products, orders, inventory, coupons, CMS and notifications.",
+//       "Optimized MongoDB queries and indexing for production workloads.",
+//       "Improved performance using lazy loading, dynamic imports and caching.",
+//       "Containerized services with Docker and deployed on AWS using Nginx.",
+//       "Authored engineering documentation and participated in architecture discussions.",
+//     ],
+
+//     technologies: [
+//       "Next.js",
+//       "React",
+//       "Node.js",
+//       "Express",
+//       "MongoDB",
+//       "Elasticsearch",
+//       "Docker",
+//       "AWS",
+//       "Nginx",
+//     ],
+//     architecture: [
+//       "SEO",
+//       "SSR",
+//       "REST API",
+//       "Micro Modules",
+//       "Admin Dashboard",
+//       "Search Engine",
+//     ],
+
+//     images: [
+//       {
+//         image: "/projects/gemlay/storefront.jpg",
+//         alt: "Gemlay storefront homepage",
+//       },
+//       {
+//         image: "/projects/gemlay/product.jpg",
+//         alt: "Gemlay product detail page",
+//       },
+//       { image: "/projects/gemlay/admin.jpg", alt: "Gemlay admin dashboard" },
+//     ],
+//   },
+
+//   {
+//     id: "bullion",
+//     title: "Bullion Management Platform",
+//     subtitle: "Trading & Inventory Management",
+//     year: "2025",
+//     featured: true,
+
+//     description:
+//       "Enterprise platform for bullion trading, inventory management and client operations across web and mobile.",
+//     shortDescription:
+//       "Enterprise bullion trading and inventory platform with real-time pricing, RBAC, and a companion mobile app.",
+
+//     responsibilities: [
+//       "Developed Admin Panel, website and mobile application.",
+//       "Implemented inventory and trading workflows.",
+//       "Designed REST APIs for business operations.",
+//       "Implemented secure authentication and RBAC.",
+//       "Integrated real-time updates and push notifications.",
+//       "Containerized backend using Docker.",
+//     ],
+
+//     technologies: [
+//       "React",
+//       "React Native",
+//       "Node.js",
+//       "Express",
+//       "MongoDB",
+//       "Docker",
+//     ],
+//     architecture: ["RBAC", "REST API", "Real-time Updates", "Authentication"],
+
+//     images: [
+//       {
+//         image: "/projects/bullion/dashboard.jpg",
+//         alt: "Bullion trading dashboard",
+//       },
+//       { image: "/projects/bullion/admin.jpg", alt: "Bullion admin panel" },
+//       { image: "/projects/bullion/mobile.jpg", alt: "Bullion mobile app" },
+//     ],
+//   },
+
+//   {
+//     id: "karigar",
+//     title: "Karigar",
+//     subtitle: "Worker Hiring Platform",
+//     year: "2025",
+//     featured: true,
+
+//     description:
+//       "Marketplace platform connecting skilled workers with customers through a verified onboarding and approval workflow.",
+//     shortDescription:
+//       "Worker marketplace with verified onboarding, admin approval workflow, and a companion mobile app.",
+
+//     responsibilities: [
+//       "Built worker registration workflow.",
+//       "Designed profile verification system.",
+//       "Developed admin approval dashboard.",
+//       "Created backend APIs for onboarding.",
+//       "Implemented notification workflows.",
+//       "Built supporting mobile application.",
+//     ],
+
+//     technologies: ["React Native", "Node.js", "Express", "MongoDB"],
+//     architecture: [
+//       "Approval Workflow",
+//       "Notifications",
+//       "Mobile App",
+//       "REST API",
+//     ],
+
+//     images: [
+//       {
+//         image: "/projects/karigar/onboarding.jpg",
+//         alt: "Karigar worker onboarding flow",
+//       },
+//       {
+//         image: "/projects/karigar/admin.jpg",
+//         alt: "Karigar admin approval dashboard",
+//       },
+//       { image: "/projects/karigar/mobile.jpg", alt: "Karigar mobile app" },
+//     ],
+//   },
+// ];
+
+/**
+ * Project content, straight from the resume -- three shipped platforms,
+ * no invented numbers or clients. `accent` drives both the card's own
+ * highlight color and the Three.js background color in ProjectsScene,
+ * so the whole section shifts palette as you move between projects.
+ */
+
+export type Project = {
+  slug: string;
+  index: string;
+  name: string;
+  tagline: string;
+  bullets: string[];
+  stack: string[];
+  accent: string;
+  images: { src: string; label: string }[];
+};
 
 export const PROJECTS: Project[] = [
   {
-    id: "gemlay",
-    title: "Gemlay",
-    subtitle: "Jewellery E-commerce Platform",
-    year: "2024 - Present",
-    featured: true,
-
-    description:
-      "Production-scale jewellery e-commerce platform built with a scalable MERN architecture, supporting SEO, advanced product discovery, inventory management, and a complete admin ecosystem.",
-    shortDescription:
-      "Production-scale jewellery e-commerce platform with SEO-optimized storefront, Elasticsearch search, and a full admin ecosystem.",
-
-    responsibilities: [
-      "Developed SEO-optimized storefront using Next.js SSR.",
-      "Designed scalable REST APIs for web and admin applications.",
-      "Implemented Elasticsearch-powered product search and filtering.",
-      "Built complete Admin Panel for products, orders, inventory, coupons, CMS and notifications.",
-      "Optimized MongoDB queries and indexing for production workloads.",
-      "Improved performance using lazy loading, dynamic imports and caching.",
-      "Containerized services with Docker and deployed on AWS using Nginx.",
-      "Authored engineering documentation and participated in architecture discussions.",
+    slug: "gemlay",
+    index: "01",
+    name: "Gemlay",
+    tagline:
+      "A production-scale jewellery e-commerce platform, catalog to checkout.",
+    bullets: [
+      "SEO-optimized Next.js SSR storefront",
+      "Elasticsearch-powered search with filtering and ranking",
+      "Admin Panel: Products, Orders, Inventory, Coupons, Notifications, CMS, Analytics",
+      "Docker-based deployment on AWS with Nginx as reverse proxy",
     ],
-
-    technologies: [
-      "Next.js",
-      "React",
-      "Node.js",
-      "Express",
-      "MongoDB",
-      "Elasticsearch",
-      "Docker",
-      "AWS",
-      "Nginx",
-    ],
-    architecture: [
-      "SEO",
-      "SSR",
-      "REST API",
-      "Micro Modules",
-      "Admin Dashboard",
-      "Search Engine",
-    ],
-
+    stack: ["Next.js", "Elasticsearch", "MongoDB", "Docker", "AWS", "Nginx"],
+    accent: "#6c63ff",
     images: [
       {
-        image: "/projects/gemlay/storefront.jpg",
-        alt: "Gemlay storefront homepage",
+        src: "https://picsum.photos/seed/gemlay-website/900/675",
+        label: "Website",
       },
       {
-        image: "/projects/gemlay/product.jpg",
-        alt: "Gemlay product detail page",
+        src: "https://picsum.photos/seed/gemlay-admin/900/675",
+        label: "Admin",
       },
-      { image: "/projects/gemlay/admin.jpg", alt: "Gemlay admin dashboard" },
+      {
+        src: "https://picsum.photos/seed/gemlay-search/900/675",
+        label: "Search",
+      },
     ],
   },
-
   {
-    id: "bullion",
-    title: "Bullion Management Platform",
-    subtitle: "Trading & Inventory Management",
-    year: "2025",
-    featured: true,
-
-    description:
-      "Enterprise platform for bullion trading, inventory management and client operations across web and mobile.",
-    shortDescription:
-      "Enterprise bullion trading and inventory platform with real-time pricing, RBAC, and a companion mobile app.",
-
-    responsibilities: [
-      "Developed Admin Panel, website and mobile application.",
-      "Implemented inventory and trading workflows.",
-      "Designed REST APIs for business operations.",
-      "Implemented secure authentication and RBAC.",
-      "Integrated real-time updates and push notifications.",
-      "Containerized backend using Docker.",
+    slug: "bullion",
+    index: "02",
+    name: "Bullion Management Platform",
+    tagline: "Real-time trading and inventory across web, admin, and mobile.",
+    bullets: [
+      "Inventory and trading modules with real-time price + stock tracking",
+      "Role-based access control (RBAC) and secure auth across web and mobile",
+      "REST APIs powering real-time updates and push notifications",
+      "Containerized services with Docker for consistent deployment",
     ],
-
-    technologies: [
-      "React",
-      "React Native",
-      "Node.js",
-      "Express",
-      "MongoDB",
-      "Docker",
-    ],
-    architecture: ["RBAC", "REST API", "Real-time Updates", "Authentication"],
-
+    stack: ["REST APIs", "RBAC", "Real-time Updates", "Docker"],
+    accent: "#4c8dff",
     images: [
       {
-        image: "/projects/bullion/dashboard.jpg",
-        alt: "Bullion trading dashboard",
+        src: "https://picsum.photos/seed/bullion-website/900/675",
+        label: "Website",
       },
-      { image: "/projects/bullion/admin.jpg", alt: "Bullion admin panel" },
-      { image: "/projects/bullion/mobile.jpg", alt: "Bullion mobile app" },
+      {
+        src: "https://picsum.photos/seed/bullion-admin/900/675",
+        label: "Admin",
+      },
+      { src: "https://picsum.photos/seed/bullion-app/900/675", label: "App" },
     ],
   },
-
   {
-    id: "karigar",
-    title: "Karigar",
-    subtitle: "Worker Hiring Platform",
-    year: "2025",
-    featured: true,
-
-    description:
-      "Marketplace platform connecting skilled workers with customers through a verified onboarding and approval workflow.",
-    shortDescription:
-      "Worker marketplace with verified onboarding, admin approval workflow, and a companion mobile app.",
-
-    responsibilities: [
-      "Built worker registration workflow.",
-      "Designed profile verification system.",
-      "Developed admin approval dashboard.",
-      "Created backend APIs for onboarding.",
-      "Implemented notification workflows.",
-      "Built supporting mobile application.",
+    slug: "karigar",
+    index: "03",
+    name: "Karigar",
+    tagline:
+      "A worker marketplace with a verified, admin-approved onboarding flow.",
+    bullets: [
+      "Worker registration and hiring workflow with admin approval steps",
+      "Profile verification built into onboarding",
+      "Admin dashboard + mobile app for end-to-end onboarding management",
+      "Backend APIs powering registration, approval, and notification flows",
     ],
-
-    technologies: ["React Native", "Node.js", "Express", "MongoDB"],
-    architecture: [
-      "Approval Workflow",
-      "Notifications",
-      "Mobile App",
-      "REST API",
-    ],
-
+    stack: ["Backend APIs", "Mobile App", "Notifications"],
+    accent: "#9b7eff",
     images: [
       {
-        image: "/projects/karigar/onboarding.jpg",
-        alt: "Karigar worker onboarding flow",
+        src: "https://picsum.photos/seed/karigar-onboarding/900/675",
+        label: "Onboarding",
       },
       {
-        image: "/projects/karigar/admin.jpg",
-        alt: "Karigar admin approval dashboard",
+        src: "https://picsum.photos/seed/karigar-admin/900/675",
+        label: "Admin",
       },
-      { image: "/projects/karigar/mobile.jpg", alt: "Karigar mobile app" },
+      { src: "https://picsum.photos/seed/karigar-app/900/675", label: "App" },
     ],
   },
 ];

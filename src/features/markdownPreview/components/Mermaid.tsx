@@ -124,7 +124,7 @@ ${chart}
   }, [chart]);
 
   return (
-    <div className="my-6 overflow-auto rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-950">
+    <div className="mermaid my-6 overflow-auto rounded-lg border border-sky-800">
       <div ref={containerRef} />
     </div>
   );

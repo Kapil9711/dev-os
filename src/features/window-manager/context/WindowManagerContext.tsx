@@ -4,6 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -12,12 +13,19 @@ import type { AppId } from "@/constants/apps";
 import { APP_REGISTRY } from "@/constants/apps";
 import type { WindowRect, WindowState } from "../types/window";
 
+type OpenWindowOptions = {
+  width?: number;
+  height?: number;
+  query?: Record<string, string>;
+  state?: unknown;
+};
+
 interface WindowManagerValue {
   windows: Record<string, WindowState>;
   hasMaximizedWindow: boolean;
   openOrder: AppId[];
   focusedId: AppId | null;
-  openWindow: (id: AppId) => void;
+  openWindow: (id: AppId, options?: OpenWindowOptions) => void;
   closeWindow: (id: AppId) => void;
   finalizeCloseWindow: (id: AppId) => void;
   minimizeWindow: (id: AppId) => void;
@@ -25,6 +33,7 @@ interface WindowManagerValue {
   restoreWindow: (id: AppId) => void;
   toggleMaximize: (id: AppId) => void;
   focusWindow: (id: AppId) => void;
+  setWindows: any;
   updateRect: (
     id: AppId,
     rect: Partial<WindowRect> | ((prev: WindowRect) => Partial<WindowRect>),
@@ -77,20 +86,18 @@ export function WindowManagerProvider({
   }, []);
 
   const openWindow = useCallback(
-    (id: AppId) => {
-      console.log("OPEN WINDOW", id);
-      let shouldFocus = false;
+    (id: AppId, options: OpenWindowOptions = {}) => {
+      const existing = windows[id];
+      const shouldFocus = !existing || existing.status !== "closing";
 
       setWindows((prev) => {
         const existing = prev[id];
 
         if (existing) {
-          shouldFocus = true;
+          zCounter.current++;
 
           switch (existing.status) {
             case "closing":
-              return prev;
-
             case "minimizing":
               return prev;
 
@@ -100,31 +107,37 @@ export function WindowManagerProvider({
                 [id]: {
                   ...existing,
                   status: "restoring",
+                  zIndex: zCounter.current,
+                  query: options.query ?? existing.query,
+                  state: options.state ?? existing.state,
                 },
               };
 
-            case "restoring":
-            case "open":
             default:
-              return prev;
+              return {
+                ...prev,
+                [id]: {
+                  ...existing,
+                  zIndex: zCounter.current,
+                  query: options.query ?? existing.query,
+                  state: options.state ?? existing.state,
+                },
+              };
           }
         }
 
         const meta = APP_REGISTRY[id];
+
         const isMobile =
           typeof window !== "undefined" && window.innerWidth <= 720;
 
-        const rect = nextRect(
-          cascadeCounter.current,
-          isMobile,
-          meta.width,
-          meta.height,
-        );
+        const width = options.width ?? meta.width;
+        const height = options.height ?? meta.height;
+
+        const rect = nextRect(cascadeCounter.current, isMobile, width, height);
 
         cascadeCounter.current++;
         zCounter.current++;
-
-        shouldFocus = true;
 
         return {
           ...prev,
@@ -135,6 +148,8 @@ export function WindowManagerProvider({
             maximized: false,
             prevRect: null,
             zIndex: zCounter.current,
+            query: options.query,
+            state: options.state,
           },
         };
       });
@@ -142,10 +157,13 @@ export function WindowManagerProvider({
       setOpenOrder((prev) => (prev.includes(id) ? prev : [...prev, id]));
 
       if (shouldFocus) {
-        focusWindow(id);
+        // Wait until React has committed the state update
+        requestAnimationFrame(() => {
+          focusWindow(id);
+        });
       }
     },
-    [focusWindow],
+    [windows, focusWindow],
   );
 
   const closeWindow = useCallback((id: AppId) => {
@@ -221,6 +239,25 @@ export function WindowManagerProvider({
     },
     [focusWindow],
   );
+
+  const bringToFront = useCallback((id: AppId) => {
+    zCounter.current++;
+
+    setWindows((prev) => {
+      const win = prev[id];
+      if (!win) return prev;
+
+      return {
+        ...prev,
+        [id]: {
+          ...win,
+          zIndex: zCounter.current,
+        },
+      };
+    });
+
+    setFocusedId(id);
+  }, []);
 
   const toggleMaximize = useCallback((id: AppId) => {
     setWindows((prev) => {
@@ -317,6 +354,7 @@ export function WindowManagerProvider({
       toggleMaximize,
       focusWindow,
       updateRect,
+      setWindows,
       closeAll,
       hasMaximizedWindow,
     }),
@@ -333,6 +371,7 @@ export function WindowManagerProvider({
       toggleMaximize,
       focusWindow,
       updateRect,
+      setWindows,
       closeAll,
       hasMaximizedWindow,
     ],

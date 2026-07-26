@@ -1,15 +1,20 @@
 "use client";
 
+import { useWindowManager } from "@/features/window-manager";
 import { PROFILE, SOCIALS } from "../../data";
 
 import Badge from "../common/Badge";
-import Button from "../common/Button";
+import Button, { ButtonDiv } from "../common/Button";
 import Container from "../common/Container";
 import GlassCard from "../common/GlassCard";
 import Section from "../common/Section";
 import SectionHeading from "../common/SectionHeading";
+import { useWindowDimensions } from "@/features/window-manager/hooks/useWindowDimensions";
 
 export default function Contact() {
+  const { openWindow } = useWindowManager();
+  const dimensions = useWindowDimensions("portfolio");
+
   return (
     <Section id="contact">
       <Container>
@@ -19,7 +24,7 @@ export default function Contact() {
           description="I'm always interested in discussing new opportunities, exciting projects, or simply connecting with other developers."
         />
 
-        <div className="mt-16 grid gap-8 lg:grid-cols-[1fr_380px]">
+        <div className="mt-16 grid gap-8 @5xl:grid-cols-[1fr_380px]">
           <GlassCard className="p-10">
             <div className="space-y-8">
               <div>
@@ -57,9 +62,23 @@ export default function Contact() {
                   Email Me
                 </Button>
 
-                <Button href={PROFILE.resume} variant="secondary">
+                <ButtonDiv
+                  onClick={() => {
+                    openWindow("resume", {
+                      width: dimensions.width / 1.5,
+                      height: dimensions.height / 1.2,
+                      query: {
+                        project: "resume",
+                      },
+                      state: {
+                        activeTab: "pdf",
+                      },
+                    });
+                  }}
+                  variant="secondary"
+                >
                   Resume
-                </Button>
+                </ButtonDiv>
               </div>
             </div>
           </GlassCard>

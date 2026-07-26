@@ -27,7 +27,7 @@ export default function MarkdownFilePreview({
   }, [path]);
 
   return (
-    <div className="@6xl:p-6 mx-auto max-w-7xl">
+    <div className="@6xl:p-6 max-w-8xl mx-auto">
       <MarkdownPreview markdown={markdown} />
     </div>
   );

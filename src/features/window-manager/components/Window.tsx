@@ -5,6 +5,7 @@ import { APP_REGISTRY, type AppId } from "@/constants/apps";
 import { useWindowManager } from "../context/WindowManagerContext";
 import { useDraggable } from "../hooks/useDraggable";
 import { useResizable } from "../hooks/useResizable";
+import { motion, type TargetAndTransition } from "framer-motion";
 
 interface WindowProps {
   id: AppId;
@@ -23,6 +24,7 @@ export function Window({ id, children }: WindowProps) {
     toggleMaximize,
     focusWindow,
     updateRect,
+    setWindows,
   } = useWindowManager();
   const win = windows[id];
   const meta = APP_REGISTRY[id];
@@ -49,6 +51,53 @@ export function Window({ id, children }: WindowProps) {
       })),
   });
 
+  const [showContent, setShowContent] = useState(false);
+
+  useEffect(() => {
+    if (win?.status === "open") {
+      const id = requestAnimationFrame(() => {
+        setTimeout(() => {
+          setShowContent(true);
+        }, 180); // Match your open animation duration
+
+        return () => cancelAnimationFrame(id);
+      });
+    } else {
+      setShowContent(false);
+    }
+  }, [win?.status]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindows((prev: any) => {
+        const next = { ...prev };
+
+        for (const id in next) {
+          const win = next[id as AppId];
+
+          if (!win.maximized) continue;
+
+          next[id as AppId] = {
+            ...win,
+            rect: {
+              ...win.rect,
+              width: window.innerWidth,
+              height: window.innerHeight,
+            },
+          };
+        }
+
+        return next;
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   if (!win || win.status === "minimized") {
     return null;
   }
@@ -61,13 +110,13 @@ export function Window({ id, children }: WindowProps) {
           ? {
               opacity: 0,
               scale: 0.15,
-              y: 180,
+              y: 400,
             }
           : win.status === "minimizing"
             ? {
                 opacity: 0,
                 scale: 0.2,
-                y: 250,
+                y: 400,
               }
             : {
                 opacity: 1,
@@ -153,12 +202,16 @@ export function Window({ id, children }: WindowProps) {
         </div>
       </div>
 
-      <div
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.2 }}
+        onAnimationComplete={() => setShowContent(true)}
         id={"window-container-" + id}
-        className="wbody-scroll @container relative w-full flex-1 overflow-auto"
+        className="wbody-scroll relative w-full flex-1 overflow-auto @container"
       >
-        {children}
-      </div>
+        {showContent ? children : null}
+      </motion.div>
 
       <button
         aria-label="Resize window"
@@ -173,7 +226,7 @@ export function Window({ id, children }: WindowProps) {
 
 import { Minus, Square, X } from "lucide-react";
 import { AnimatedWindow } from "./AnimationWindow";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function TrafficDot({
   color,

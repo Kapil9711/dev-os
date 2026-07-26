@@ -4,6 +4,10 @@ export const NAVIGATION = [
     label: "Home",
   },
   {
+    id: "about",
+    label: "About",
+  },
+  {
     id: "journey",
     label: "Journey",
   },
@@ -11,13 +15,14 @@ export const NAVIGATION = [
     id: "projects",
     label: "Projects",
   },
+  // {
+  //   id: "highlights",
+  //   label: "Highlights",
+  // },
+
   {
-    id: "skills",
-    label: "Skills",
-  },
-  {
-    id: "experience",
-    label: "Experience",
+    id: "howibuild",
+    label: "Thought Process",
   },
   {
     id: "contact",

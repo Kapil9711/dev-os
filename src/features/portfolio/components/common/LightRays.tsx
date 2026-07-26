@@ -1,5 +1,7 @@
+"use client";
 import { useRef, useEffect, useState } from "react";
 import { Renderer, Program, Triangle, Mesh } from "ogl";
+import { useWindowDimensions } from "@/features/window-manager/hooks/useWindowDimensions";
 
 export type RaysOrigin =
   | "top-center"
@@ -113,6 +115,8 @@ const LightRays: React.FC<LightRaysProps> = ({
   const [isVisible, setIsVisible] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
+  const dimensions = useWindowDimensions("portfolio");
+
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -132,7 +136,7 @@ const LightRays: React.FC<LightRaysProps> = ({
         observerRef.current = null;
       }
     };
-  }, []);
+  }, [dimensions.height, dimensions.width]);
 
   useEffect(() => {
     if (!isVisible || !containerRef.current) return;
@@ -404,6 +408,8 @@ void main() {
     mouseInfluence,
     noiseAmount,
     distortion,
+    dimensions.height,
+    dimensions.width,
   ]);
 
   useEffect(() => {
@@ -441,6 +447,8 @@ void main() {
     mouseInfluence,
     noiseAmount,
     distortion,
+    dimensions.height,
+    dimensions.width,
   ]);
 
   useEffect(() => {
@@ -456,7 +464,7 @@ void main() {
       window.addEventListener("mousemove", handleMouseMove);
       return () => window.removeEventListener("mousemove", handleMouseMove);
     }
-  }, [followMouse]);
+  }, [followMouse, dimensions.height, dimensions.width]);
 
   return (
     <div

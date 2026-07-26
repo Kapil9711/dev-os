@@ -6,13 +6,13 @@ import SectionHeading from "../common/SectionHeading";
 
 export default function Skills() {
   return (
-    <Section id="skills">
+    <Section>
       <Container>
         <div className="mt-0">
           <LogoLoop
             logos={techLogos}
-            speed={100}
-            logoHeight={90}
+            speed={80}
+            logoHeight={60}
             gap={48}
             fadeOut
             scaleOnHover

@@ -1,125 +1,143 @@
 "use client";
 
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, MeshDistortMaterial } from "@react-three/drei";
-import {
-  useEffect,
-  useRef,
-  type MutableRefObject,
-  type RefObject,
-} from "react";
+import { useEffect, useRef, type RefObject } from "react";
 import * as THREE from "three";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-interface FloatingGemProps {
-  position: [number, number, number];
-  color: string;
-  scale?: number;
-  speed?: number;
-  driftRange?: number;
-  progressRef: MutableRefObject<number>;
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
 }
 
-function FloatingGem({
-  position,
-  color,
-  scale = 1,
-  speed = 1,
-  driftRange = 2.5,
-  progressRef,
-}: FloatingGemProps) {
-  const mesh = useRef<THREE.Mesh>(null);
-
-  useFrame((_, delta) => {
-    if (!mesh.current) return;
-    mesh.current.rotation.x += delta * 0.15 * speed;
-    mesh.current.rotation.y += delta * 0.22 * speed;
-
-    const p = progressRef.current;
-    mesh.current.position.y = position[1] + p * driftRange;
-    mesh.current.position.x = position[0] + Math.sin(p * Math.PI) * 0.6;
-  });
-
-  return (
-    <Float speed={1.4} rotationIntensity={0.4} floatIntensity={0.8}>
-      <mesh ref={mesh} position={position} scale={scale}>
-        <icosahedronGeometry args={[1, 1]} />
-        <MeshDistortMaterial
-          color={color}
-          distort={0.35}
-          speed={2}
-          roughness={0.15}
-          metalness={0.6}
-        />
-      </mesh>
-    </Float>
-  );
+interface ProjectSceneProps {
+  /**
+   * Element the scroll-linked rotation triggers off of. This component
+   * renders inside ProjectsBackground's `absolute inset-0` wrapper,
+   * which has no scroll-meaningful size of its own -- the actual
+   * section is what has real height, so the trigger comes from the
+   * caller instead of being measured off a ref local to this file.
+   *
+   * Typed `RefObject<HTMLElement | null>`, not `RefObject<HTMLElement>`:
+   * that's what `useRef<HTMLElement>(null)` actually produces, and was
+   * the real source of the mismatch that needed `as any` at the call
+   * site -- not a missing prop.
+   */
+  sectionRef: RefObject<HTMLElement | null>;
+  /** Which project card is active. Optional -- renders with a static
+   *  default color if the caller hasn't wired this through yet. */
+  activeIndex?: number;
+  accents?: string[];
 }
 
-export default function ProjectsScene({
+const DEFAULT_ACCENTS = ["#6c63ff", "#4c8dff", "#9b7eff"];
+
+export default function ProjectScene({
   sectionRef,
-}: {
-  sectionRef: RefObject<HTMLElement>;
-}) {
-  const progressRef = useSectionScrollProgress(sectionRef);
-
-  return (
-    <Canvas
-      className="h-full w-full"
-      dpr={[1, 1.5]}
-      camera={{ position: [0, 0, 8], fov: 45 }}
-      gl={{ alpha: true, antialias: true }}
-    >
-      <ambientLight intensity={0.6} />
-      <directionalLight position={[4, 4, 4]} intensity={1.2} />
-      <FloatingGem
-        position={[-4, 2, -2]}
-        color="#8b5cf6"
-        scale={1.1}
-        speed={0.8}
-        driftRange={-3}
-        progressRef={progressRef}
-      />
-      <FloatingGem
-        position={[4.5, -1.5, -3]}
-        color="#38bdf8"
-        scale={1.4}
-        speed={1.1}
-        driftRange={2.5}
-        progressRef={progressRef}
-      />
-      <FloatingGem
-        position={[0, -3, -4]}
-        color="#facc15"
-        scale={0.9}
-        speed={0.6}
-        driftRange={-2}
-        progressRef={progressRef}
-      />
-    </Canvas>
-  );
-}
-
-export function useSectionScrollProgress(ref: RefObject<HTMLElement>) {
-  const progress = useRef(0);
+  activeIndex = 0,
+  accents = DEFAULT_ACCENTS,
+}: ProjectSceneProps) {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const materialRef = useRef<THREE.MeshBasicMaterial | null>(null);
 
   useEffect(() => {
-    function update() {
-      const el = ref.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const total = rect.height + vh;
-      const passed = vh - rect.top;
-      progress.current = Math.min(1, Math.max(0, passed / total));
-    }
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
-    };
-  }, [ref]);
+    const section = sectionRef.current;
+    const canvas = canvasRef.current;
+    if (!section || !canvas) return;
 
-  return progress;
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      alpha: true,
+      antialias: true,
+    });
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
+      45,
+      canvas.clientWidth / canvas.clientHeight,
+      0.1,
+      100,
+    );
+    camera.position.set(0, 0, 9);
+
+    function size() {
+      const w = canvas!.clientWidth;
+      const h = canvas!.clientHeight;
+      renderer.setSize(w, h, false);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+
+    const geo = new THREE.TorusKnotGeometry(1.8, 0.5, 160, 20);
+    const mat = new THREE.MeshBasicMaterial({
+      color: new THREE.Color(accents[0] ?? DEFAULT_ACCENTS[0]),
+      wireframe: true,
+      transparent: true,
+      opacity: 0.35,
+    });
+    materialRef.current = mat;
+    const mesh = new THREE.Mesh(geo, mat);
+    scene.add(mesh);
+
+    size();
+    window.addEventListener("resize", size);
+
+    let rafId = 0;
+    function animate() {
+      if (!reduceMotion) {
+        mesh.rotation.y += 0.0018;
+        mesh.rotation.x += 0.0008;
+      }
+      renderer.render(scene, camera);
+      rafId = requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Scoped to `section` (the caller's element), not a local ref --
+    // this is the whole reason sectionRef exists as a prop.
+    const ctx = gsap.context(() => {
+      if (!reduceMotion) {
+        gsap.to(mesh.rotation, {
+          y: "+=1.4",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+          },
+        });
+      }
+    }, section);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("resize", size);
+      ctx.revert();
+      renderer.dispose();
+      geo.dispose();
+      mat.dispose();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sectionRef]);
+
+  // Re-run only when the active project changes -- tweens the existing
+  // material's color rather than rebuilding the scene.
+  useEffect(() => {
+    const mat = materialRef.current;
+    const nextColor = accents[activeIndex];
+    if (!mat || !nextColor) return;
+    const target = new THREE.Color(nextColor);
+    gsap.to(mat.color, {
+      r: target.r,
+      g: target.g,
+      b: target.b,
+      duration: 0.8,
+      ease: "power2.out",
+    });
+  }, [activeIndex, accents]);
+
+  return <canvas ref={canvasRef} className="h-full w-full" />;
 }

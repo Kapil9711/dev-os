@@ -52,6 +52,9 @@ const config: Config = {
         winOpen: "winOpen 0.28s cubic-bezier(0.2,0.9,0.3,1.2)",
         pulseDot: "pulse 2s infinite",
       },
+      maxWidth: {
+        "8xl": "96rem", // 1536px
+      },
     },
   },
   plugins: [containerQueries],

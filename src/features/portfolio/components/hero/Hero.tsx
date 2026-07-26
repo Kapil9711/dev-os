@@ -13,16 +13,14 @@ import Heading from "../common/Heading";
 import Paragraph from "../common/Paragraph";
 import Section from "../common/Section";
 import HeroScene from "../three/HeroScene";
-import LightRays from "../common/LightRays";
-import TextType from "../common/TextType";
 
 export default function Hero() {
   return (
     <Section
       id="hero"
-      className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden pb-16 pt-16 sm:pt-16 lg:min-h-screen lg:pb-0 lg:pt-0"
+      className="@5xl:pt-0 @7xl:min-h-screen @7xl:pb-0 @7xl:pt-0 @7xl:justify-center @7xl:min-h-[100svh] relative flex flex-col overflow-hidden pb-10 pt-10"
     >
-      {/* Three.js background — desktop/tablet only. Skipped below sm: costs
+      {/* Three.js background — desktop/tablet only. Skipped below @5xl: costs
           GPU/battery for no real payoff at that size, and reads as noise
           rather than depth on a small dark canvas. */}
 
@@ -32,13 +30,13 @@ export default function Hero() {
 
       {/* Ambient glow */}
       <div
-        className="pointer-events-none absolute -top-32 left-1/4 -z-10 h-[320px] w-[320px] rounded-full opacity-25 blur-[100px] sm:h-[420px] sm:w-[420px] sm:blur-[130px] lg:h-[520px] lg:w-[520px] lg:blur-[140px]"
+        className="@5xl:h-[420px] @5xl:w-[420px] @5xl:blur-[130px] @7xl:h-[520px] @7xl:w-[520px] @7xl:blur-[140px] pointer-events-none absolute -top-32 left-1/4 -z-10 h-[320px] w-[320px] rounded-full opacity-25 blur-[100px]"
         style={{
           background: "radial-gradient(circle, var(--accent), transparent 70%)",
         }}
       />
       <div
-        className="pointer-events-none absolute bottom-0 right-0 -z-10 h-[280px] w-[280px] rounded-full opacity-20 blur-[100px] sm:h-[380px] sm:w-[380px] sm:blur-[130px] lg:h-[480px] lg:w-[480px] lg:blur-[140px]"
+        className="@5xl:h-[380px] @5xl:w-[380px] @5xl:blur-[130px] @7xl:h-[480px] @7xl:w-[480px] @7xl:blur-[140px] pointer-events-none absolute bottom-0 right-0 -z-10 h-[280px] w-[280px] rounded-full opacity-20 blur-[100px]"
         style={{
           background:
             "radial-gradient(circle, var(--accent-2), transparent 70%)",
@@ -46,11 +44,11 @@ export default function Hero() {
       />
 
       <Container>
-        <div className="grid items-center gap-12 lg:grid-cols-[1fr_420px] lg:gap-16 xl:grid-cols-[1fr_500px]">
+        <div className="@3xl:grid-cols-[1fr_420px] @7xl:gap-16 @9xl:grid-cols-[1fr_500px] grid items-center gap-12">
           {/* ---------------- Left ---------------- */}
 
           <div>
-            <Badge className="mb-5 inline-flex items-center gap-2 sm:mb-6">
+            <Badge className="@5xl:mb-6 mb-5 inline-flex items-center gap-2">
               <span className="relative flex h-2 w-2 shrink-0">
                 {PROFILE.availableForWork && (
                   <span
@@ -88,19 +86,19 @@ export default function Hero() {
             </Heading>
 
             <h2
-              className="mt-4 text-xl font-light sm:mt-5 sm:text-2xl lg:text-3xl"
+              className="@5xl:mt-5 @5xl:text-2xl @7xl:text-3xl mt-4 text-xl font-light"
               style={{ color: "var(--text-2)" }}
             >
               {PROFILE.title}
             </h2>
 
-            <Paragraph className="mt-6 max-w-2xl sm:mt-8">
+            <Paragraph className="@5xl:mt-8 mt-6 max-w-2xl">
               {PROFILE.description}
             </Paragraph>
 
             {/* Buttons */}
 
-            <div className="mt-8 flex flex-wrap gap-3 sm:mt-10 sm:gap-4">
+            <div className="@5xl:mt-10 @5xl:gap-4 mt-8 flex flex-wrap gap-3">
               <Button href="#projects" variant="primary">
                 View Projects
               </Button>
@@ -111,46 +109,46 @@ export default function Hero() {
 
             {/* Stats */}
 
-            <div className="mt-10 grid grid-cols-3 gap-2.5 sm:mt-14 sm:gap-4">
-              <GlassCard className="p-3 text-center transition-transform duration-300 hover:-translate-y-1 sm:p-6">
+            <div className="@5xl:mt-14 @5xl:gap-4 mt-10 grid grid-cols-3 gap-2.5">
+              <GlassCard className="@5xl:p-6 p-3 text-center transition-transform duration-300 hover:-translate-y-1">
                 <h3
-                  className="text-xl font-bold sm:text-2xl lg:text-4xl"
+                  className="@5xl:text-2xl @7xl:text-4xl text-xl font-bold"
                   style={{ color: "var(--text-1)" }}
                 >
                   {PROFILE.experience}+
                 </h3>
                 <p
-                  className="mt-1 text-[11px] sm:mt-2 sm:text-sm"
+                  className="@5xl:mt-2 @5xl:text-sm mt-1 text-[11px]"
                   style={{ color: "var(--text-2)" }}
                 >
                   Years
                 </p>
               </GlassCard>
 
-              <GlassCard className="p-3 text-center transition-transform duration-300 hover:-translate-y-1 sm:p-6">
+              <GlassCard className="@5xl:p-6 p-3 text-center transition-transform duration-300 hover:-translate-y-1">
                 <h3
-                  className="text-xl font-bold sm:text-2xl lg:text-4xl"
+                  className="@5xl:text-2xl @7xl:text-4xl text-xl font-bold"
                   style={{ color: "var(--text-1)" }}
                 >
                   20+
                 </h3>
                 <p
-                  className="mt-1 text-[11px] sm:mt-2 sm:text-sm"
+                  className="@5xl:mt-2 @5xl:text-sm mt-1 text-[11px]"
                   style={{ color: "var(--text-2)" }}
                 >
                   Projects
                 </p>
               </GlassCard>
 
-              <GlassCard className="p-3 text-center transition-transform duration-300 hover:-translate-y-1 sm:p-6">
+              <GlassCard className="@5xl:p-6 p-3 text-center transition-transform duration-300 hover:-translate-y-1">
                 <h3
-                  className="text-xl font-bold sm:text-2xl lg:text-4xl"
+                  className="@5xl:text-2xl @7xl:text-4xl text-xl font-bold"
                   style={{ color: "var(--text-1)" }}
                 >
                   100%
                 </h3>
                 <p
-                  className="mt-1 text-[11px] sm:mt-2 sm:text-sm"
+                  className="@5xl:mt-2 @5xl:text-sm mt-1 text-[11px]"
                   style={{ color: "var(--text-2)" }}
                 >
                   Passion
@@ -161,7 +159,7 @@ export default function Hero() {
 
           {/* ---------------- Right ---------------- */}
 
-          <div className="mx-auto w-full max-w-[360px] sm:max-w-[420px] lg:max-w-none">
+          <div className="@5xl:max-w-[420px] @7xl:max-w-none mx-auto w-full max-w-[360px]">
             <TiltCard />
           </div>
         </div>
@@ -193,10 +191,10 @@ function TiltCard() {
       onMouseLeave={() => setTilt({ x: 0, y: 0 })}
     >
       <GlassCard
-        className="overflow-hidden p-4 transition-transform duration-300 ease-out sm:p-5"
+        className="@5xl:p-5 overflow-hidden p-4 transition-transform duration-300 ease-out"
         style={{ transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)` }}
       >
-        <div className="relative aspect-[4/5] overflow-hidden rounded-2xl sm:rounded-3xl">
+        <div className="@5xl:rounded-3xl relative aspect-[4/5] overflow-hidden rounded-2xl">
           <Image
             src={PROFILE.avatar}
             alt={PROFILE.name}
@@ -209,13 +207,13 @@ function TiltCard() {
       </GlassCard>
 
       <div
-        className="pointer-events-none absolute -left-6 -top-6 -z-10 h-40 w-40 rounded-full opacity-25 blur-[90px] sm:-left-10 sm:-top-10 sm:h-56 sm:w-56 sm:blur-[120px]"
+        className="@5xl:-left-10 @5xl:-top-10 @5xl:h-56 @5xl:w-56 @5xl:blur-[120px] pointer-events-none absolute -left-6 -top-6 -z-10 h-40 w-40 rounded-full opacity-25 blur-[90px]"
         style={{
           background: "radial-gradient(circle, var(--accent), transparent 70%)",
         }}
       />
       <div
-        className="pointer-events-none absolute -bottom-6 -right-6 -z-10 h-40 w-40 rounded-full opacity-25 blur-[90px] sm:-bottom-10 sm:-right-10 sm:h-56 sm:w-56 sm:blur-[120px]"
+        className="@5xl:-bottom-10 @5xl:-right-10 @5xl:h-56 @5xl:w-56 @5xl:blur-[120px] pointer-events-none absolute -bottom-6 -right-6 -z-10 h-40 w-40 rounded-full opacity-25 blur-[90px]"
         style={{
           background:
             "radial-gradient(circle, var(--accent-3), transparent 70%)",

@@ -174,3 +174,18 @@ button:focus-visible,
     transform: rotate(360deg);
   }
 }
+
+/* .mermaid svg .node rect,
+.mermaid svg .node polygon,
+.mermaid svg .node path,
+.mermaid svg .node circle,
+.mermaid svg .node ellipse {
+  fill: #0c234a !important;
+  stroke: #103474 !important;
+  stroke-width: 2px;
+}
+
+.mermaid svg .node .label,
+.mermaid svg .node text {
+  fill: white !important;
+} */

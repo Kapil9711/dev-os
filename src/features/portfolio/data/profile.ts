@@ -16,9 +16,9 @@ export const PROFILE: Profile = {
 
   experience: 2,
 
-  email: "kapil@email.com",
+  email: "kapil.rajput9711@gmail.com",
 
-  phone: "",
+  phone: "+91 8449111099",
 
   location: "India",
 

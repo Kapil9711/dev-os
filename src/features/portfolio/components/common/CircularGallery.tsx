@@ -1,4 +1,7 @@
+"use client";
 import { useWindowManager } from "@/features/window-manager";
+import { useWindowDimensions } from "@/features/window-manager/hooks/useWindowDimensions";
+
 import {
   Camera,
   Mesh,
@@ -857,6 +860,9 @@ export default function CircularGallery({
 }: CircularGalleryProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { hasMaximizedWindow } = useWindowManager();
+  const dimensions = useWindowDimensions("portfolio");
+
+  // console.log(dimensions, "dimensions");
   useEffect(() => {
     if (!containerRef.current) return;
     let app: App | undefined;
@@ -887,6 +893,8 @@ export default function CircularGallery({
     scrollSpeed,
     scrollEase,
     hasMaximizedWindow,
+    dimensions.height,
+    dimensions.width,
   ]);
   return (
     <div

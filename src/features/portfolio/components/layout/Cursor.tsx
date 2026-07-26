@@ -1,5 +1,6 @@
 "use client";
 
+import { useWindowManager } from "@/features/window-manager";
 import { useEffect, useRef } from "react";
 
 const HOVER_SELECTOR = "a, button, [data-cursor-hover]";
@@ -12,86 +13,139 @@ export default function Cursor() {
 
   const target = useRef({ x: 0, y: 0 });
   const ring = useRef({ x: 0, y: 0 });
+
   const rafId = useRef<number>();
+  const containerRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const supportsHover = window.matchMedia(
       "(hover: hover) and (pointer: fine)",
     ).matches;
+
     if (!supportsHover) return;
 
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    function handleMove(e: MouseEvent) {
-      target.current.x = e.clientX;
-      target.current.y = e.clientY;
+    containerRef.current = document.getElementById(
+      "window-container-portfolio",
+    );
 
-      // dot tracks the pointer exactly — no lag, it's the precision indicator
+    if (!containerRef.current) return;
+
+    const container = containerRef.current;
+
+    function showCursor() {
+      dotRef.current?.style.setProperty("opacity", "1");
+      ringRef.current?.style.setProperty("opacity", "1");
+    }
+
+    function hideCursor() {
+      dotRef.current?.style.setProperty("opacity", "0");
+      ringRef.current?.style.setProperty("opacity", "0");
+
+      if (labelRef.current) {
+        labelRef.current.textContent = "";
+      }
+
+      if (ringRef.current) {
+        ringRef.current.dataset.hovering = "false";
+      }
+    }
+
+    function handleMove(e: MouseEvent) {
+      const rect = container.getBoundingClientRect();
+
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      target.current.x = x;
+      target.current.y = y;
+
       if (dotRef.current) {
-        dotRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`;
+        dotRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
       }
     }
 
     function handleOver(e: MouseEvent) {
       const el = (e.target as HTMLElement)?.closest(HOVER_SELECTOR);
+
       if (!el || !ringRef.current) return;
 
       ringRef.current.dataset.hovering = "true";
-      const text = el.getAttribute("data-cursor-text");
-      if (labelRef.current) labelRef.current.textContent = text ?? "";
+      labelRef.current!.textContent = el.getAttribute("data-cursor-text") ?? "";
     }
 
     function handleOut(e: MouseEvent) {
       const el = (e.target as HTMLElement)?.closest(HOVER_SELECTOR);
+
       if (!el || !ringRef.current) return;
 
       ringRef.current.dataset.hovering = "false";
-      if (labelRef.current) labelRef.current.textContent = "";
+      labelRef.current!.textContent = "";
     }
 
     function tick() {
-      // ring lerps toward the pointer — this is what gives it "weight"
       ring.current.x +=
         (target.current.x - ring.current.x) * (reduceMotion ? 1 : LERP);
+
       ring.current.y +=
         (target.current.y - ring.current.y) * (reduceMotion ? 1 : LERP);
 
       if (ringRef.current) {
-        ringRef.current.style.transform = `translate3d(${ring.current.x}px, ${ring.current.y}px, 0) translate(-50%, -50%)`;
+        ringRef.current.style.transform = `translate3d(${ring.current.x}px, ${ring.current.y}px,0) translate(-50%,-50%)`;
       }
 
       rafId.current = requestAnimationFrame(tick);
     }
 
-    window.addEventListener("mousemove", handleMove, { passive: true });
-    document.addEventListener("mouseover", handleOver, { passive: true });
-    document.addEventListener("mouseout", handleOut, { passive: true });
+    container.addEventListener("mouseenter", showCursor);
+    container.addEventListener("mouseleave", hideCursor);
+
+    container.addEventListener("mousemove", handleMove, {
+      passive: true,
+    });
+
+    container.addEventListener("mouseover", handleOver, {
+      passive: true,
+    });
+
+    container.addEventListener("mouseout", handleOut, {
+      passive: true,
+    });
+
     rafId.current = requestAnimationFrame(tick);
 
     return () => {
-      window.removeEventListener("mousemove", handleMove);
-      document.removeEventListener("mouseover", handleOver);
-      document.removeEventListener("mouseout", handleOut);
-      if (rafId.current) cancelAnimationFrame(rafId.current);
+      container.removeEventListener("mouseenter", showCursor);
+      container.removeEventListener("mouseleave", hideCursor);
+
+      container.removeEventListener("mousemove", handleMove);
+      container.removeEventListener("mouseover", handleOver);
+      container.removeEventListener("mouseout", handleOut);
+
+      if (rafId.current) {
+        cancelAnimationFrame(rafId.current);
+      }
     };
   }, []);
-
+  const { hasMaximizedWindow } = useWindowManager();
   return (
-    <div className="pointer-events-none fixed inset-0 z-[9999] hidden md:block">
-      {/* precision dot — snaps instantly */}
+    <div
+      className="pointer-events-none fixed inset-0 z-[9999] hidden md:block"
+      style={{ display: hasMaximizedWindow ? "block" : "none" }}
+    >
       <div
         ref={dotRef}
-        className="fixed left-0 top-0 h-1.5 w-1.5 rounded-full mix-blend-difference"
+        className="fixed left-0 top-0 h-1.5 w-1.5 rounded-full opacity-0 mix-blend-difference transition-opacity duration-200"
         style={{ background: "var(--text-1)" }}
       />
 
-      {/* trailing ring — lerps, scales + shows label on hover */}
       <div
         ref={ringRef}
         data-hovering="false"
-        className="fixed left-0 top-0 flex h-10 w-10 items-center justify-center rounded-full border transition-[width,height,background-color,border-color] duration-300 ease-out data-[hovering=true]:h-20 data-[hovering=true]:w-20"
+        className="fixed left-0 top-0 flex h-10 w-10 items-center justify-center rounded-full border opacity-0 transition-[width,height,background-color,border-color,opacity] duration-300 ease-out data-[hovering=true]:h-20 data-[hovering=true]:w-20"
         style={{
           borderColor: "var(--accent)",
           background: "transparent",

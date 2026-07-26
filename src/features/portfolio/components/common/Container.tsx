@@ -8,7 +8,7 @@ type ContainerProps = PropsWithChildren<{
 export default function Container({ children, className }: ContainerProps) {
   return (
     <div
-      className={clsx("@7xl:px-10 mx-auto w-full max-w-7xl px-3", className)}
+      className={clsx("@7xl:px-10 max-w-8xl mx-auto w-full px-3", className)}
     >
       {children}
     </div>

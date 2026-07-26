@@ -4,11 +4,14 @@ export default function NotFound() {
   return (
     <div className="flex h-screen w-full flex-col items-center justify-center gap-4 bg-[#05060b] px-6 text-center">
       <div className="text-sm font-bold tracking-wide text-[var(--text-1)]">
-        vaib<span className="text-accent-3">OS</span>
+        kap<span className="text-accent-3">OS</span>
       </div>
-      <h1 className="text-2xl font-extrabold text-[var(--text-1)]">404 — Window not found</h1>
+      <h1 className="text-2xl font-extrabold text-[var(--text-1)]">
+        404 — Window not found
+      </h1>
       <p className="max-w-sm text-sm text-[var(--text-2)]">
-        This process doesn&apos;t exist on the desktop. Head back and open an app from the dock.
+        This process doesn&apos;t exist on the desktop. Head back and open an
+        app from the dock.
       </p>
       <Link
         href="/"

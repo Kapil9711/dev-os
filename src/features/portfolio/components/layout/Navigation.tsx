@@ -1,11 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-
 import { NAVIGATION } from "../../constants";
 import Container from "../common/Container";
 import NavigationItem from "./NavigationItem";
-import { useWindowManager } from "@/features/window-manager";
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
@@ -150,7 +148,7 @@ export default function Navigation() {
               className="shrink-0 text-lg font-bold tracking-wide transition-all duration-300 hover:scale-105 hover:opacity-80"
               style={{ color: "var(--text-1)" }}
             >
-              VS<span style={{ color: "var(--accent)" }}>.</span>
+              KR<span style={{ color: "var(--accent)" }}>.</span>
             </a>
 
             {/* ---------------- Desktop nav ---------------- */}
@@ -202,7 +200,7 @@ export default function Navigation() {
                 color: "var(--text-1)",
               }}
             >
-              Let&apos;s Talk
+              Resume
             </a>
 
             {/* ---------------- Mobile toggle ---------------- */}
@@ -306,7 +304,7 @@ export default function Navigation() {
                     color: "var(--text-1)",
                   }}
                 >
-                  Let&apos;s Talk
+                  Resume
                 </a>
               </div>
             </div>

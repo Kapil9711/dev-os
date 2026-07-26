@@ -1,16 +1,20 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { useEffect, useState, type RefObject } from "react";
+import ProjectScene from "./ProjectScene";
 
-const ProjectsScene = dynamic(() => import("./ProjectScene"), { ssr: false });
+// const ProjectsScene = dynamic(() => import("./ProjectScene"), { ssr: false });
 
 interface ProjectsBackgroundProps {
-  sectionRef: RefObject<HTMLElement>;
+  sectionRef: RefObject<HTMLElement | null>;
+  activeIndex?: number;
+  accents?: string[];
 }
 
 export default function ProjectsBackground({
   sectionRef,
+  activeIndex,
+  accents,
 }: ProjectsBackgroundProps) {
   const [enabled, setEnabled] = useState(false);
 
@@ -24,7 +28,13 @@ export default function ProjectsBackground({
 
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      {enabled && <ProjectsScene sectionRef={sectionRef} />}
+      {enabled && (
+        <ProjectScene
+          sectionRef={sectionRef}
+          activeIndex={activeIndex}
+          accents={accents}
+        />
+      )}
     </div>
   );
 }

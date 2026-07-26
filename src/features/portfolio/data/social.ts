@@ -4,7 +4,7 @@ export const SOCIALS: Social[] = [
   {
     label: "Github",
 
-    href: "",
+    href: "https://github.com/Kapil9711",
 
     icon: "github",
   },
@@ -12,16 +12,16 @@ export const SOCIALS: Social[] = [
   {
     label: "LinkedIn",
 
-    href: "",
+    href: "https://www.linkedin.com/in/kapil-rajput-53573326b/",
 
     icon: "linkedin",
   },
 
   {
-    label: "Twitter",
+    label: "Whatsapp",
 
-    href: "",
+    href: "https://wa.me/918449111099?text=Hi%20Kapil",
 
-    icon: "twitter",
+    icon: "whatsapp",
   },
 ];

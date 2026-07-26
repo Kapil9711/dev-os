@@ -7,18 +7,13 @@ import SectionHeading from "../common/SectionHeading";
 import { HIGHLIGHTS } from "../../constants/highlights";
 import LightRays from "../common/LightRays";
 
-import RippleGrid from "../common/RipleGrid";
-import SideRays from "../common/SideRays";
-import Lightfall from "../common/LightFall";
-import LiquidEther from "../common/LiquidEthor";
-
 export default function Highlights() {
   return (
-    <Section id="highlights">
+    <Section id="highlights" className="hidden @5xl:block">
       <div
         style={{
           width: "100%",
-          height: "full",
+          height: "600px",
           position: "absolute",
           zIndex: -10,
         }}

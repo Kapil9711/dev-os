@@ -63,3 +63,38 @@ export default function Button({
     </Link>
   );
 }
+
+type ButtonDivProps = ComponentPropsWithoutRef<"div"> & {
+  variant?: ButtonVariant;
+  external?: boolean;
+  onClick?: () => void;
+};
+export function ButtonDiv({
+  onClick,
+  children,
+  variant = "secondary",
+  className,
+  external,
+  ...props
+}: ButtonDivProps) {
+  const classes = clsx(
+    "inline-flex items-center justify-center",
+    "rounded-full",
+    "border",
+    "px-7 py-4",
+    "font-mono",
+    "text-[11px]",
+    "uppercase",
+    "tracking-[0.18em]",
+    "transition-all",
+    "duration-300",
+    variants[variant],
+    className,
+  );
+
+  return (
+    <div onClick={onClick} className={classes} {...props}>
+      {children}
+    </div>
+  );
+}

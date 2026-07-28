@@ -5,7 +5,7 @@ import Container from "../common/Container";
 
 export const HowIBuild = () => {
   return (
-    <section className="py-5" id="howibuild">
+    <section className="hidden py-5 @3xl:block" id="howibuild">
       <Container>
         <MarkdownFilePreview path="/docs/howIBuild.md" />
       </Container>

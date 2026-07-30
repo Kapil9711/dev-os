@@ -20,7 +20,8 @@ export type AppId =
   | "monitor"
   // | "contact"
   | "settings"
-  | "portfolio";
+  | "portfolio"
+  | "thoughtProcess";
 
 export interface AppMeta {
   id: AppId;
@@ -89,6 +90,14 @@ export const APP_REGISTRY: Record<AppId, AppMeta> = {
     width: 660,
     height: 480,
   },
+  thoughtProcess: {
+    id: "thoughtProcess",
+    title: "My Thought Process",
+    icon: Activity,
+    accent: "#EF4444",
+    width: 660,
+    height: 480,
+  },
   // contact: {
   //   id: "contact",
   //   title: "Mail — New Message",
@@ -116,6 +125,12 @@ export const DOCK_APPS: AppId[] = [
   "monitor",
   // "contact",
   "portfolio",
+  "thoughtProcess",
 ];
 
-export const DESKTOP_APPS: AppId[] = ["resume", "portfolio", "terminal"];
+export const DESKTOP_APPS: AppId[] = [
+  "resume",
+  "portfolio",
+  "terminal",
+  "thoughtProcess",
+];

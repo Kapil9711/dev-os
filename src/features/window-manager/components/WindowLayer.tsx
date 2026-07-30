@@ -15,6 +15,7 @@ import { Settings } from "@/features/settings/components/Settings";
 
 import type { AppId } from "@/constants/apps";
 import Portfolio from "@/features/portfolio/PortfolioPage";
+import { ThoughtProcess } from "@/features/thoughtProcess/ThoughtProcess";
 
 const APP_CONTENT: Record<AppId, React.ComponentType> = {
   about: About,
@@ -26,6 +27,7 @@ const APP_CONTENT: Record<AppId, React.ComponentType> = {
   // contact: Contact,
   settings: Settings,
   portfolio: Portfolio,
+  thoughtProcess: ThoughtProcess,
 };
 
 export function WindowLayer() {

@@ -1,3 +1,45 @@
+# 🚀 Software Engineering Handbook
+
+> This edition preserves **all original Mermaid diagrams** while
+> improving the document flow and adding context around each engineering
+> phase.
+
+---
+
+# 🌟 End-to-End Product Lifecycle
+
+```text
+Business Discovery
+      ↓
+Product Research
+      ↓
+Product Planning
+      ↓
+Engineering Design
+      ↓
+Database Design
+      ↓
+API Design
+      ↓
+Development
+      ↓
+Testing & QA
+      ↓
+Security Review
+      ↓
+Deployment
+      ↓
+Monitoring & Analytics
+      ↓
+Continuous Improvement
+```
+
+The following sections walk through the complete engineering lifecycle.
+Each section contains: - Goal - Key activities - Expected deliverables -
+Mermaid diagram
+
+---
+
 # 🚀 From Idea to Production
 
 > Every successful product follows a structured engineering journey.
@@ -28,6 +70,14 @@ sequenceDiagram
 ---
 
 # 💡 Business Discovery
+
+**Goal** Validate that the product idea solves a real customer problem
+and is commercially viable.
+
+**Key Activities** - Problem validation - Customer identification -
+Market analysis - Business model validation - Budget estimation
+
+**Deliverables** - Business Vision - Value Proposition - Initial Scope
 
 ```mermaid
 flowchart TD
@@ -69,6 +119,9 @@ flowchart TD
 ---
 
 # 🔍 Product Research
+
+**Goal** Understand users, competitors, market opportunities, and
+product direction before engineering begins.
 
 ```mermaid
 flowchart TD
@@ -146,6 +199,9 @@ flowchart TD
 ---
 
 # 🏗️ Engineering Design
+
+**Goal** Translate business requirements into a scalable technical
+solution.
 
 ```mermaid
 flowchart TD
@@ -229,6 +285,8 @@ flowchart TD
 ---
 
 # 🗄️ Database
+
+**Goal** Design a normalized, scalable, and maintainable data model.
 
 ```mermaid
 erDiagram
@@ -365,6 +423,9 @@ erDiagram
 
 # 🔌 API Lifecycle
 
+**Goal** Define how requests travel through the application and where
+responsibilities are separated.
+
 ```mermaid
 sequenceDiagram
     participant Client
@@ -386,6 +447,9 @@ sequenceDiagram
 ---
 
 # 📁 Project Structure
+
+**Goal** Organize code for maintainability, scalability, and team
+collaboration.
 
 ```mermaid
 flowchart LR
@@ -416,6 +480,8 @@ Types --> SharedModels
 
 # 🧪 Quality Assurance
 
+**Goal** Ensure software quality through automated and manual testing.
+
 ```mermaid
 flowchart TD
 
@@ -445,6 +511,9 @@ Security --- S["Authentication<br/>Authorization<br/>OWASP<br/>Vulnerability Sca
 ```
 
 # 🔒 Security
+
+**Goal** Protect users, systems, and data throughout the application
+lifecycle.
 
 ```mermaid
 flowchart LR
@@ -488,12 +557,13 @@ A([🛡️ Security])
     G --> G3(Dependency Scanning)
     G --> G4(Container Scanning)
     G --> G5(CI/CD Security)
-
 ```
 
 ---
 
 # 🚀 Deployment
+
+**Goal** Automate reliable and repeatable software releases.
 
 ```mermaid
 sequenceDiagram
@@ -517,6 +587,9 @@ sequenceDiagram
 ---
 
 # 🧠 Engineering Principles
+
+**Goal** Establish consistent engineering standards that guide every
+implementation decision.
 
 ```mermaid
 flowchart TD

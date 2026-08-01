@@ -9,6 +9,7 @@ import {
   Mail,
   Settings2,
   LayoutGrid,
+  Brain,
 } from "lucide-react";
 
 export type AppId =
@@ -93,7 +94,7 @@ export const APP_REGISTRY: Record<AppId, AppMeta> = {
   thoughtProcess: {
     id: "thoughtProcess",
     title: "My Thought Process",
-    icon: Activity,
+    icon: Brain,
     accent: "#EF4444",
     width: 660,
     height: 480,

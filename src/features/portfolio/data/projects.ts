@@ -232,14 +232,14 @@ export const PROJECTS: Project[] = [
     accent: "#9b7eff",
     images: [
       {
-        src: "https://picsum.photos/seed/karigar-onboarding/900/675",
-        label: "Onboarding",
+        src: "/images/projects/karigar-login.jpeg",
+        label: "Login",
       },
       {
-        src: "https://picsum.photos/seed/karigar-admin/900/675",
+        src: "/images/projects/karigar-admin.jpeg",
         label: "Admin",
       },
-      { src: "https://picsum.photos/seed/karigar-app/900/675", label: "App" },
+      { src: "/images/projects/karigar-app.jpeg", label: "App" },
     ],
   },
 ];

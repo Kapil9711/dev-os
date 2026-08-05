@@ -4,7 +4,7 @@ import { DESKTOP_APPS, APP_REGISTRY } from "@/constants/apps";
 import { useWindowManager } from "@/features/window-manager/context/WindowManagerContext";
 
 const LABELS: Record<string, string> = {
-  resume: "Resume.pdf",
+  resume: "Resume",
   portfolio: "Portfolio",
   terminal: "Terminal",
 };

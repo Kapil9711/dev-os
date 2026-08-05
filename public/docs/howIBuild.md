@@ -1,11 +1,3 @@
-# 🚀 Software Engineering Handbook
-
-> This edition preserves **all original Mermaid diagrams** while
-> improving the document flow and adding context around each engineering
-> phase.
-
----
-
 # 🌟 End-to-End Product Lifecycle
 
 ```text
@@ -33,10 +25,6 @@ Monitoring & Analytics
       ↓
 Continuous Improvement
 ```
-
-The following sections walk through the complete engineering lifecycle.
-Each section contains: - Goal - Key activities - Expected deliverables -
-Mermaid diagram
 
 ---
 

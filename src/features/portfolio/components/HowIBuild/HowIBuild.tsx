@@ -9,7 +9,7 @@ import CButton from "@/components/ui/CButton";
 export const HowIBuild = () => {
   const { openWindow } = useWindowManager();
   return (
-    <section className="hidden py-5 @3xl:block" id="howibuild">
+    <section className="py-5 @3xl:block" id="howibuild">
       <Container>
         <MarkdownFilePreview path="/docs/thoughtProcess.md" />
         <div className="flex items-center justify-center">

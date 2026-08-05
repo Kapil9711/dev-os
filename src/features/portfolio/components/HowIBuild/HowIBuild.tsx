@@ -4,6 +4,7 @@ import MarkdownFilePreview from "@/features/markdownPreview/components/MarkdownP
 import Container from "../common/Container";
 import SpecularButton from "../common/SpecularButton";
 import { useWindowManager } from "@/features/window-manager";
+import CButton from "@/components/ui/CButton";
 
 export const HowIBuild = () => {
   const { openWindow } = useWindowManager();

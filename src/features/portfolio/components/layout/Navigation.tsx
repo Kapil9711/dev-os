@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { NAVIGATION } from "../../constants";
 import Container from "../common/Container";
 import NavigationItem from "./NavigationItem";
+import { cn } from "@/lib/utils";
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
@@ -123,10 +124,10 @@ export default function Navigation() {
       />
 
       <header
-        className="sticky top-0 z-50 pt-4 transition-transform duration-300"
-        style={{
-          transform: visible ? "translateY(0)" : " @3xl:translateY(-150%)",
-        }}
+        className={cn(
+          "sticky top-0 z-50 pt-4 transition-transform duration-300",
+          visible ? "translate-y-0" : "@3xl:translate-y-[-150%]",
+        )}
       >
         <Container>
           <nav

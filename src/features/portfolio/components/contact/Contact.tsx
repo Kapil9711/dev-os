@@ -77,7 +77,7 @@ export default function Contact() {
                   }}
                   variant="secondary"
                 >
-                  Resume
+                  Download Resume
                 </ButtonDiv>
               </div>
             </div>

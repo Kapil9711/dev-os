@@ -47,11 +47,14 @@ export function Window({ id, children }: WindowProps) {
   const { onPointerDown: onResizeStart } = useResizable({
     onResizeStart: () => setIsResizing(true),
     onResizeEnd: () => setIsResizing(false),
-    onResize: (dw, dh) =>
-      updateRect(id, (prev) => ({
-        width: Math.max(320, prev.width + dw),
-        height: Math.max(220, prev.height + dh),
-      })),
+    onResize: (dw, dh) => {
+      if (!win?.maximized) {
+        updateRect(id, (prev) => ({
+          width: Math.max(320, prev.width + dw),
+          height: Math.max(220, prev.height + dh),
+        }));
+      }
+    },
   });
 
   const [showContent, setShowContent] = useState(false);

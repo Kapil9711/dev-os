@@ -18,6 +18,7 @@ import LightRays from "./components/common/LightRays";
 import About from "./components/About/About";
 
 import Projects from "./components/projects/Projects";
+import WhyChooseMe from "./components/WhyChooseMe/WhyChooseMe";
 
 export default function Portfolio() {
   return (
@@ -62,6 +63,7 @@ export default function Portfolio() {
         <About />
         <Journey />
         <Projects />
+        {/* <WhyChooseMe /> */}
         <Highlights />
         <Books />
         <HowIBuild />

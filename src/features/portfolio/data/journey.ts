@@ -82,8 +82,7 @@ export const JOURNEY: Experience[] = [
 
     role: "Software Engineer",
 
-    duration: "2025 - Present",
-
+    duration: "2024 - Present",
     location: "India",
 
     description:
@@ -93,8 +92,8 @@ export const JOURNEY: Experience[] = [
       "React",
       "Next.js",
       "React Native",
-      "Electron",
       "Node.js",
+      "Electron",
       "Express",
       "MongoDB",
       "Docker",

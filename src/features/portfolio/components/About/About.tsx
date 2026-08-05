@@ -7,33 +7,48 @@ import Container from "../common/Container";
 import Heading from "../common/Heading";
 import Paragraph from "../common/Paragraph";
 import Section from "../common/Section";
+import SideRays from "../common/SideRays";
 import TiltPanel from "../common/TiltPannel";
 import AboutScene from "../three/AboutScene";
 
 const SKILL_SECTIONS = [
-  {
-    title: "Frontend",
-    items: ABOUT.frontend,
-  },
-  {
-    title: "Backend",
-    items: ABOUT.backend,
-  },
-  {
-    title: "Databases",
-    items: ABOUT.databases,
-  },
-  {
-    title: "Tools & DevOps",
-    items: ABOUT.tools,
-  },
+  { title: "frontend", items: ABOUT.frontend },
+  { title: "backend", items: ABOUT.backend },
+  { title: "databases", items: ABOUT.databases },
+  { title: "tools", items: ABOUT.tools },
+];
+
+const STATS = [
+  { key: "experience", value: "2+ yrs" },
+  { key: "projects.length", value: "20+" },
+  { key: "stack.length", value: "15+" },
+  { key: "production_focus", value: "100%" },
 ];
 
 export default function About() {
   return (
     <Section id="about" className="relative overflow-hidden py-10">
+      <div
+        style={{ width: "100%", height: "700px", position: "absolute" }}
+        className="hidden @3xl:block"
+      >
+        <SideRays
+          speed={2}
+          rayColor1="#9b7eff"
+          rayColor2="#9b7eff"
+          intensity={1.5}
+          spread={1.5}
+          origin="top-right"
+          tilt={0}
+          saturation={1.5}
+          blend={0.75}
+          falloff={1.6}
+          opacity={1}
+        />
+      </div>
+
       {/* Background */}
-      <div className="@3xl:block pointer-events-none absolute inset-0 -z-10 hidden opacity-80">
+      <div className="pointer-events-none absolute inset-0 -z-10 hidden opacity-80 @3xl:block">
         <AboutScene />
       </div>
 
@@ -48,7 +63,7 @@ export default function About() {
       />
 
       <Container>
-        <Badge className="mb-6 inline-flex items-center gap-2">
+        <Badge className="mb-6 inline-flex items-center gap-2 font-mono">
           <span
             className="h-1.5 w-1.5 rounded-full"
             style={{
@@ -56,98 +71,106 @@ export default function About() {
               boxShadow: "0 0 12px var(--accent-2)",
             }}
           />
-          <span>02 · {ABOUT.title}</span>
+          <span>~about.me</span>
         </Badge>
 
         <Heading className="max-w-3xl">
           Building scalable digital products with clean architecture.
         </Heading>
 
-        <Paragraph className="mt-6 max-w-4xl text-lg leading-8">
-          {ABOUT.intro}
-        </Paragraph>
+        {/* Narrative + live status on the left, stack listing on the right —
+           replaces the old single-column badge/paragraph/card-grid stack. */}
+        <div className="mt-10 grid gap-8 @5xl:grid-cols-[1.1fr_1fr] @5xl:items-start">
+          {/* Left column */}
+          <div className="flex flex-col gap-8 @5xl:sticky @5xl:top-28">
+            <Paragraph className="max-w-xl text-lg leading-8">
+              {ABOUT.intro}
+            </Paragraph>
 
-        {/* Stats */}
-        <div className="@7xl:grid-cols-4 mt-12 grid grid-cols-2 gap-4">
-          {[
-            { value: "2+", label: "Years Experience" },
-            { value: "20+", label: "Projects" },
-            { value: "15+", label: "Technologies" },
-            { value: "100%", label: "Production Focus" },
-          ].map((item) => (
-            <TiltPanel key={item.label} className="text-center">
-              <div
-                className="text-3xl font-bold"
-                style={{ color: "var(--accent)" }}
-              >
-                {item.value}
+            {/* The one signature panel — everything else stays quiet */}
+            <TiltPanel className="font-mono text-sm">
+              <div className="mb-4 flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-[var(--text-2)]">
+                <span
+                  className="h-1.5 w-1.5 rounded-full"
+                  style={{ background: "var(--accent)" }}
+                />
+                status
               </div>
 
-              <p className="mt-2 text-sm text-[var(--text-2)]">{item.label}</p>
+              <dl className="space-y-3">
+                {STATS.map((stat, i) => (
+                  <div
+                    key={stat.key}
+                    className="flex items-baseline justify-between border-b border-white/5 pb-3 last:border-none last:pb-0"
+                  >
+                    <dt className="text-[var(--text-2)]">{stat.key}</dt>
+                    <dd
+                      className="font-semibold"
+                      style={{
+                        color:
+                          i % 2 === 0 ? "var(--accent)" : "var(--accent-3)",
+                      }}
+                    >
+                      {stat.value}
+                      {i === STATS.length - 1 && (
+                        <span className="ml-1 inline-block h-4 w-2 animate-pulse bg-[var(--accent)] align-middle" />
+                      )}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
             </TiltPanel>
-          ))}
-        </div>
+          </div>
 
-        {/* Skills */}
-        <div className="@5xl:grid-cols-2 mt-12 grid gap-5">
-          {SKILL_SECTIONS.map((section) => (
-            <TiltPanel key={section.title}>
-              <h3
-                className="mb-5 text-sm font-semibold uppercase tracking-[0.2em]"
-                style={{ color: "var(--accent-3)" }}
-              >
-                {section.title}
+          {/* Right column: stack + passion, styled like directory listings */}
+          <div className="flex flex-col gap-6">
+            {SKILL_SECTIONS.map((section) => (
+              <div key={section.title}>
+                <h3 className="mb-3 font-mono text-xs uppercase tracking-[0.2em] text-[var(--text-2)]">
+                  <span style={{ color: "var(--accent-3)" }}>~/</span>
+                  {section.title}
+                </h3>
+
+                <ul className="grid grid-cols-2 gap-x-6 gap-y-1.5 @lg:grid-cols-3">
+                  {section.items.map((item) => (
+                    <li
+                      key={item}
+                      className="group flex items-center gap-2 border-l pl-3 text-sm text-[var(--text-1)]"
+                      style={{
+                        borderColor:
+                          "color-mix(in srgb, var(--accent) 20%, transparent)",
+                      }}
+                    >
+                      <span
+                        className="text-xs transition-transform duration-200 group-hover:translate-x-0.5"
+                        style={{ color: "var(--accent)" }}
+                      >
+                        ▸
+                      </span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+
+            {/* Passion, as tags rather than a boxed card */}
+            <div>
+              <h3 className="mb-3 font-mono text-xs uppercase tracking-[0.2em] text-[var(--text-2)]">
+                <span style={{ color: "var(--accent-2)" }}>#</span>
+                enjoys-building
               </h3>
 
-              <div className="flex flex-wrap gap-2">
-                {section.items.map((item) => (
-                  <span
-                    key={item}
-                    className="rounded-full px-3 py-1.5 text-sm font-medium transition-all duration-300 hover:-translate-y-1"
-                    style={{
-                      color: "var(--text-1)",
-                      background:
-                        "color-mix(in srgb, var(--accent) 12%, transparent)",
-                      border:
-                        "1px solid color-mix(in srgb, var(--accent) 25%, transparent)",
-                    }}
-                  >
+              <div className="flex flex-wrap gap-x-4 gap-y-2 font-mono text-sm">
+                {ABOUT.passion.map((item) => (
+                  <span key={item} style={{ color: "var(--text-1)" }}>
+                    <span style={{ color: "var(--accent-2)" }}>#</span>
                     {item}
                   </span>
                 ))}
               </div>
-            </TiltPanel>
-          ))}
-        </div>
-
-        {/* Passion */}
-        <div className="mt-8">
-          <TiltPanel>
-            <h3
-              className="mb-5 text-sm font-semibold uppercase tracking-[0.2em]"
-              style={{ color: "var(--accent-3)" }}
-            >
-              What I Enjoy Building
-            </h3>
-
-            <div className="flex flex-wrap gap-3">
-              {ABOUT.passion.map((item) => (
-                <span
-                  key={item}
-                  className="rounded-full px-4 py-2 text-sm font-medium"
-                  style={{
-                    color: "var(--text-1)",
-                    background:
-                      "color-mix(in srgb, var(--accent-2) 10%, transparent)",
-                    border:
-                      "1px solid color-mix(in srgb, var(--accent-2) 24%, transparent)",
-                  }}
-                >
-                  {item}
-                </span>
-              ))}
             </div>
-          </TiltPanel>
+          </div>
         </div>
       </Container>
     </Section>

@@ -152,6 +152,7 @@ export type Project = {
   slug: string;
   index: string;
   name: string;
+  redirectUrl?: string;
   tagline: string;
   bullets: string[];
   stack: string[];
@@ -164,6 +165,7 @@ export const PROJECTS: Project[] = [
     slug: "gemlay",
     index: "01",
     name: "Gemlay",
+    redirectUrl: "https://www.gemlay.com",
     tagline:
       "A production-scale jewellery e-commerce platform, catalog to checkout.",
     bullets: [
@@ -176,16 +178,16 @@ export const PROJECTS: Project[] = [
     accent: "#6c63ff",
     images: [
       {
-        src: "https://picsum.photos/seed/gemlay-website/900/675",
+        src: "/images/projects/gemlay-web-2.jpeg",
+        label: "Search",
+      },
+      {
+        src: "/images/projects/gemlay-web-1.jpeg",
         label: "Website",
       },
       {
-        src: "https://picsum.photos/seed/gemlay-admin/900/675",
+        src: "/images/projects/gemlay-admin.jpeg",
         label: "Admin",
-      },
-      {
-        src: "https://picsum.photos/seed/gemlay-search/900/675",
-        label: "Search",
       },
     ],
   },
@@ -204,14 +206,14 @@ export const PROJECTS: Project[] = [
     accent: "#4c8dff",
     images: [
       {
-        src: "https://picsum.photos/seed/bullion-website/900/675",
+        src: "/images/projects/metalcare-web.jpeg",
         label: "Website",
       },
       {
-        src: "https://picsum.photos/seed/bullion-admin/900/675",
+        src: "/images/projects/metalcare-admin.jpeg",
         label: "Admin",
       },
-      { src: "https://picsum.photos/seed/bullion-app/900/675", label: "App" },
+      { src: "/images/projects/metalcare-app.jpeg", label: "App" },
     ],
   },
   {

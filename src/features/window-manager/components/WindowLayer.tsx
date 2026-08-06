@@ -16,6 +16,7 @@ import { Settings } from "@/features/settings/components/Settings";
 import type { AppId } from "@/constants/apps";
 import Portfolio from "@/features/portfolio/PortfolioPage";
 import { ThoughtProcess } from "@/features/thoughtProcess/ThoughtProcess";
+import BlogsWindow from "@/features/blogs/components/Blogs";
 
 const APP_CONTENT: Record<AppId, React.ComponentType> = {
   about: About,
@@ -25,7 +26,8 @@ const APP_CONTENT: Record<AppId, React.ComponentType> = {
   resume: Resume,
   monitor: Monitor,
   // contact: Contact,
-  settings: Settings,
+  // settings:Settings,
+  blogs: BlogsWindow,
   portfolio: Portfolio,
   thoughtProcess: ThoughtProcess,
 };

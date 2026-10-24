@@ -9,7 +9,7 @@ interface SpotlightProps {
   onClose: () => void;
 }
 
-const SEARCHABLE: AppId[] = [...DOCK_APPS, "settings"];
+const SEARCHABLE: AppId[] = [...DOCK_APPS];
 
 export function Spotlight({ open, onClose }: SpotlightProps) {
   const { openWindow } = useWindowManager();

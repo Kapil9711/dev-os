@@ -10,6 +10,7 @@ import {
   Settings2,
   LayoutGrid,
   Brain,
+  NotebookPen,
 } from "lucide-react";
 
 export type AppId =
@@ -20,7 +21,8 @@ export type AppId =
   | "resume"
   | "monitor"
   // | "contact"
-  | "settings"
+  // | "settings"
+  | "blogs"
   | "portfolio"
   | "thoughtProcess";
 
@@ -45,7 +47,7 @@ export const APP_REGISTRY: Record<AppId, AppMeta> = {
   },
   about: {
     id: "about",
-    title: "About — developer.ts",
+    title: "About",
     icon: UserRound,
     accent: "#4C8DFF",
     width: 800,
@@ -107,10 +109,10 @@ export const APP_REGISTRY: Record<AppId, AppMeta> = {
   //   width: 640,
   //   height: 420,
   // },
-  settings: {
-    id: "settings",
-    title: "Settings",
-    icon: Settings2,
+  blogs: {
+    id: "blogs",
+    title: "Blogs",
+    icon: NotebookPen,
     accent: "#9B7EFF",
     width: 480,
     height: 440,

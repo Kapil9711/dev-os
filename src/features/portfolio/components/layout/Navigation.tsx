@@ -24,9 +24,19 @@ export default function Navigation() {
   // the scrollable ancestor (window, or a custom container like
   // #window-container-portfolio) — scrollIntoView resolves that for us.
   const scrollToSection = useCallback((id: string) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    const container = document.getElementById(
+      "window-container-portfolio",
+    ) as HTMLDivElement | null;
+
+    const target = document.getElementById(id);
+
+    if (!container || !target) return;
+
+    container.scrollTo({
+      top: target.offsetTop - 20,
+      behavior: "smooth",
+    });
+
     window.history.replaceState(null, "", `#${id}`);
   }, []);
 

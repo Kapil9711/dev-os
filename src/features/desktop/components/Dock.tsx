@@ -50,14 +50,14 @@ export function Dock() {
         <div className="mx-1 w-px self-stretch bg-[var(--line)]" />
 
         <DockItem
-          id="settings"
+          id="blogs"
           mouseX={mouseX}
           running={
             !!windows.settings &&
             windows.settings.status !== "minimized" &&
             windows.settings.status !== "closing"
           }
-          onClick={() => openWindow("settings")}
+          onClick={() => openWindow("blogs")}
         />
       </motion.div>
     </motion.div>

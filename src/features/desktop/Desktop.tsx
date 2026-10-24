@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { BootScreen } from "@/components/common/BootScreen";
 import {
@@ -18,14 +17,34 @@ import { Spotlight } from "./components/Spotlight";
 import { MobileStatusBar } from "./components/MobileStatusBar";
 import { MobileHome } from "./components/MobileHome";
 import { MobileNavBar } from "./components/MobileNavBar";
+import { useMobile } from "@/hooks/useMobile";
+import { Portfolio } from "../portfolio";
 
 export function Desktop() {
   const [booted, setBooted] = useState(false);
+  const isMobile = useMobile();
 
   return (
     <WindowManagerProvider>
-      {!booted && <BootScreen onDone={() => setBooted(true)} />}
-      <DesktopShell booted={booted} />
+      {!booted ? (
+        <BootScreen onDone={() => setBooted(true)} />
+      ) : (
+        <>
+          {isMobile ? (
+            <div
+              id={"window-container-portfolio"}
+              className="wbody-scroll relative h-full w-full flex-1 overflow-auto pb-5 @container sm:pb-0"
+              // className="relative h-full w-full flex-1 pb-5 @container sm:pb-0"
+            >
+              <Portfolio />
+            </div>
+          ) : (
+            <>
+              <DesktopShell booted={booted} />
+            </>
+          )}
+        </>
+      )}
     </WindowManagerProvider>
   );
 }

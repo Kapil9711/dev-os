@@ -18,26 +18,23 @@ import LightRays from "./components/common/LightRays";
 import About from "./components/About/About";
 
 import Projects from "./components/projects/Projects";
-import WhyChooseMe from "./components/WhyChooseMe/WhyChooseMe";
+import { useMobile } from "@/hooks/useMobile";
 
 export default function Portfolio() {
+  const isMobile = useMobile();
   return (
     <>
       <Loader />
-
       <Cursor />
-
       <ScrollProgress />
-
       <Navigation />
-
       <div
         className="mx-auto"
         style={{
           width: "100%",
           height: "600px",
           position: "absolute",
-          zIndex: -10,
+          zIndex: isMobile ? 100 : -10,
         }}
       >
         <LightRays
@@ -57,7 +54,7 @@ export default function Portfolio() {
         />
       </div>
 
-      <main className="relative overflow-x-hidden text-white">
+      <main className="relative overflow-hidden text-white">
         <Hero />
         <Skills />
         <About />

@@ -207,7 +207,6 @@ export function WindowManagerProvider({
 
   const finalizeMinimizeWindow = useCallback((id: AppId) => {
     console.log("FINALIZE MINIMIZE", id);
-
     setWindows((prev) =>
       prev[id]
         ? {

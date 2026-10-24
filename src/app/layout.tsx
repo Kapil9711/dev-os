@@ -49,7 +49,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
-      <body className="h-screen overflow-hidden font-sans antialiased">
+      <body className="h-screen overflow-scroll font-sans antialiased">
         {children}
       </body>
     </html>

@@ -216,7 +216,7 @@ export default function Journey() {
                       rotating gradient into a thin sweeping ring */}
                     <div
                       className="relative overflow-hidden rounded-[20px] p-[1px]"
-                      style={{ background: "var(--line)" }}
+                      // style={{ background: "var(--line)" }}
                     >
                       {/* Oversized rotating conic gradient, clipped by the
                         parent above. Opacity fades in on hover only —
@@ -247,7 +247,7 @@ export default function Journey() {
                         {/* Frosted tint layer sits above the opaque base,
                           below the content */}
                         <div
-                          className="pointer-events-none absolute inset-0 rounded-[20px]"
+                          className="pointer-events-none absolute inset-0"
                           style={{
                             background: "var(--glass)",
                             backdropFilter: "blur(16px)",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Image from "next/image";
 
 import { PROFILE } from "../../data";
@@ -17,6 +17,24 @@ import { useMobile } from "@/hooks/useMobile";
 
 export default function Hero() {
   const isMobile = useMobile();
+
+  const scrollToSection = useCallback((id: string) => {
+    const container = document.getElementById(
+      "window-container-portfolio",
+    ) as HTMLDivElement | null;
+
+    const target = document.getElementById(id);
+
+    if (!container || !target) return;
+
+    container.scrollTo({
+      top: target.offsetTop - 20,
+      behavior: "smooth",
+    });
+
+    window.history.replaceState(null, "", `#${id}`);
+  }, []);
+
   return (
     <Section
       id="hero"
@@ -102,10 +120,23 @@ export default function Hero() {
             {/* Buttons */}
 
             <div className="mt-8 flex flex-wrap gap-3 @5xl:mt-10 @5xl:gap-4">
-              <Button href="#projects" variant="primary">
+              <Button
+                href={`#${"projects"}`}
+                onClick={(e) => {
+                  e.preventDefault();
+
+                  scrollToSection("projects");
+                }}
+
+                variant="primary"
+              >
                 View Projects
               </Button>
-              <Button href="#contact" variant="secondary">
+              <Button
+                onClick={() => scrollToSection("contact")}
+                href=""
+                variant="secondary"
+              >
                 Contact Me
               </Button>
             </div>

@@ -9,7 +9,7 @@ import { useWindowManager } from "@/features/window-manager";
 export const Books = () => {
   const { hasMaximizedWindow } = useWindowManager();
   return (
-    <section className="py-5">
+    <section className="py-5 ">
       <div
         style={{ width: "100%", height: "700px", position: "absolute" }}
         className="hidden @3xl:block"

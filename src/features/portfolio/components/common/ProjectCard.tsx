@@ -2,106 +2,116 @@ import GlassCard from "../common/GlassCard";
 import type { Project } from "../../data";
 
 type Props = {
-  project: any;
+  project: Project;
 };
 
 export default function ProjectCard({ project }: Props) {
-  return (
-    <GlassCard className="overflow-hidden p-5 @3xl:p-7 @5xl:p-10">
-      <div className="grid gap-8 @5xl:grid-cols-[1.45fr_1fr] @5xl:gap-12">
-        {/* Left */}
-        <div>
-          <div
-            className="max-w-screen relative overflow-hidden rounded-3xl"
-            style={{ border: "1px solid var(--line)" }}
-          >
-            <img
-              src={project.images[1].src}
-              alt={project.images[1].label}
-              className="w-[100%] object-fill transition-transform duration-700 hover:scale-105 @3xl:h-72 @5xl:h-[420px] md:h-96"
-            />
+  const image = project.images[1] ?? project.images[0];
 
-            <span className="absolute bottom-3 left-3 rounded-full bg-black/70 px-3 py-1 text-xs text-white backdrop-blur @3xl:px-4 @3xl:py-2 @3xl:text-sm">
-              {project.images[1].label}
+  return (
+    <GlassCard className="group overflow-hidden p-3 @3xl:p-4 @5xl:p-5">
+      <div className="grid gap-4 @3xl:grid-cols-[0.9fr_1.1fr] @3xl:items-center @3xl:gap-6 @5xl:grid-cols-[1fr_1fr] @5xl:gap-8">
+        {/* Project image */}
+        <div
+          className="group/image relative overflow-hidden rounded-xl"
+          style={{
+            border: "1px solid var(--line)",
+            background: "var(--surface)",
+          }}
+        >
+          {image ? (
+            <img
+              src={image.src}
+              alt={image.label}
+              loading="lazy"
+              className="aspect-[16/9] w-full object-fill transition-transform duration-500 group-hover/image:scale-[1.03] @3xl:aspect-[5/4] @5xl:aspect-[16/10]"
+            />
+          ) : (
+            <div
+              className="flex aspect-[16/9] w-full items-center justify-center"
+              style={{ color: project.accent }}
+            >
+              <span className="text-4xl font-bold">
+                {project.name.charAt(0)}
+              </span>
+            </div>
+          )}
+
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/15" />
+
+          <div className="absolute left-3 top-3">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/40 px-2.5 py-1 font-mono text-[10px] tracking-wider text-white backdrop-blur-md">
+              <span
+                className="h-1.5 w-1.5 rounded-full"
+                style={{ backgroundColor: project.accent }}
+              />
+              PROJECT {project.index}
             </span>
           </div>
 
-          {/* Mobile horizontal thumbnails */}
-          <div className="mt-4 flex gap-3 overflow-x-auto pb-2 @5xl:hidden">
-            {[project.images[0], project.images[2]].map((img) => (
-              <div
-                key={img.label}
-                className="relative min-w-[98%] overflow-hidden rounded-2xl"
-                style={{ border: "1px solid var(--line)" }}
-              >
-                <img
-                  src={img.src}
-                  alt={img.label}
-                  className="aspect-[16/10] w-full object-cover transition-transform duration-500 hover:scale-105"
-                />
-
-                <span className="absolute bottom-2 left-2 rounded-full bg-black/60 px-2 py-1 text-[10px] text-white backdrop-blur">
-                  {img.label}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          {/* Desktop thumbnails */}
-          <div className="mt-5 hidden grid-cols-2 gap-4 @5xl:grid">
-            {[project.images[0], project.images[2]].map((img) => (
-              <div
-                key={img.label}
-                className="relative overflow-hidden rounded-2xl"
-                style={{ border: "1px solid var(--line)" }}
-              >
-                <img
-                  src={img.src}
-                  alt={img.label}
-                  className="aspect-[16/10] w-full object-cover transition-transform duration-500 hover:scale-105"
-                />
-
-                <span className="absolute bottom-3 left-3 rounded-full bg-black/60 px-3 py-1 text-xs text-white backdrop-blur">
-                  {img.label}
-                </span>
-              </div>
-            ))}
-          </div>
+          {image && (
+            <div className="absolute bottom-3 left-3 right-3">
+              <p className="text-[10px] font-medium uppercase tracking-widest text-white/70">
+                Featured Preview
+              </p>
+              <p className="mt-0.5 text-base font-semibold text-white @3xl:text-lg">
+                {image.label}
+              </p>
+            </div>
+          )}
         </div>
 
-        {/* Right */}
-        <div className="flex flex-col">
-          <span
-            className="font-mono text-[11px] tracking-[0.35em] @3xl:text-xs"
-            style={{ color: project.accent }}
-          >
-            PROJECT {project.index}
-          </span>
+        {/* Project details */}
+        <div className="flex min-w-0 flex-col py-1">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <span
+              className="font-mono text-[10px] tracking-[0.2em]"
+              style={{ color: project.accent }}
+            >
+              {project.slug.toUpperCase()}
+            </span>
+
+            {project.redirectUrl && (
+              <a
+                href={project.redirectUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`Visit ${project.name}`}
+                className="inline-flex items-center gap-1 text-xs transition-opacity hover:opacity-70"
+                style={{ color: "var(--text-2)" }}
+              >
+                Visit website <span aria-hidden="true">↗</span>
+              </a>
+            )}
+          </div>
 
           <h2
-            className="mt-3 text-3xl font-bold leading-tight @3xl:text-4xl @5xl:mt-5 @5xl:text-5xl"
+            className="mt-2 text-xl font-bold leading-tight tracking-tight @3xl:text-2xl @5xl:text-3xl"
             style={{ color: project.accent }}
           >
             {project.name}
           </h2>
 
           <p
-            className="mt-4 text-base leading-7 @3xl:text-lg @3xl:leading-8"
+            className="mt-2 text-sm leading-5 @3xl:leading-6"
             style={{ color: "var(--text-2)" }}
           >
             {project.tagline}
           </p>
 
-          <div className="mt-6 space-y-3 @3xl:mt-8 @3xl:space-y-4">
-            {project.bullets.map((bullet: any) => (
-              <div key={bullet} className="flex items-start gap-3">
-                <div
-                  className="mt-2 h-2 w-2 shrink-0 rounded-full"
-                  style={{ background: project.accent }}
+          {/* Key features */}
+          <div className="mt-3 space-y-2 @3xl:mt-4">
+            {project.bullets.map((bullet, index) => (
+              <div
+                key={`${project.slug}-${index}`}
+                className="flex items-start gap-2.5"
+              >
+                <span
+                  className="mt-[6px] h-1.5 w-1.5 shrink-0 rounded-full"
+                  style={{ backgroundColor: project.accent }}
                 />
-
                 <p
-                  className="text-sm leading-6 @3xl:text-base"
+                  className="text-xs leading-5 @3xl:text-sm"
                   style={{ color: "var(--text-2)" }}
                 >
                   {bullet}
@@ -110,50 +120,47 @@ export default function ProjectCard({ project }: Props) {
             ))}
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-2 @3xl:mt-10 @3xl:gap-3">
-            {project.stack.map((tech: any) => (
-              <span
-                key={tech}
-                className="rounded-full border px-3 py-1.5 text-xs @3xl:px-4 @3xl:py-2 @3xl:text-sm"
-                style={{
-                  borderColor: `${project.accent}40`,
-                  background: `${project.accent}15`,
-                  color: "var(--text-1)",
-                }}
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
+          {/* Technology tags */}
+          <div className="mt-4">
+            <p
+              className="mb-2 font-mono text-[10px] uppercase tracking-[0.18em]"
+              style={{ color: "var(--text-2)" }}
+            >
+              Technologies
+            </p>
 
-          {(project.demo || project.github) && (
-            <div className="mt-8 flex flex-col gap-3 @3xl:flex-row @5xl:mt-auto @5xl:pt-10">
-              {project.demo && (
-                <a
-                  href={project.demo}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center justify-center rounded-xl px-5 py-3 text-sm font-medium text-white transition hover:opacity-90"
-                  style={{ background: project.accent }}
-                >
-                  Live Demo →
-                </a>
-              )}
-
-              {project.github && (
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center justify-center rounded-xl border px-5 py-3 text-sm transition"
+            <div className="flex flex-wrap gap-1.5">
+              {project.stack.map((tech) => (
+                <span
+                  key={tech}
+                  className="rounded-md border px-2 py-1 text-[10px] font-medium @3xl:text-[11px]"
                   style={{
-                    borderColor: "var(--line)",
+                    borderColor: `${project.accent}40`,
+                    backgroundColor: `${project.accent}12`,
                     color: "var(--text-1)",
                   }}
                 >
-                  GitHub
-                </a>
-              )}
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Action */}
+          {project.redirectUrl && (
+            <div className="mt-4">
+              <a
+                href={project.redirectUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex min-h-9 items-center justify-center gap-2 rounded-lg px-4 py-2 text-xs font-semibold text-white transition hover:brightness-110"
+                style={{
+                  backgroundColor: project.accent,
+                  boxShadow: `0 3px 12px ${project.accent}25`,
+                }}
+              >
+                Explore Project <span aria-hidden="true">↗</span>
+              </a>
             </div>
           )}
         </div>

@@ -18,7 +18,7 @@ export default function GlassCard({
       className={clsx(
         "rounded-[28px]",
         "border border-white/10",
-        "bg-white/[0.04]",
+        "bg-white/[0..05]",
         "backdrop-blur-2xl",
         className,
       )}

@@ -125,7 +125,7 @@ export const DOCK_APPS: AppId[] = [
   // "projects",
   "terminal",
   "resume",
-  "monitor",
+  // "monitor",
   // "contact",
   "portfolio",
   "thoughtProcess",

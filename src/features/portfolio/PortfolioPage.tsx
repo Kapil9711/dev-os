@@ -62,7 +62,8 @@ export default function Portfolio() {
         <Projects />
         {/* <WhyChooseMe /> */}
         <Highlights />
-        <Books />
+        {!isMobile && <Books />}
+
         <HowIBuild />
         <Contact />
       </main>

@@ -2,7 +2,7 @@ import Container from "../common/Container";
 
 export default function Footer() {
   return (
-    <footer className="border-(--color-border) bg-(--color-background-secondary) border-t">
+    <footer className="border-(--color-border) bg-(--color-background-secondary) border-t pb-8">
       <Container className="py-8">
         <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
           {/* Left */}

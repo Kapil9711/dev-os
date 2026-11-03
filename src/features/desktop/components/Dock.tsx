@@ -33,23 +33,30 @@ export function Dock() {
         onMouseLeave={() => mouseX.set(Infinity)}
         className="glass-panel flex items-end gap-1.5 rounded-[22px] px-3.5 py-2.5 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
       >
-        {DOCK_APPS.map((id) => (
-          <DockItem
-            key={id}
-            id={id}
-            mouseX={mouseX}
-            running={
-              !!windows[id] &&
-              windows[id].status !== "minimized" &&
-              windows[id].status !== "closing"
-            }
-            onClick={() => openWindow(id)}
-          />
-        ))}
+        {DOCK_APPS.map((id, index) => {
+          const isLast = index == DOCK_APPS.length - 1;
 
-        <div className="mx-1 w-px self-stretch bg-[var(--line)]" />
+          return (
+            <>
+              {isLast && (
+                <div className="mx-1 w-px self-stretch bg-[var(--line)]" />
+              )}
+              <DockItem
+                key={id}
+                id={id}
+                mouseX={mouseX}
+                running={
+                  !!windows[id] &&
+                  windows[id].status !== "minimized" &&
+                  windows[id].status !== "closing"
+                }
+                onClick={() => openWindow(id)}
+              />
+            </>
+          );
+        })}
 
-        <DockItem
+        {/* <DockItem
           id="blogs"
           mouseX={mouseX}
           running={
@@ -58,7 +65,7 @@ export function Dock() {
             windows.settings.status !== "closing"
           }
           onClick={() => openWindow("blogs")}
-        />
+        /> */}
       </motion.div>
     </motion.div>
   );

@@ -33,7 +33,7 @@ export default function Navigation() {
     if (!container || !target) return;
 
     container.scrollTo({
-      top: target.offsetTop - 20,
+      top: target.offsetTop - 0,
       behavior: "smooth",
     });
 

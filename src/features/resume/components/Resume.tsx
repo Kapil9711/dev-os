@@ -62,9 +62,9 @@ export function Resume() {
   return (
     <div className="flex h-full flex-col pb-10 sm:pb-0">
       <div className="flex items-center gap-1 border-b border-white/10 px-2 py-2 print:hidden">
-        <TabButton active={tab === "md"} onClick={() => setTab("md")}>
+        {/* <TabButton active={tab === "md"} onClick={() => setTab("md")}>
           📘 Resume.md
-        </TabButton>
+        </TabButton> */}
         <TabButton
           className="hidden @3xl:block"
           active={tab === "pdf"}

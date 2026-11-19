@@ -1,6 +1,6 @@
 "use client";
 
-import AuroraBackground from "./AuroBackground";
+import AuroraBackground from "./AuroraBackground";
 
 export function Wallpaper() {
   return (

@@ -34,7 +34,6 @@ export function Desktop() {
             <div
               id={"window-container-portfolio"}
               className="wbody-scroll relative h-full w-full flex-1 overflow-auto pb-5 @container sm:pb-0"
-              // className="relative h-full w-full flex-1 pb-5 @container sm:pb-0"
             >
               <Portfolio />
             </div>

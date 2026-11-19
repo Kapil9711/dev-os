@@ -4,29 +4,29 @@ import { AnimatePresence } from "framer-motion";
 import { useWindowManager } from "../context/WindowManagerContext";
 import { Window } from "./Window";
 
-import { About } from "@/features/about/components/About";
-import { Experience } from "@/features/experience/components/Experience";
-import { Projects } from "@/features/projects/components/Projects";
-import Terminal from "@/features/terminal/components/Terminal";
-import { Resume } from "@/features/resume/components/Resume";
-import { Monitor } from "@/features/monitor/components/Monitor";
-import { Contact } from "@/features/contact/components/Contact";
-import { Settings } from "@/features/settings/components/Settings";
+import { About } from "@/features/about";
+import { Experience } from "@/features/experience";
+import { Projects } from "@/features/projects";
+import { Terminal } from "@/features/terminal";
+import { Resume } from "@/features/resume";
+import { Monitor } from "@/features/monitor";
+import { Contact } from "@/features/contact";
+import { Settings } from "@/features/settings";
 
 import type { AppId } from "@/constants/apps";
-import Portfolio from "@/features/portfolio/PortfolioPage";
-import { ThoughtProcess } from "@/features/thoughtProcess/ThoughtProcess";
-import BlogsWindow from "@/features/blogs/components/Blogs";
+import { Portfolio } from "@/features/portfolio";
+import { ThoughtProcess } from "@/features/thoughtProcess";
+import { BlogsWindow } from "@/features/blogs";
 
 const APP_CONTENT: Record<AppId, React.ComponentType> = {
   about: About,
   experience: Experience,
-  // projects: Projects,
+  projects: Projects,
   terminal: Terminal,
   resume: Resume,
   monitor: Monitor,
-  // contact: Contact,
-  // settings:Settings,
+  contact: Contact,
+  settings: Settings,
   blogs: BlogsWindow,
   portfolio: Portfolio,
   thoughtProcess: ThoughtProcess,

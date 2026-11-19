@@ -8,12 +8,7 @@ export function MobileStatusBar() {
   const time = useClock();
 
   return (
-    <div
-      className={cn(
-        "fixed inset-x-0 top-0 z-[55] hidden h-[34px] items-center justify-between px-[18px] text-xs font-semibold text-[var(--text-1)]",
-        false ? "hidden" : "max-[720px]:flex",
-      )}
-    >
+    <div className="fixed inset-x-0 top-0 z-[55] hidden h-[34px] items-center justify-between px-[18px] text-xs font-semibold text-[var(--text-1)] max-[720px]:flex">
       <div>{time ?? "--:--"}</div>
       <div className="flex items-center gap-1.5 text-xs opacity-90">
         📶 📡 🔋

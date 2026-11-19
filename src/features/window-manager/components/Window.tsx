@@ -1,11 +1,15 @@
 "use client";
-import { ArrowLeft } from "lucide-react";
+
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { APP_REGISTRY, type AppId } from "@/constants/apps";
 import { useWindowManager } from "../context/WindowManagerContext";
 import { useDraggable } from "../hooks/useDraggable";
 import { useResizable } from "../hooks/useResizable";
-import { motion, type TargetAndTransition } from "framer-motion";
+import { AnimatedWindow } from "./AnimationWindow";
+import { WindowTitleBar } from "./WindowTitleBar";
+import { WindowResizeHandle } from "./WindowResizeHandle";
 
 interface WindowProps {
   id: AppId;
@@ -26,12 +30,14 @@ export function Window({ id, children }: WindowProps) {
     updateRect,
     setWindows,
   } = useWindowManager();
+
   const win = windows[id];
   const meta = APP_REGISTRY[id];
   const isFocused = focusedId === id;
 
   const [isDragging, setIsDragging] = useState(false);
-  const [isResizing, setIsResizing] = useState(false);
+  const [, setIsResizing] = useState(false);
+  const [showContent, setShowContent] = useState(false);
 
   const { onPointerDown: onDragStart } = useDraggable({
     disabled: win?.maximized,
@@ -57,36 +63,32 @@ export function Window({ id, children }: WindowProps) {
     },
   });
 
-  const [showContent, setShowContent] = useState(false);
-
   useEffect(() => {
     if (win?.status === "open") {
-      const id = requestAnimationFrame(() => {
-        setTimeout(() => {
+      const frameId = requestAnimationFrame(() => {
+        const timer = setTimeout(() => {
           setShowContent(true);
-        }, 180); // Match your open animation duration
-
-        return () => cancelAnimationFrame(id);
+        }, 180);
+        return () => clearTimeout(timer);
       });
-    } else {
-      setShowContent(false);
+      return () => cancelAnimationFrame(frameId);
     }
+    setShowContent(false);
   }, [win?.status]);
 
   useEffect(() => {
     const handleResize = () => {
-      setWindows((prev: any) => {
+      setWindows((prev) => {
         const next = { ...prev };
 
-        for (const id in next) {
-          const win = next[id as AppId];
+        for (const appId in next) {
+          const w = next[appId];
+          if (!w || !w.maximized) continue;
 
-          if (!win.maximized) continue;
-
-          next[id as AppId] = {
-            ...win,
+          next[appId] = {
+            ...w,
             rect: {
-              ...win.rect,
+              ...w.rect,
               width: window.innerWidth,
               height: window.innerHeight,
             },
@@ -98,44 +100,30 @@ export function Window({ id, children }: WindowProps) {
     };
 
     window.addEventListener("resize", handleResize);
-
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [setWindows]);
 
-  if (!win || win.status === "minimized") {
+  if (!win || win.status === "minimized" || !meta) {
     return null;
   }
+
+  const animationTarget =
+    win.status === "closing"
+      ? { opacity: 0, scale: 0.15, y: 400 }
+      : win.status === "minimizing"
+        ? { opacity: 0, scale: 0.2, y: 400 }
+        : { opacity: 1, scale: 1, y: 0 };
 
   return (
     <AnimatedWindow
       isDragging={isDragging}
-      animate={
-        win.status === "closing"
-          ? {
-              opacity: 0,
-              scale: 0.15,
-              y: 400,
-            }
-          : win.status === "minimizing"
-            ? {
-                opacity: 0,
-                scale: 0.2,
-                y: 400,
-              }
-            : {
-                opacity: 1,
-                scale: 1,
-                y: 0,
-              }
-      }
-
+      animate={animationTarget}
       onAnimationComplete={() => {
         if (win.status === "closing") {
           finalizeCloseWindow(id);
         }
-
         if (win.status === "minimizing") {
           finalizeMinimizeWindow(id);
         }
@@ -155,59 +143,15 @@ export function Window({ id, children }: WindowProps) {
       }}
       onPointerDown={() => focusWindow(id)}
     >
-      {/* Android-style app bar (mobile only) */}
-      <div className="hidden h-10 shrink-0 items-center gap-3.5 border-b border-white/10 bg-[rgba(17,20,32,0.92)] px-1 backdrop-blur-md max-[720px]:flex">
-        {/* <button
-          type="button"
-          aria-label="Back"
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full active:bg-white/10"
-          onClick={() => closeWindow(id)}
-        >
-          <ArrowLeft className="h-5 w-5" />
-        </button>
-        <div className="select-none text-[15px] font-bold">
-          {<meta.icon />} {meta.title}
-        </div> */}
-      </div>
+      <div className="hidden h-10 shrink-0 items-center gap-3.5 border-b border-white/10 bg-[rgba(17,20,32,0.92)] px-1 backdrop-blur-md max-[720px]:flex" />
 
-      {/* Desktop titlebar */}
-      <div
-        className="titlebar max-[720px]:hidden"
-        style={{
-          borderColor: "var(--line)",
-          background: "rgba(255,255,255,0.02)",
-        }}
-        onPointerDown={onDragStart}
-      >
-        <div className="flex gap-2">
-          <TrafficDot
-            color="#ff5f57"
-            label="Close"
-            icon={<X className="h-2.5 w-2.5 stroke-[3] text-black/70" />}
-            onClick={() => closeWindow(id)}
-          />
-
-          <TrafficDot
-            color="#febc2e"
-            label="Minimize"
-            icon={<Minus className="h-2.5 w-2.5 stroke-[3] text-black/70" />}
-            onClick={() => minimizeWindow(id)}
-          />
-
-          <TrafficDot
-            color="#28c840"
-            label="Maximize"
-            icon={<Square className="h-2 w-2 stroke-[3] text-black/70" />}
-            onClick={() => toggleMaximize(id)}
-          />
-        </div>
-        <div className="mr-[52px] flex flex-1 items-center justify-center gap-2 text-center text-[12.5px] font-semibold text-[var(--text-1)]">
-          <span className="select-none text-[13px] opacity-80">
-            {<meta.icon />}
-          </span>
-          {meta.title}
-        </div>
-      </div>
+      <WindowTitleBar
+        meta={meta}
+        onClose={() => closeWindow(id)}
+        onMinimize={() => minimizeWindow(id)}
+        onMaximize={() => toggleMaximize(id)}
+        onDragStart={onDragStart}
+      />
 
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
@@ -220,44 +164,9 @@ export function Window({ id, children }: WindowProps) {
         {showContent ? children : null}
       </motion.div>
 
-      <button
-        aria-label="Resize window"
-        onPointerDown={onResizeStart}
-        className="absolute bottom-0.5 right-0.5 z-10 h-4 w-4 cursor-nwse-resize max-[720px]:hidden"
-      >
-        <span className="absolute bottom-[3px] right-[3px] h-2 w-2 border-b-2 border-r-2 border-[var(--text-2)] opacity-40" />
-      </button>
+      <WindowResizeHandle onResizeStart={onResizeStart} />
     </AnimatedWindow>
   );
 }
 
-import { Minus, Square, X } from "lucide-react";
-import { AnimatedWindow } from "./AnimationWindow";
-import { useEffect, useRef, useState } from "react";
-
-function TrafficDot({
-  color,
-  label,
-  icon,
-  onClick,
-}: {
-  color: string;
-  label: string;
-  icon: React.ReactNode;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      aria-label={label}
-      title={label}
-      onClick={onClick}
-      className="group flex h-3.5 w-3.5 items-center justify-center rounded-full border border-black/15 transition-all duration-150 hover:brightness-110"
-      style={{ background: color }}
-    >
-      <span className="opacity-0 transition-opacity duration-150 group-hover:opacity-100">
-        {icon}
-      </span>
-    </button>
-  );
-}
+export default Window;

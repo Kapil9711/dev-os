@@ -1,139 +1,112 @@
 # kapOS Portfolio — Next.js
 
-A desktop operating system–inspired developer portfolio built with **Next.js 14 App Router**. The portfolio recreates a modern desktop experience with draggable windows, a dock, menu bar, terminal, spotlight search, and interactive applications while showcasing projects, skills, and professional experience.
+A desktop operating system–inspired developer portfolio built with **Next.js 14 App Router**. The portfolio recreates a modern desktop experience with draggable windows, a magnified dock, menu bar, interactive terminal, spotlight search (`⌘K`), and full-featured desktop applications while showcasing projects, skills, and professional experience.
 
-Designed with a feature-based architecture to provide a scalable, maintainable, and production-ready codebase.
-
----
-
-## Tech Stack
-
-- Next.js 14 (App Router)
-- React 18
-- TypeScript
-- Tailwind CSS
-- Framer Motion
-- Three.js & React Three Fiber
-- Lucide React
-- ESLint
-- Prettier
+Designed with a strict **Feature-Based Architecture (FBA)** to provide a scalable, maintainable, and production-ready codebase.
 
 ---
 
-## Getting Started
+## 📚 Architectural Documentation
 
-Install dependencies:
+Comprehensive documentation is available for reference:
 
+- **[System Architecture & Blueprint (ARCHITECTURE.md)](ARCHITECTURE.md)**: Full architecture diagram, design patterns, window manager lifecycle, and feature specifications.
+- **[Feature-Based Architecture Guide (docs/FEATURE_STRUCTURE.md)](docs/FEATURE_STRUCTURE.md)**: Rules for feature folders, public API contracts, and decomposition standards.
+- **[Window Manager Deep Dive (docs/WINDOW_MANAGER.md)](docs/WINDOW_MANAGER.md)**: Multi-window state machine, z-index stacking, dragging/resizing mechanics, and mobile responsiveness.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **UI Library**: React 18
+- **Language**: TypeScript 5
+- **Styling**: Tailwind CSS & Glassmorphism design tokens
+- **Animations**: Framer Motion
+- **3D & Shaders**: Three.js & React Three Fiber (`@react-three/fiber`, `@react-three/drei`)
+- **Icons**: Lucide React
+- **Markdown & Code Highlighting**: React Markdown, Shiki, Mermaid
+- **Code Quality**: ESLint, Prettier
+
+---
+
+## 🚀 Getting Started
+
+### 1. Install Dependencies:
 ```bash
 npm install
+# or
+yarn install
 ```
 
-Start the development server:
-
+### 2. Start Development Server:
 ```bash
 npm run dev
 ```
 
-Visit:
+### 3. Build for Production:
+```bash
+npm run build
+```
 
+Visit:
 ```
 http://localhost:3000
 ```
 
 ---
 
-# Project Structure
+## 📁 Project Structure
 
-The project follows a **feature-based architecture** rather than a traditional page-based structure.
+The project follows a **feature-based architecture** where each domain capability is self-contained:
 
 ```text
 src/
-├── app/                    # App Router routes, layouts, metadata
-├── components/
-│   ├── common/             # Shared reusable components
-│   └── ui/                 # UI primitives
+├── app/                        # Next.js App Router routes, layouts, metadata
+├── components/                 # Global cross-cutting components
+│   ├── common/                 # Application-wide UI (BootScreen, SectionLabel)
+│   └── ui/                     # Reusable design system primitives (Button, Badge, Toggle, CButton)
 │
-├── constants/              # Global constants
-├── hooks/                  # Shared hooks
-├── lib/                    # Utility functions
+├── constants/                  # Global immutable configurations (apps registry, developer profile)
+├── hooks/                      # Shared global hooks (useClock, useMediaQuery, useMobile)
+├── lib/                        # Low-level utilities (cn, clsx)
 │
-├── features/
-│   ├── desktop/            # Desktop, wallpaper, dock, menu bar
-│   ├── window-manager/     # Window system
-│   ├── about/
-│   ├── experience/
-│   ├── projects/
-│   ├── terminal/
-│   ├── resume/
-│   ├── contact/
-│   ├── settings/
-│   └── ...
+└── features/                   # Autonomous Domain Feature Modules
+    ├── about/                  # Developer profile & tabbed explorer
+    ├── blogs/                  # Technical articles & blog viewer
+    ├── contact/                # Mail composer & social channels
+    ├── desktop/                # OS desktop shell, menu bar, dock, widgets, wallpaper
+    ├── experience/             # Git-style interactive career log
+    ├── markdownPreview/        # Rich Markdown, Shiki syntax highlighter, Mermaid graphs
+    ├── monitor/                # System performance & telemetry simulator
+    ├── portfolio/              # 3D interactive portfolio showcase
+    ├── projects/               # File explorer portfolio showcase
+    ├── resume/                 # Dual Markdown/PDF interactive resume viewer
+    ├── settings/               # System preference manager (accents, fonts, blur)
+    ├── terminal/               # Interactive CLI shell simulator
+    ├── thoughtProcess/         # Architectural thought process viewer
+    └── window-manager/         # Centralized multi-window state & layer manager
 ```
 
-Each feature owns its components, hooks, data, and exports through an `index.ts` file to keep module boundaries clean.
+Each feature owns its components, custom hooks, data, and types, exporting exclusively through an `index.ts` public contract to keep module boundaries clean.
 
 ---
 
-# Features
+## ✨ Features
 
-- Desktop OS inspired interface
-- Multi-window system
-- Drag & Resize windows
-- Dock navigation
-- Menu Bar
-- Spotlight Search
-- Interactive Terminal
-- Responsive Design
-- Smooth Animations
-- Dark Glassmorphism UI
-- Three.js Visual Effects
-
----
-
-# Architecture
-
-The application is built around a centralized **Window Manager**, which manages:
-
-- Opening applications
-- Closing applications
-- Window stacking (z-index)
-- Window focus
-- Dragging
-- Resizing
-- Minimize / Maximize
-- Application state
-
-Instead of manipulating the DOM directly, the UI is rendered declaratively using React state and context, making the application scalable and easier to maintain.
+- **Desktop OS Simulation**: Windowed multitasking desktop with window stacking, drag, resize, minimize, maximize, and restore.
+- **Magnified Dock**: Spring physics dock with proximity-based icon magnification.
+- **Spotlight Search (`⌘K`)**: Instant keyboard search and app launcher.
+- **Interactive Terminal**: CLI simulator with history navigation (Arrow Up/Down), command parsing (`help`, `about`, `skills`, `projects`, `resume`, `neofetch`, `clear`), and typewriter text animations.
+- **Developer Monitor**: Simulated workstation telemetry with CPU/memory graphs, tech radar, and 52-week contribution heatmap.
+- **Dual Resume Viewer**: Live Markdown resume preview with instant `.md` download, interactive PDF preview, and native browser print hookup.
+- **Projects File Explorer**: Interactive file tree with markdown inspection, demo links, and GitHub repository integration.
+- **Experience Git Log**: Career timeline styled as an interactive `git log` commit and branch tree.
+- **3D Visual Effects**: Procedural aurora wallpaper shader, particle scenes, and responsive glassmorphism.
+- **Adaptive Mobile Layout**: Automatic transformation into a touch-optimized mobile home screen and fullscreen apps on screens `<= 720px`.
 
 ---
 
-# Design Principles
+## 📄 License
 
-- Feature-first architecture
-- Reusable UI components
-- Type-safe development
-- Responsive layouts
-- Production-ready folder structure
-- Clean separation of concerns
-- Minimal shared state
-
----
-
-# Future Improvements
-
-- File Explorer
-- Browser App
-- Music Player
-- Theme Engine
-- Wallpaper Manager
-- Command Palette
-- Multiple Desktop Workspaces
-- Persistent Window State
-- PWA Support
-- Internationalization (i18n)
-
----
-
-# License
-
-This project is intended as a personal portfolio and learning project. Feel free to use the architecture and ideas as inspiration for your own projects.
+This project is open-source and intended as a personal portfolio and architectural reference. Feel free to use the architecture and ideas as inspiration for your own projects.

@@ -2,7 +2,6 @@
 
 import { useWindowManager } from "@/features/window-manager";
 import { PROFILE, SOCIALS } from "../../data";
-
 import Badge from "../common/Badge";
 import Button, { ButtonDiv } from "../common/Button";
 import Container from "../common/Container";
@@ -10,10 +9,13 @@ import GlassCard from "../common/GlassCard";
 import Section from "../common/Section";
 import SectionHeading from "../common/SectionHeading";
 import { useWindowDimensions } from "@/features/window-manager/hooks/useWindowDimensions";
+import { downloadPdfResume } from "@/features/resume";
+import { useMobile } from "@/hooks";
 
 export default function Contact() {
   const { openWindow } = useWindowManager();
   const dimensions = useWindowDimensions("portfolio");
+  const isMobile = useMobile();
 
   return (
     <Section id="contact">
@@ -64,16 +66,18 @@ export default function Contact() {
 
                 <ButtonDiv
                   onClick={() => {
-                    openWindow("resume", {
-                      width: dimensions.width / 1.5,
-                      height: dimensions.height / 1.2,
-                      query: {
-                        project: "resume",
-                      },
-                      state: {
-                        activeTab: "pdf",
-                      },
-                    });
+                    isMobile
+                      ? downloadPdfResume()
+                      : openWindow("resume", {
+                          width: dimensions.width / 1.5,
+                          height: dimensions.height / 1.2,
+                          query: {
+                            project: "resume",
+                          },
+                          state: {
+                            activeTab: "pdf",
+                          },
+                        });
                   }}
                   variant="secondary"
                 >

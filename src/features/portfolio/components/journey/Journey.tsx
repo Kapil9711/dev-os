@@ -1,15 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-
 import Container from "../common/Container";
-import GlassCard from "../common/GlassCard";
 import Section from "../common/Section";
 import SectionHeading from "../common/SectionHeading";
 import JourneyScene from "../three/JourneyScene";
-import Galaxy from "../common/GalaxyBackground";
 import { JOURNEY } from "../../data/journey";
-import { Briefcase } from "lucide-react";
+import { JourneyCard } from "./JourneyCard";
+import { JourneyTimelineDot } from "./JourneyTimelineDot";
 
 export default function Journey() {
   const timelineRef = useRef<HTMLDivElement>(null);
@@ -19,11 +17,7 @@ export default function Journey() {
 
   const [visibleIds, setVisibleIds] = useState<Set<string>>(new Set());
   const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  // Created once, persisted across renders — cards attach to *this same*
-  // instance the moment they mount, so there's no window where a card
-  // exists in the DOM but hasn't been handed to the observer yet.
   const revealObserverRef = useRef<IntersectionObserver | null>(null);
-
   const containerRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -32,10 +26,10 @@ export default function Journey() {
     ) as HTMLElement | null;
   }, []);
 
-  // Scroll-progress loop feeding the Three.js beam — unchanged.
+  // Scroll-progress loop feeding the Three.js beam
   useEffect(() => {
-    const timeline: any = timelineRef.current;
-    const container: any = containerRef.current;
+    const timeline = timelineRef.current;
+    const container = containerRef.current;
 
     if (!timeline || !container) return;
 
@@ -45,48 +39,43 @@ export default function Journey() {
         return;
       }
 
+      if (!timeline || !container) return;
+
       const timelineRect = timeline.getBoundingClientRect();
       const containerRect = container.getBoundingClientRect();
-
       const viewportHeight = container.clientHeight;
 
-      // Position relative to the scroll container
       const top = timelineRect.top - containerRect.top;
-
       const total = timelineRect.height + viewportHeight;
       const scrolled = viewportHeight - top;
 
       progressRef.current = Math.min(1, Math.max(0, scrolled / total));
-
       rafRef.current = requestAnimationFrame(tick);
     }
 
     const observer = new IntersectionObserver(
-      ([entry]: any) => {
+      (entries) => {
+        const entry = entries[0];
+        if (!entry) return;
         isVisibleRef.current = entry.isIntersecting;
-
         if (entry.isIntersecting && rafRef.current === undefined) {
           rafRef.current = requestAnimationFrame(tick);
         }
       },
-      {
-        root: container,
-      },
+      { root: container },
     );
 
     observer.observe(timeline);
 
     return () => {
       observer.disconnect();
-
       if (rafRef.current !== undefined) {
         cancelAnimationFrame(rafRef.current);
       }
     };
   }, []);
 
-  // Create the reveal observer once. It does NOT scan cardRefs.current —
-  // cards register themselves via setCardRef below, as soon as they exist.
+  // Reveal observer for cards
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -102,7 +91,6 @@ export default function Journey() {
 
           setVisibleIds((prev) => {
             if (prev.has(id)) return prev;
-
             const next = new Set(prev);
             next.add(id);
             return next;
@@ -127,14 +115,10 @@ export default function Journey() {
     return (el: HTMLDivElement | null) => {
       cardRefs.current[id] = el;
       if (el) {
-        // Safe to call even if this card was already being observed —
-        // per spec, observe() on an already-observed target is a no-op.
         revealObserverRef.current?.observe(el);
       }
     };
   }, []);
-
-  const SectionRef = useRef(null as any);
 
   return (
     <Section id="journey">
@@ -155,7 +139,7 @@ export default function Journey() {
             style={{ background: "var(--line)" }}
           />
 
-          <div ref={SectionRef} className="space-y-8 @3xl:space-y-12">
+          <div className="space-y-8 @3xl:space-y-12">
             {JOURNEY.map((experience, index) => {
               const isLeft = index % 2 === 0;
               const isVisible = visibleIds.has(experience.id);
@@ -167,212 +151,16 @@ export default function Journey() {
                     isLeft ? "@5xl:justify-start" : "@5xl:justify-end"
                   }`}
                 >
-                  {/* Timeline dot */}
-                  <div
-                    className="absolute left-4 top-8 z-10 flex h-4 w-4 -translate-x-1/2 items-center justify-center rounded-full border-4 transition-all duration-700 @5xl:left-1/2"
-                    style={{
-                      borderColor: "var(--bg-void)",
-                      background: "var(--accent-2)",
-                      boxShadow: isVisible
-                        ? "0 0 0 5px rgba(108,99,255,0.15), 0 0 20px rgba(108,99,255,0.4)"
-                        : "0 0 0 0px rgba(108,99,255,0)",
-                    }}
-                  >
-                    <span
-                      className="absolute h-2 w-2 rounded-full transition-transform duration-700"
-                      style={{
-                        background: "var(--text-1)",
-                        transform: isVisible ? "scale(1)" : "scale(0)",
-                      }}
-                    />
-                  </div>
-
-                  {/* Connecting stub, desktop only */}
-                  <div
-                    className={`absolute top-[38px] hidden h-px transition-all duration-700 @5xl:block ${
-                      isLeft ? "left-1/2 right-[54%]" : "left-[54%] right-1/2"
-                    }`}
-                    style={{
-                      background:
-                        "linear-gradient(90deg, var(--accent-2), transparent)",
-                      opacity: isVisible ? 1 : 0,
-                      transform: isVisible ? "scaleX(1)" : "scaleX(0)",
-                      transformOrigin: isLeft ? "left" : "right",
-                    }}
+                  <JourneyTimelineDot
+                    isVisible={isVisible}
+                    isLeft={isLeft}
                   />
 
-                  <div
-                    data-experience-id={experience.id}
-                    ref={setCardRef(experience.id)}
-                    className="ml-12 w-full transition-all duration-700 ease-out @5xl:ml-0 @5xl:w-[46%]"
-                    style={{
-                      opacity: isVisible ? 1 : 0,
-                      transform: isVisible
-                        ? "translateY(0) scale(1)"
-                        : "translateY(24px) scale(0.98)",
-                    }}
-                  >
-                    {/* Border-ring wrapper — overflow-hidden clips the oversized
-                      rotating gradient into a thin sweeping ring */}
-                    <div
-                      className="relative overflow-hidden rounded-[20px] p-[1px]"
-                      // style={{ background: "var(--line)" }}
-                    >
-                      {/* Oversized rotating conic gradient, clipped by the
-                        parent above. Opacity fades in on hover only —
-                        the animation itself runs continuously so there's
-                        no restart jank. */}
-                      <div
-                        className="border-spin-layer pointer-events-none absolute left-1/2 top-1/2 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                        style={{
-                          width: "250%",
-                          height: "250%",
-                          background:
-                            "conic-gradient(from 0deg, transparent 0%, var(--accent) 8%, transparent 18%)",
-                          animation: "border-spin 3.5s linear infinite",
-                          transform: "translate(-50%, -50%)",
-                        }}
-                      />
-
-                      {/* Opaque base layer — this is what keeps the gradient
-                        confined to the 1px edge instead of bleeding through
-                        the middle of the card */}
-                      <GlassCard
-                        className="relative overflow-hidden p-5 transition-all duration-500 group-hover:-translate-y-1.5 @3xl:p-6 @5xl:p-8"
-                        style={{
-                          background: "var(--bg-void)",
-                          boxShadow: "0 1px 2px rgba(0,0,0,0.2)",
-                        }}
-                      >
-                        {/* Frosted tint layer sits above the opaque base,
-                          below the content */}
-                        <div
-                          className="pointer-events-none absolute inset-0"
-                          style={{
-                            background: "var(--glass)",
-                            backdropFilter: "blur(16px)",
-                          }}
-                        />
-
-                        {/* Ambient glow blobs */}
-                        <div
-                          className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full opacity-0 blur-[90px] transition-opacity duration-700 group-hover:opacity-40"
-                          style={{ background: "var(--accent)" }}
-                        />
-                        <div
-                          className="pointer-events-none absolute -bottom-20 -left-20 h-48 w-48 rounded-full opacity-0 blur-[80px] transition-opacity duration-700 group-hover:opacity-20"
-                          style={{ background: "var(--accent-3)" }}
-                        />
-
-                        <div className="relative flex flex-col gap-3 @3xl:flex-row @3xl:flex-wrap @3xl:items-start @3xl:justify-between @3xl:gap-4">
-                          <div className="flex items-start gap-3.5">
-                            <div
-                              className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border transition-colors duration-500 group-hover:border-transparent"
-                              style={{
-                                borderColor: "var(--line)",
-                                background: "var(--glass)",
-                              }}
-                            >
-                              <div
-                                className="border-spin-layer pointer-events-none absolute left-1/2 top-1/2 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                                style={{
-                                  width: "250%",
-                                  height: "250%",
-                                  background:
-                                    "conic-gradient(from 0deg, transparent 0%, var(--accent-2) 10%, transparent 22%)",
-                                  animation: "border-spin 3s linear infinite",
-                                  transform: "translate(-50%, -50%)",
-                                }}
-                              />
-                              <div
-                                className="relative z-10 flex h-[calc(100%-2px)] w-[calc(100%-2px)] items-center justify-center rounded-[10px]"
-                                style={{ background: "var(--bg-void)" }}
-                              >
-                                <Briefcase
-                                  size={18}
-                                  style={{ color: "var(--accent-3)" }}
-                                />
-                              </div>
-                            </div>
-
-                            <div>
-                              <h3
-                                className="text-lg font-bold leading-snug @3xl:text-xl @5xl:text-2xl"
-                                style={{ color: "var(--text-1)" }}
-                              >
-                                {experience.role}
-                              </h3>
-                              <p
-                                className="mt-1 text-sm font-medium @3xl:text-base"
-                                style={{ color: "var(--accent-3)" }}
-                              >
-                                {experience.company}
-                              </p>
-                            </div>
-                          </div>
-
-                          <span
-                            className="flex w-fit shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-medium uppercase tracking-wider transition-colors duration-500 @3xl:px-4 @3xl:py-2 @3xl:text-xs"
-                            style={{
-                              borderColor: "var(--line)",
-                              background: "var(--glass)",
-                              color: "var(--text-2)",
-                            }}
-                          >
-                            <span
-                              className="h-1.5 w-1.5 rounded-full"
-                              style={{
-                                background: "var(--success)",
-                                boxShadow: "0 0 8px var(--success)",
-                              }}
-                            />
-                            {experience.duration}
-                          </span>
-                        </div>
-
-                        <p
-                          className="relative mt-5 border-l-2 pl-4 text-sm leading-7 @3xl:mt-6 @3xl:text-base @3xl:leading-8"
-                          style={{
-                            borderColor: "var(--line)",
-                            color: "var(--text-2)",
-                          }}
-                        >
-                          {experience.description}
-                        </p>
-
-                        <div className="relative mt-6 flex flex-wrap gap-2 @3xl:mt-8 @3xl:gap-3">
-                          {experience.technologies.map((technology) => (
-                            <span
-                              key={technology}
-                              className="rounded-full border px-3 py-1.5 text-xs font-medium transition-all duration-300 hover:-translate-y-0.5 @3xl:px-4 @3xl:py-2 @3xl:text-sm"
-                              style={{
-                                borderColor: "var(--line)",
-                                background: "var(--glass)",
-                                color: "var(--text-1)",
-                              }}
-                              onMouseEnter={(e) => {
-                                e.currentTarget.style.borderColor =
-                                  "var(--accent)";
-                                e.currentTarget.style.background =
-                                  "rgba(108,99,255,0.12)";
-                                e.currentTarget.style.boxShadow =
-                                  "inset 0 0 12px rgba(108,99,255,0.15)";
-                              }}
-                              onMouseLeave={(e) => {
-                                e.currentTarget.style.borderColor =
-                                  "var(--line)";
-                                e.currentTarget.style.background =
-                                  "var(--glass)";
-                                e.currentTarget.style.boxShadow = "none";
-                              }}
-                            >
-                              {technology}
-                            </span>
-                          ))}
-                        </div>
-                      </GlassCard>
-                    </div>
-                  </div>
+                  <JourneyCard
+                    experience={experience}
+                    isVisible={isVisible}
+                    cardRef={setCardRef(experience.id)}
+                  />
                 </div>
               );
             })}

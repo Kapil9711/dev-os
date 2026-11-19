@@ -1,1 +1,2 @@
-export { About } from "./components/About";
+export { About, default } from "./components/About";
+export * from "./types";

@@ -1,1 +1,13 @@
 export { Desktop } from "./Desktop";
+export { Wallpaper } from "./components/Wallpaper";
+export { MenuBar } from "./components/MenuBar";
+export { Dock } from "./components/Dock";
+export { DockItem } from "./components/DockItem";
+export { DesktopIcons } from "./components/DesktopIcons";
+export { DesktopWidgets } from "./components/DesktopWidgets";
+export { Spotlight } from "./components/Spotlight";
+export { Notification } from "./components/Notification";
+export { MobileStatusBar } from "./components/MobileStatusBar";
+export { MobileHome } from "./components/MobileHome";
+export { MobileNavBar } from "./components/MobileNavBar";
+export { useWeather } from "./hooks/useWeather";

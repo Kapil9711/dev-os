@@ -1,8 +1,4 @@
-export interface Project {
-  name: string;
-  desc: string;
-  stack: string[];
-}
+import type { Project } from "../types";
 
 /** Pulled from the "Experience" section of the supplied resume. */
 export const PROJECTS: Project[] = [

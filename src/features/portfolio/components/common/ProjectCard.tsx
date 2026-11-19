@@ -6,7 +6,7 @@ type Props = {
 };
 
 export default function ProjectCard({ project }: Props) {
-  const image = project.images[1] ?? project.images[0];
+  const image = project.images[0] ?? project.images[0];
 
   return (
     <GlassCard className="group overflow-hidden p-3 @3xl:p-4 @5xl:p-5">

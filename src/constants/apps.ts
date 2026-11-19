@@ -16,12 +16,12 @@ import {
 export type AppId =
   | "about"
   | "experience"
-  // | "projects"
+  | "projects"
   | "terminal"
   | "resume"
   | "monitor"
-  // | "contact"
-  // | "settings"
+  | "contact"
+  | "settings"
   | "blogs"
   | "portfolio"
   | "thoughtProcess";
@@ -61,14 +61,14 @@ export const APP_REGISTRY: Record<AppId, AppMeta> = {
     width: 560,
     height: 350,
   },
-  // projects: {
-  //   id: "projects",
-  //   title: "Projects — File Explorer",
-  //   icon: FolderTree,
-  //   accent: "#EAB308",
-  //   width: 680,
-  //   height: 460,
-  // },
+  projects: {
+    id: "projects",
+    title: "Projects — File Explorer",
+    icon: FolderTree,
+    accent: "#EAB308",
+    width: 680,
+    height: 460,
+  },
   terminal: {
     id: "terminal",
     title: "Terminal",
@@ -101,14 +101,22 @@ export const APP_REGISTRY: Record<AppId, AppMeta> = {
     width: 660,
     height: 480,
   },
-  // contact: {
-  //   id: "contact",
-  //   title: "Mail — New Message",
-  //   icon: Mail,
-  //   accent: "#3B82F6",
-  //   width: 640,
-  //   height: 420,
-  // },
+  contact: {
+    id: "contact",
+    title: "Mail — New Message",
+    icon: Mail,
+    accent: "#3B82F6",
+    width: 640,
+    height: 420,
+  },
+  settings: {
+    id: "settings",
+    title: "Settings",
+    icon: Settings2,
+    accent: "#64748B",
+    width: 520,
+    height: 420,
+  },
   blogs: {
     id: "blogs",
     title: "Blogs",
@@ -126,9 +134,9 @@ export const DOCK_APPS: AppId[] = [
   "terminal",
   "resume",
   // "monitor",
-  // "contact",
   "portfolio",
   "thoughtProcess",
+  // "contact",
 ];
 
 export const DESKTOP_APPS: AppId[] = [

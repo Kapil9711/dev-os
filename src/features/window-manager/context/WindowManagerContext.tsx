@@ -4,23 +4,25 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useRef,
   useState,
+  type Dispatch,
+  type SetStateAction,
 } from "react";
 import type { AppId } from "@/constants/apps";
 import { APP_REGISTRY } from "@/constants/apps";
 import type { WindowRect, WindowState } from "../types/window";
+import { nextRect } from "../utils/layout";
 
-type OpenWindowOptions = {
+export interface OpenWindowOptions {
   width?: number;
   height?: number;
   query?: Record<string, string>;
   state?: unknown;
-};
+}
 
-interface WindowManagerValue {
+export interface WindowManagerValue {
   windows: Record<string, WindowState>;
   hasMaximizedWindow: boolean;
   openOrder: AppId[];
@@ -33,7 +35,7 @@ interface WindowManagerValue {
   restoreWindow: (id: AppId) => void;
   toggleMaximize: (id: AppId) => void;
   focusWindow: (id: AppId) => void;
-  setWindows: any;
+  setWindows: Dispatch<SetStateAction<Record<string, WindowState>>>;
   updateRect: (
     id: AppId,
     rect: Partial<WindowRect> | ((prev: WindowRect) => Partial<WindowRect>),
@@ -42,28 +44,6 @@ interface WindowManagerValue {
 }
 
 const WindowManagerContext = createContext<WindowManagerValue | null>(null);
-
-/** Picks a cascading default position so new windows don't stack exactly. */
-function nextRect(
-  index: number,
-  isMobile: boolean,
-  width: number,
-  height: number,
-): WindowRect {
-  if (isMobile)
-    return {
-      x: 0,
-      y: 0,
-      width: window.innerWidth,
-      height: window.innerHeight - 0,
-    };
-  return {
-    x: 260 + (index % 5) * 30,
-    y: 60 + (index % 5) * 26,
-    width,
-    height,
-  };
-}
 
 export function WindowManagerProvider({
   children,
@@ -91,12 +71,12 @@ export function WindowManagerProvider({
       const shouldFocus = !existing || existing.status !== "closing";
 
       setWindows((prev) => {
-        const existing = prev[id];
+        const win = prev[id];
 
-        if (existing) {
+        if (win) {
           zCounter.current++;
 
-          switch (existing.status) {
+          switch (win.status) {
             case "closing":
             case "minimizing":
               return prev;
@@ -105,11 +85,11 @@ export function WindowManagerProvider({
               return {
                 ...prev,
                 [id]: {
-                  ...existing,
+                  ...win,
                   status: "restoring",
                   zIndex: zCounter.current,
-                  query: options.query ?? existing.query,
-                  state: options.state ?? existing.state,
+                  query: options.query ?? win.query,
+                  state: options.state ?? win.state,
                 },
               };
 
@@ -117,22 +97,21 @@ export function WindowManagerProvider({
               return {
                 ...prev,
                 [id]: {
-                  ...existing,
+                  ...win,
                   zIndex: zCounter.current,
-                  query: options.query ?? existing.query,
-                  state: options.state ?? existing.state,
+                  query: options.query ?? win.query,
+                  state: options.state ?? win.state,
                 },
               };
           }
         }
 
         const meta = APP_REGISTRY[id];
-
         const isMobile =
           typeof window !== "undefined" && window.innerWidth <= 720;
 
-        const width = options.width ?? meta.width;
-        const height = options.height ?? meta.height;
+        const width = options.width ?? meta?.width ?? 600;
+        const height = options.height ?? meta?.height ?? 400;
 
         const rect = nextRect(cascadeCounter.current, isMobile, width, height);
 
@@ -157,7 +136,6 @@ export function WindowManagerProvider({
       setOpenOrder((prev) => (prev.includes(id) ? prev : [...prev, id]));
 
       if (shouldFocus) {
-        // Wait until React has committed the state update
         requestAnimationFrame(() => {
           focusWindow(id);
         });
@@ -206,7 +184,6 @@ export function WindowManagerProvider({
   }, []);
 
   const finalizeMinimizeWindow = useCallback((id: AppId) => {
-    console.log("FINALIZE MINIMIZE", id);
     setWindows((prev) =>
       prev[id]
         ? {
@@ -239,34 +216,11 @@ export function WindowManagerProvider({
     [focusWindow],
   );
 
-  const bringToFront = useCallback((id: AppId) => {
-    zCounter.current++;
-
-    setWindows((prev) => {
-      const win = prev[id];
-      if (!win) return prev;
-
-      return {
-        ...prev,
-        [id]: {
-          ...win,
-          zIndex: zCounter.current,
-        },
-      };
-    });
-
-    setFocusedId(id);
-  }, []);
-
   const toggleMaximize = useCallback((id: AppId) => {
     setWindows((prev) => {
       const win = prev[id];
       if (!win) return prev;
-      console.log(
-        typeof window !== "undefined" ? window.innerWidth : win.rect.width,
 
-        typeof window !== "undefined" ? window.innerHeight : win.rect.height,
-      );
       if (!win.maximized) {
         return {
           ...prev,
@@ -307,18 +261,18 @@ export function WindowManagerProvider({
       rect: Partial<WindowRect> | ((prev: WindowRect) => Partial<WindowRect>),
     ) => {
       setWindows((prev) => {
-        const window = prev[id];
-        if (!window) return prev;
+        const win = prev[id];
+        if (!win) return prev;
 
-        const nextRect = typeof rect === "function" ? rect(window.rect) : rect;
+        const nextR = typeof rect === "function" ? rect(win.rect) : rect;
 
         return {
           ...prev,
           [id]: {
-            ...window,
+            ...win,
             rect: {
-              ...window.rect,
-              ...nextRect,
+              ...win.rect,
+              ...nextR,
             },
           },
         };
@@ -326,6 +280,7 @@ export function WindowManagerProvider({
     },
     [],
   );
+
   const closeAll = useCallback(() => {
     setWindows({});
     setOpenOrder([]);
@@ -333,10 +288,10 @@ export function WindowManagerProvider({
   }, []);
 
   const hasMaximizedWindow = Object.values(windows).some(
-    (window) =>
-      window.status !== "closing" &&
-      window.status !== "minimized" &&
-      window.maximized,
+    (win) =>
+      win.status !== "closing" &&
+      win.status !== "minimized" &&
+      win.maximized,
   );
 
   const value = useMemo<WindowManagerValue>(

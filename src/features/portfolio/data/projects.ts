@@ -165,7 +165,7 @@ export const PROJECTS: Project[] = [
     slug: "gemlay",
     index: "01",
     name: "Gemlay",
-    redirectUrl: "https://www.gemlay.com",
+    // redirectUrl: "https://www.gemlay.com",
     tagline:
       "A production-scale jewellery e-commerce platform, catalog to checkout.",
     bullets: [
@@ -177,6 +177,10 @@ export const PROJECTS: Project[] = [
     stack: ["Next.js", "Elasticsearch", "MongoDB", "Docker", "AWS", "Nginx"],
     accent: "#6c63ff",
     images: [
+      {
+        src: "/images/projects/gemlay-main.webp",
+        label: "main",
+      },
       {
         src: "/images/projects/gemlay-web-2.jpeg",
         label: "Search",
@@ -206,6 +210,10 @@ export const PROJECTS: Project[] = [
     accent: "#4c8dff",
     images: [
       {
+        src: "/images/projects/metalcare-main.webp",
+        label: "main",
+      },
+      {
         src: "/images/projects/metalcare-web.jpeg",
         label: "Website",
       },
@@ -231,6 +239,10 @@ export const PROJECTS: Project[] = [
     stack: ["Backend APIs", "Mobile App", "Notifications"],
     accent: "#9b7eff",
     images: [
+      {
+        src: "/images/projects/karigar-main.webp",
+        label: "main",
+      },
       {
         src: "/images/projects/karigar-login.jpeg",
         label: "Login",

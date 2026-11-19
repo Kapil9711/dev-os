@@ -5,7 +5,7 @@ import { DOCK_APPS, APP_REGISTRY, type AppId } from "@/constants/apps";
 import { DEV } from "@/constants/dev";
 import { useWindowManager } from "@/features/window-manager/context/WindowManagerContext";
 
-const HOME_APPS: AppId[] = [...DOCK_APPS, "settings"];
+const HOME_APPS: AppId[] = Array.from(new Set([...DOCK_APPS, "settings"]));
 
 export function MobileHome({
   visible,
@@ -37,7 +37,9 @@ export function MobileHome({
 
       <div className="grid grid-cols-4 gap-x-2 gap-y-[22px]">
         {HOME_APPS.map((id) => {
-          const Icon = APP_REGISTRY[id]?.icon;
+          const app = APP_REGISTRY[id];
+          if (!app) return null;
+          const Icon = app.icon;
           return (
             <button
               key={id}
@@ -49,7 +51,7 @@ export function MobileHome({
                 <Icon />
               </div>
               <div className="truncate text-[11px] text-[var(--text-1)]">
-                {APP_REGISTRY[id].title.split(" — ")[0]}
+                {app.title.split(" — ")[0]}
               </div>
             </button>
           );

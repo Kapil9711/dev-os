@@ -1,6 +1,6 @@
 import React from "react";
 
-import MarkdownFilePreview from "@/features/markdownPreview/components/MarkdownPreviewFile";
+import { MarkdownPreviewFile } from "@/features/markdownPreview";
 import Container from "../common/Container";
 import SpecularButton from "../common/SpecularButton";
 import { useWindowManager } from "@/features/window-manager";
@@ -13,7 +13,7 @@ export const HowIBuild = () => {
   return (
     <section className="py-5 @3xl:block" id="howibuild">
       <Container>
-        <MarkdownFilePreview path="/docs/thoughtProcess.md" />
+        <MarkdownPreviewFile path="/docs/thoughtProcess.md" />
         {!isMobile && (
           <div className="flex items-center justify-center">
             <SpecularButton

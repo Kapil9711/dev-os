@@ -131,7 +131,8 @@ export function Window({ id, children }: WindowProps) {
       className={cn(
         "window-shell",
         isFocused ? "is-focused" : "is-unfocused",
-        win.maximized && "!rounded-none",
+        win.maximized &&
+          "is-maximized !border-0 !border-none !rounded-none !shadow-none",
         "z-50 max-[720px]:!inset-0 max-[720px]:h-screen max-[720px]:!w-screen max-[720px]:!rounded-none max-[720px]:!border-none",
       )}
       style={{

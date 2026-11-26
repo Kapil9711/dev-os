@@ -29,12 +29,13 @@ export default function Portfolio() {
       <ScrollProgress />
       <Navigation />
       <div
-        className="mx-auto"
+        className="pointer-events-none mx-auto"
         style={{
           width: "100%",
           height: "600px",
           position: "absolute",
           zIndex: isMobile ? 100 : -10,
+          pointerEvents: "none",
         }}
       >
         <LightRays
@@ -47,7 +48,7 @@ export default function Portfolio() {
           mouseInfluence={0.1}
           noiseAmount={0}
           distortion={0}
-          className="custom-rays"
+          className="custom-rays pointer-events-none"
           pulsating={false}
           fadeDistance={1}
           saturation={1}

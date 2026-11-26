@@ -24,20 +24,30 @@ export default function Navigation() {
   // the scrollable ancestor (window, or a custom container like
   // #window-container-portfolio) — scrollIntoView resolves that for us.
   const scrollToSection = useCallback((id: string) => {
+    const target = document.getElementById(id);
+    if (!target) return;
+
     const container = document.getElementById(
       "window-container-portfolio",
     ) as HTMLDivElement | null;
 
-    const target = document.getElementById(id);
+    if (container && typeof container.scrollTo === "function") {
+      const containerRect = container.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      const targetTop =
+        targetRect.top - containerRect.top + container.scrollTop;
 
-    if (!container || !target) return;
+      container.scrollTo({
+        top: Math.max(0, targetTop - 20),
+        behavior: "smooth",
+      });
+    } else {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
 
-    container.scrollTo({
-      top: target.offsetTop - 0,
-      behavior: "smooth",
-    });
-
-    window.history.replaceState(null, "", `#${id}`);
+    try {
+      window.history.replaceState(null, "", `#${id}`);
+    } catch {}
   }, []);
 
   // scroll-aware header background — sentinel-based, no scroll listener

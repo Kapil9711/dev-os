@@ -17,19 +17,30 @@ export default function Hero() {
   const isMobile = useMobile();
 
   const scrollToSection = useCallback((id: string) => {
+    const target = document.getElementById(id);
+    if (!target) return;
+
     const container = document.getElementById(
       "window-container-portfolio",
     ) as HTMLDivElement | null;
 
-    const target = document.getElementById(id);
-    if (!container || !target) return;
+    if (container && typeof container.scrollTo === "function") {
+      const containerRect = container.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      const targetTop =
+        targetRect.top - containerRect.top + container.scrollTop;
 
-    container.scrollTo({
-      top: target.offsetTop - 20,
-      behavior: "smooth",
-    });
+      container.scrollTo({
+        top: Math.max(0, targetTop - 20),
+        behavior: "smooth",
+      });
+    } else {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
 
-    window.history.replaceState(null, "", `#${id}`);
+    try {
+      window.history.replaceState(null, "", `#${id}`);
+    } catch {}
   }, []);
 
   return (
@@ -113,7 +124,6 @@ export default function Hero() {
             <div className="mt-8 flex flex-wrap gap-3 @5xl:mt-10 @5xl:gap-4">
               <Button
                 href={isMobile ? "#projects" : "#"}
-
                 onClick={(e) => {
                   e.preventDefault();
                   scrollToSection("projects");
@@ -123,8 +133,11 @@ export default function Hero() {
                 View Projects
               </Button>
               <Button
-                onClick={() => scrollToSection("contact")}
                 href={isMobile ? "#contact" : "#"}
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection("contact");
+                }}
                 variant="secondary"
               >
                 Contact Me

@@ -587,9 +587,9 @@ const MagicBento: React.FC<BentoProps> = ({
             --border-color: #2F293A;
             --background-dark: #120F17;
             --white: hsl(0, 0%, 100%);
-            --purple-primary: rgba(132, 0, 255, 1);
-            --purple-glow: rgba(132, 0, 255, 0.2);
-            --purple-border: rgba(132, 0, 255, 0.8);
+            --purple-primary: rgba(0, 240, 255, 1);
+            --purple-glow: rgba(0, 240, 255, 0.2);
+            --purple-border: rgba(0, 240, 255, 0.8);
           }
           
           .card-responsive {

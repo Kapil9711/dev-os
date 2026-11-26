@@ -12,9 +12,9 @@ export function Dock() {
 
   return (
     <motion.div
-      className="fixed inset-x-0 bottom-3.5 z-50 flex justify-center max-[720px]:hidden"
+      className="fixed inset-x-0 bottom-4 z-50 flex justify-center max-[720px]:hidden select-none"
       animate={{
-        y: hasMaximizedWindow ? 100 : 0,
+        y: hasMaximizedWindow ? 110 : 0,
       }}
       transition={{
         type: "spring",
@@ -25,7 +25,7 @@ export function Dock() {
       <motion.div
         onMouseMove={(e) => mouseX.set(e.pageX)}
         onMouseLeave={() => mouseX.set(Infinity)}
-        className="glass-panel flex items-end gap-1.5 rounded-[22px] px-3.5 py-2.5 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+        className="dock-shell flex items-end gap-2 px-4 py-2.5"
       >
         {DOCK_APPS.map((id, index) => {
           const isLast = index === DOCK_APPS.length - 1;
@@ -33,7 +33,7 @@ export function Dock() {
           return (
             <React.Fragment key={id}>
               {isLast && (
-                <div className="mx-1 w-px self-stretch bg-[var(--line)]" />
+                <div className="mx-1 my-1.5 w-px self-stretch bg-cyan-500/25" />
               )}
               <DockItem
                 id={id}

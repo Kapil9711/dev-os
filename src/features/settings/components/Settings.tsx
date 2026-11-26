@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Toggle } from "@/components/ui/Toggle";
+import { ThemeSelector } from "@/features/theme";
 import { ACCENTS } from "../constants";
 import type { AccentOption } from "../types";
 import { SettingRow } from "./SettingRow";
@@ -23,16 +24,24 @@ export function Settings() {
 
   function applyBlur(on: boolean) {
     setBlur(on);
-    document.documentElement.style.setProperty("--blur", on ? "18px" : "0px");
+    document.documentElement.style.setProperty("--blur", on ? "20px" : "0px");
   }
 
   return (
-    <div className="p-[18px]">
+    <div className="p-6">
+      <SettingRow
+        label="System Theme"
+        desc="Active aesthetic engine and telemetry palette"
+        fullWidth
+      >
+        <ThemeSelector />
+      </SettingRow>
+
       <SettingRow
         label="Accent Color"
         desc="Applies across dock, focus rings, and highlights"
       >
-        <div className="flex gap-2">
+        <div className="flex gap-2.5">
           {ACCENTS.map((a) => (
             <button
               key={a.id}
@@ -40,8 +49,10 @@ export function Settings() {
               aria-label={`${a.id} accent`}
               onClick={() => applyAccent(a.id)}
               className={cn(
-                "h-[26px] w-[26px] rounded-full border-2",
-                accent === a.id ? "border-white" : "border-transparent",
+                "h-7 w-7 rounded-full border-2 transition-transform duration-150 hover:scale-110",
+                accent === a.id
+                  ? "border-cyan-400 shadow-[0_0_10px_#00f0ff]"
+                  : "border-transparent opacity-80 hover:opacity-100",
               )}
               style={{
                 background: `linear-gradient(135deg, ${a.from}, ${a.to})`,
@@ -53,7 +64,7 @@ export function Settings() {
 
       <SettingRow
         label="Animations"
-        desc="Window transitions & dock magnification"
+        desc="Window transitions & dock magnification physics"
       >
         <Toggle
           checked={animations}
@@ -78,7 +89,7 @@ export function Settings() {
         <select
           value={font}
           onChange={(e) => setFont(e.target.value)}
-          className="rounded-lg border border-white/10 bg-white/[0.06] px-2.5 py-1.5 text-[12.5px] text-[var(--text-1)]"
+          className="rounded-lg border border-cyan-500/25 bg-[#030611]/80 px-3 py-1.5 font-mono text-[12.5px] text-cyan-100 outline-none transition focus:border-cyan-400 focus:shadow-[0_0_10px_rgba(0,240,255,0.25)]"
         >
           <option>JetBrains Mono</option>
           <option>Menlo</option>

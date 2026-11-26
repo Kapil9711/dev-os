@@ -15,14 +15,14 @@ export function About() {
     <div className="flex h-full pb-10 sm:pb-0">
       <AboutSidebar activeTab={tab} onSelectTab={setTab} />
 
-      <div className="hidden flex-1 overflow-auto px-3 @3xl:block">
+      <div className="wbody-scroll hidden flex-1 overflow-auto p-5 @3xl:block">
         {tab === "code" && <CodeTab />}
         {tab === "photo" && <PhotoTab />}
         {tab === "skills" && <SkillsTab />}
         {tab === "contact" && <ContactTab />}
       </div>
 
-      <div className="block flex-1 overflow-auto p-2 @3xl:hidden">
+      <div className="wbody-scroll block flex-1 overflow-auto p-4 @3xl:hidden">
         <CodeTab />
         <PhotoTab />
         <SkillsTab />

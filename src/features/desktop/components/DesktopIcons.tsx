@@ -14,7 +14,7 @@ export function DesktopIcons() {
   const { openWindow } = useWindowManager();
 
   return (
-    <div className="fixed right-5 top-14 z-10 flex flex-col items-center gap-2 max-[720px]:hidden">
+    <div className="fixed right-6 top-16 z-10 flex flex-col items-center gap-3.5 max-[720px]:hidden select-none">
       {DESKTOP_APPS.map((id) => {
         const app = APP_REGISTRY[id];
         if (!app) return null;
@@ -28,15 +28,15 @@ export function DesktopIcons() {
             onClick={() => {
               openWindow(app.id);
             }}
-            className="group w-24 rounded-2xl px-2 py-2 text-center transition-all duration-200 hover:bg-white/5 focus:outline-none"
+            className="group flex w-24 flex-col items-center rounded-2xl p-2 text-center transition-all duration-200 hover:bg-cyan-500/10 focus:outline-none"
           >
-            <div className="mx-auto mb-2 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-accent/25 via-accent-2/20 to-accent/10 shadow-lg transition-all duration-200 group-hover:scale-105 group-hover:shadow-xl">
-              <div className="text-white">
-                <Icon />
+            <div className="desktop-icon-badge mx-auto mb-2 flex h-14 w-14 items-center justify-center rounded-2xl shadow-lg transition-all duration-200 group-hover:scale-105 group-hover:shadow-[0_0_25px_rgba(0,240,255,0.45)]">
+              <div className="text-cyan-200 transition-colors duration-200 group-hover:text-cyan-50">
+                <Icon size={26} />
               </div>
             </div>
 
-            <div className="rounded-md px-1 py-0.5 text-[11px] font-medium text-[var(--text-1)] [text-shadow:0_1px_3px_rgba(0,0,0,0.7)]">
+            <div className="rounded-md border border-cyan-500/20 bg-[#030611]/80 px-2 py-0.5 font-mono text-[10.5px] font-medium tracking-wide text-cyan-100 shadow-md backdrop-blur-md transition-colors duration-200 group-hover:border-cyan-400 group-hover:text-cyan-200">
               {label}
             </div>
           </button>

@@ -41,7 +41,8 @@ export function DockItem({ id, running, onClick, mouseX }: DockItemProps) {
 
   return (
     <div className="group relative flex flex-col items-center">
-      <div className="pointer-events-none absolute -top-8 z-30 rounded-md border border-white/10 bg-[rgba(10,13,26,0.9)] px-2 py-0.5 text-[11px] font-medium text-white opacity-0 shadow-lg backdrop-blur-md transition-opacity duration-150 group-hover:opacity-100">
+      {/* Tooltip */}
+      <div className="pointer-events-none absolute -top-10 z-30 whitespace-nowrap rounded-lg border border-cyan-400/30 bg-[#030611]/95 px-2.5 py-1 font-mono text-[11px] font-semibold tracking-wide text-cyan-100 opacity-0 shadow-[0_0_15px_rgba(0,240,255,0.25)] backdrop-blur-md transition-opacity duration-150 group-hover:opacity-100">
         {meta.title.split(" — ")[0]}
       </div>
 
@@ -51,16 +52,19 @@ export function DockItem({ id, running, onClick, mouseX }: DockItemProps) {
         aria-label={meta.title}
         onClick={onClick}
         style={{ width: size, height: size }}
-        className="flex items-center justify-center rounded-[18px] border border-white/10 bg-gradient-to-br from-white/15 to-white/5 shadow-[0_8px_20px_rgba(0,0,0,0.35)] transition-colors hover:border-white/20 active:scale-95"
+        className="dock-item-btn flex items-center justify-center active:scale-95"
       >
-        <div className="text-white">
+        <div className="dock-icon text-cyan-200 transition-colors duration-150 group-hover:text-cyan-50">
           <Icon />
         </div>
       </motion.button>
 
+      {/* Running indicator dot */}
       <span
-        className={`mt-1.5 h-1 w-1 rounded-full transition-all duration-200 ${
-          running ? "bg-white/80 opacity-100" : "opacity-0"
+        className={`mt-1.5 h-1.5 w-1.5 rounded-full transition-all duration-200 ${
+          running
+            ? "bg-cyan-400 opacity-100 shadow-[0_0_8px_#00f0ff]"
+            : "opacity-0"
         }`}
       />
     </div>

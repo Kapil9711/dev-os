@@ -259,7 +259,7 @@ const Masonry: React.FC<MasonryProps> = ({
             style={{ backgroundImage: `url(${item.img})` }}
           >
             {colorShiftOnHover && (
-              <div className="color-overlay pointer-events-none absolute inset-0 rounded-[10px] bg-gradient-to-tr from-pink-500/50 to-sky-500/50 opacity-0" />
+              <div className="color-overlay pointer-events-none absolute inset-0 rounded-[10px] bg-gradient-to-tr from-cyan-500/40 to-sky-500/40 opacity-0" />
             )}
           </div>
         </div>

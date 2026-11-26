@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { BootScreen } from "@/components/common/BootScreen";
+import { ThemeProvider } from "@/features/theme";
 import {
   WindowManagerProvider,
   useWindowManager,
@@ -25,26 +26,28 @@ export function Desktop() {
   const isMobile = useMobile();
 
   return (
-    <WindowManagerProvider>
-      {!booted ? (
-        <BootScreen onDone={() => setBooted(true)} />
-      ) : (
-        <>
-          {isMobile ? (
-            <div
-              id={"window-container-portfolio"}
-              className="wbody-scroll relative h-full w-full flex-1 overflow-auto pb-5 @container sm:pb-0"
-            >
-              <Portfolio />
-            </div>
-          ) : (
-            <>
-              <DesktopShell booted={booted} />
-            </>
-          )}
-        </>
-      )}
-    </WindowManagerProvider>
+    <ThemeProvider>
+      <WindowManagerProvider>
+        {!booted ? (
+          <BootScreen onDone={() => setBooted(true)} />
+        ) : (
+          <>
+            {isMobile ? (
+              <div
+                id={"window-container-portfolio"}
+                className="wbody-scroll relative h-full w-full flex-1 overflow-auto pb-5 @container sm:pb-0"
+              >
+                <Portfolio />
+              </div>
+            ) : (
+              <>
+                <DesktopShell booted={booted} />
+              </>
+            )}
+          </>
+        )}
+      </WindowManagerProvider>
+    </ThemeProvider>
   );
 }
 

@@ -54,11 +54,11 @@ void main(){
 
     float n=noise(uv*6.+uTime*.03);
 
-    vec3 blue=vec3(.30,.55,1.);
-    vec3 purple=vec3(.55,.40,1.);
-    vec3 cyan=vec3(.30,.90,1.);
+    vec3 blue=vec3(.10,.45,.85);
+    vec3 sky=vec3(.05,.65,.95);
+    vec3 cyan=vec3(.10,.95,1.);
 
-    vec3 color=mix(blue,purple,n);
+    vec3 color=mix(blue,sky,n);
     color=mix(color,cyan,n*.4);
 
     float alpha=smoothstep(.15,.8,n)*.12;

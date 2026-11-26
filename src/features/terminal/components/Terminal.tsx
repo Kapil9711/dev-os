@@ -27,7 +27,7 @@ export function Terminal() {
   return (
     <div
       ref={scrollRef}
-      className="h-full overflow-y-auto bg-[#0b0f19] px-4 py-4 font-mono text-[13px]"
+      className="term-scroll h-full overflow-y-auto bg-[#040816]/95 p-5 font-mono text-[13px] text-cyan-50 select-text"
     >
       <TerminalHeader />
 

@@ -109,6 +109,7 @@ src/
     ├── resume/                 # Dual Markdown/PDF interactive resume viewer
     ├── settings/               # System preference manager (accents, fonts, blur)
     ├── terminal/               # Interactive CLI shell simulator
+    ├── theme/                  # Multi-theme engine (Cyberpunk, Skeuomorphism, Neubrutalism)
     ├── thoughtProcess/         # Architectural thought process viewer
     └── window-manager/         # Centralized multi-window state & layer manager
 ```
@@ -321,7 +322,35 @@ Your app is now fully integrated with:
 
 ---
 
-## 8. Verification & Build Workflow
+## 8. Cyberpunk HUD Design System (`src/features/theme`)
+
+`kapOS` is styled with an aesthetic centered on the **Cyberpunk HUD**:
+
+### Visual Paradigm & Token Palette
+
+- **Visual Identity**: High-tech netrunner desktop operating system with cyan ice luminance glow and neon accents.
+- **Color System**:
+  - `--bg-void`: Deep dark void (`#030611`)
+  - `--accent`: Cyan Ice (`#00f0ff`) with luminance glow
+  - `--accent-2`: Electric Violet (`#7000ff`)
+  - `--accent-3`: Hot Magenta (`#ff007f`)
+  - `--text-1`: Crisp high-contrast cyan white (`#e0f7fa`)
+  - `--text-2`: Secondary telemetry slate cyan (`#6ba0b8`)
+  - `--success`: Matrix Green (`#00ff88`)
+- **Backdrop & Shaders**:
+  - Interactive 3D WebGL Aurora shader simulation (`AuroraBackground.tsx`).
+  - Drifting neon plasma clusters with heavy blur (`blur-[75px]`).
+  - High-tech HUD grid scanlines and CRT scanline overlay.
+  - Tactical corner telemetry brackets.
+- **Glassmorphism & Windows**:
+  - Translucent cyan glass panels with subtle luminance drop shadows (`0 0 30px rgba(0, 240, 255, 0.12)`).
+  - Glowing window titlebars and traffic control dots with neon halo on hover.
+  - Slim cyan-tinted custom scrollbars with hover glow.
+  - Spring-physics magnified dock with cyan neon borders and item tooltips.
+
+---
+
+## 9. Verification & Build Workflow
 
 - **Type Check**:
   ```bash

@@ -13,7 +13,7 @@ export const SYSTEM_STATS: SystemStatItem[] = [
     label: "Memory",
     value: 58,
     icon: MemoryStick,
-    color: "from-purple-400 to-fuchsia-500",
+    color: "from-sky-400 to-blue-500",
   },
   {
     label: "Projects",

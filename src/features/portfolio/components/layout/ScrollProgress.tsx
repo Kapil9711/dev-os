@@ -52,7 +52,7 @@ export default function ScrollProgress({
   return (
     <div className="sticky left-0 top-0 z-[9999] hidden h-1 w-full bg-transparent @3xl:block">
       <div
-        className="h-full rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 transition-[width] duration-75"
+        className="h-full rounded-full bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 shadow-[0_0_8px_#00f0ff] transition-[width] duration-75"
         style={{ width: `${progress}%` }}
       />
     </div>

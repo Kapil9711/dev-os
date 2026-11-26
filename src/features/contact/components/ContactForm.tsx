@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/Button";
 import { DEV } from "@/constants/dev";
+import { Send, CheckCircle2 } from "lucide-react";
 
 export function ContactForm() {
   const [sent, setSent] = useState(false);
@@ -10,52 +10,69 @@ export function ContactForm() {
   function handleSend(e: React.FormEvent) {
     e.preventDefault();
     setSent(true);
-    setTimeout(() => setSent(false), 2200);
+    setTimeout(() => setSent(false), 2400);
   }
 
   return (
-    <form onSubmit={handleSend} className="flex-1 overflow-auto p-[18px]">
-      <Field label="To">
-        <input value={DEV.email} readOnly className="contact-field" />
+    <form onSubmit={handleSend} className="wbody-scroll flex-1 overflow-auto p-6 space-y-4">
+      <Field label="Recipient Target">
+        <input value={DEV.email} readOnly className="contact-field cursor-default text-cyan-300 font-mono" />
       </Field>
-      <Field label="Your Name">
-        <input placeholder="Jane Recruiter" className="contact-field" />
+      <Field label="Your Name // Handle">
+        <input placeholder="Jane Recruiter" className="contact-field" required />
       </Field>
-      <Field label="Your Email">
+      <Field label="Return Comms Address">
         <input
           type="email"
           placeholder="jane@company.com"
           className="contact-field"
+          required
         />
       </Field>
-      <Field label="Message">
+      <Field label="Encrypted Transmission">
         <textarea
           rows={4}
-          placeholder="Let's talk about an opportunity…"
+          placeholder="Let's collaborate on an exciting high-impact engineering opportunity…"
           className="contact-field resize-none"
+          required
         />
       </Field>
-      <Button type="submit" variant="primary">
-        {sent ? "Sent ✓" : "Send Message"}
-      </Button>
+
+      <button
+        type="submit"
+        className="flex items-center justify-center gap-2 rounded-xl border border-cyan-400 bg-gradient-to-r from-cyan-400 via-cyan-300 to-sky-400 px-5 py-2.5 font-mono text-[13px] font-bold text-black shadow-[0_0_15px_rgba(0,240,255,0.4)] transition hover:brightness-110 active:scale-95"
+      >
+        {sent ? (
+          <>
+            <CheckCircle2 size={16} />
+            <span>TRANSMITTED // CONFIRMED</span>
+          </>
+        ) : (
+          <>
+            <Send size={15} />
+            <span>TRANSMIT DISPATCH</span>
+          </>
+        )}
+      </button>
 
       <style jsx>{`
         .contact-field {
           width: 100%;
           margin-top: 6px;
-          margin-bottom: 14px;
-          padding: 10px 12px;
-          border-radius: 10px;
-          background: rgba(255, 255, 255, 0.04);
-          border: 1px solid var(--line);
-          color: var(--text-1);
+          padding: 10px 14px;
+          border-radius: 12px;
+          background: rgba(3, 6, 18, 0.75);
+          border: 1px solid rgba(0, 240, 255, 0.2);
+          color: #e0f7fa;
           font-size: 13px;
           outline: none;
           font-family: inherit;
           display: block;
+          transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
         .contact-field:focus {
-          border-color: var(--accent);
+          border-color: #00f0ff;
+          box-shadow: 0 0 12px rgba(0, 240, 255, 0.25);
         }
       `}</style>
     </form>
@@ -70,9 +87,9 @@ function Field({
   children: React.ReactNode;
 }) {
   return (
-    <label className="mb-0 block">
-      <span className="text-[11px] uppercase tracking-wide text-[var(--text-2)]">
-        {label}
+    <label className="block">
+      <span className="font-mono text-[10.5px] uppercase tracking-wider text-cyan-400/80">
+        {"//"} {label}
       </span>
       {children}
     </label>

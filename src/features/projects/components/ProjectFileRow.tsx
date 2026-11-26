@@ -18,12 +18,12 @@ export function ProjectFileRow({
       type="button"
       onClick={onClick}
       disabled={!onClick}
-      className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-[13px] transition hover:bg-white/[0.06] disabled:cursor-default"
+      className="flex w-full items-center gap-3 rounded-lg border border-transparent px-3 py-2 text-left font-mono text-[12.5px] text-slate-200 transition hover:border-cyan-500/20 hover:bg-cyan-500/10 hover:text-cyan-100 disabled:cursor-default"
     >
       <span>{icon}</span>
-      <span>{label}</span>
+      <span className="font-medium">{label}</span>
       {trailing && (
-        <span className="ml-auto text-[11px] text-[var(--text-2)]">
+        <span className="ml-auto font-mono text-[11px] text-cyan-400/60">
           {trailing}
         </span>
       )}

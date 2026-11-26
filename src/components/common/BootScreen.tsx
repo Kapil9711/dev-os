@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 const BOOT_LINES = [
-  "loading kernel",
-  "mounting components",
+  "loading cybernetic kernel // v2.6.0",
+  "mounting virtual subsystems",
   "connecting → github.com/Kapil9711",
-  "initializing portfolio.sys",
-  "indexing repositories",
+  "initializing telemetry.sys & hud.engine",
+  "indexing project artifacts",
 ];
 
 const LINE_INTERVAL = 260;
@@ -72,7 +72,7 @@ export function BootScreen({ onDone }: { onDone: () => void }) {
     <div
       onClick={finish}
       className={cn(
-        "boot-root fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-[#05060b] transition-all duration-500 ease-out",
+        "boot-root fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-[#02050e] transition-all duration-500 ease-out select-none",
         fadeOut && "pointer-events-none scale-[1.03] opacity-0 blur-[6px]",
       )}
     >
@@ -80,56 +80,56 @@ export function BootScreen({ onDone }: { onDone: () => void }) {
       <div className="boot-glow" />
 
       <div className="relative mb-6 flex flex-col items-center">
-        <div className="logo-glow text-[15px] font-bold tracking-[0.02em] text-[var(--text-1)]">
-          kap<span className="text-accent-3">OS</span>
-          <span className="ml-2 text-[11px] font-normal text-[var(--text-2)]">
-            v2.6.0
+        <div className="logo-glow font-mono text-base font-bold tracking-wider text-cyan-100">
+          kap<span className="text-cyan-400">OS</span>
+          <span className="ml-2 rounded border border-cyan-400/30 bg-cyan-500/10 px-1.5 py-0.5 text-[10px] font-normal text-cyan-300">
+            CYBER_HUD v2.6
           </span>
         </div>
       </div>
 
-      <div className="relative min-h-[170px] w-[min(460px,86vw)] font-mono text-[12.5px] text-[var(--text-2)]">
+      <div className="relative min-h-[170px] w-[min(480px,88vw)] font-mono text-[12.5px] text-slate-300">
         {BOOT_LINES.slice(0, visibleLines).map((line, i) => {
           const isLast = i === visibleLines - 1;
           return (
             <div
               key={line}
-              className="boot-line mb-1.5 flex items-center gap-1.5"
+              className="boot-line mb-2 flex items-center gap-2"
             >
-              <span className="text-success">[ok]</span>
+              <span className="text-cyan-400 drop-shadow-[0_0_6px_#00f0ff]">[OK]</span>
               <span>{line}</span>
               {isLast && !showWelcome && <span className="cursor-blink" />}
             </div>
           );
         })}
         {showWelcome && (
-          <div className="welcome-in mt-2.5 font-semibold text-[var(--text-1)]">
-            Welcome, Recruiter.
+          <div className="welcome-in mt-3 font-mono font-bold text-cyan-200">
+            Workstation Ready. Welcome, Recruiter.
             <span className="cursor-blink" />
           </div>
         )}
       </div>
 
-      <div className="relative mt-5 flex w-[min(460px,86vw)] flex-col gap-1.5">
-        <div className="h-[3px] w-full overflow-hidden rounded-full bg-white/[0.06]">
+      <div className="relative mt-5 flex w-[min(480px,88vw)] flex-col gap-2">
+        <div className="h-[3px] w-full overflow-hidden rounded-full bg-cyan-950/60 border border-cyan-500/20">
           <div
-            className="progress-bar h-full rounded-full bg-gradient-to-r from-accent to-accent-2"
+            className="progress-bar h-full rounded-full bg-gradient-to-r from-cyan-400 via-cyan-300 to-sky-400 shadow-[0_0_12px_#00f0ff]"
             style={{ width: `${progress}%` }}
           />
         </div>
-        <div className="text-[var(--text-2)]/60 flex justify-between font-mono text-[10px]">
-          <span>booting</span>
+        <div className="flex justify-between font-mono text-[10.5px] text-cyan-400/70">
+          <span>INITIALIZING</span>
           <span>{progress}%</span>
         </div>
       </div>
 
       <div
         className={cn(
-          "absolute bottom-[26px] text-[11px] text-[var(--text-2)] opacity-0 transition-opacity duration-500",
-          showSkip && "opacity-70",
+          "absolute bottom-8 font-mono text-[11px] text-cyan-400/50 opacity-0 transition-opacity duration-500",
+          showSkip && "opacity-80",
         )}
       >
-        press any key to skip
+        [ press any key to skip ]
       </div>
 
       <style jsx>{`
@@ -137,31 +137,31 @@ export function BootScreen({ onDone }: { onDone: () => void }) {
           position: absolute;
           inset: 0;
           background-image:
-            linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+            linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
             linear-gradient(
               90deg,
-              rgba(255, 255, 255, 0.035) 1px,
+              rgba(0, 240, 255, 0.05) 1px,
               transparent 1px
             );
-          background-size: 42px 42px;
+          background-size: 48px 48px;
           -webkit-mask-image: radial-gradient(
-            ellipse 70% 60% at 50% 45%,
+            ellipse 75% 65% at 50% 45%,
             black 20%,
-            transparent 75%
+            transparent 80%
           );
           mask-image: radial-gradient(
-            ellipse 70% 60% at 50% 45%,
+            ellipse 75% 65% at 50% 45%,
             black 20%,
-            transparent 75%
+            transparent 80%
           );
-          animation: gridDrift 18s linear infinite;
+          animation: gridDrift 20s linear infinite;
         }
         @keyframes gridDrift {
           from {
             background-position: 0 0;
           }
           to {
-            background-position: 84px 84px;
+            background-position: 96px 96px;
           }
         }
 
@@ -169,9 +169,9 @@ export function BootScreen({ onDone }: { onDone: () => void }) {
           position: absolute;
           inset: 0;
           background: radial-gradient(
-            circle at 50% 40%,
-            rgba(108, 99, 255, 0.16),
-            transparent 60%
+            circle at 50% 42%,
+            rgba(0, 240, 255, 0.16),
+            transparent 65%
           );
           animation: glowPulse 3.6s ease-in-out infinite;
         }
@@ -186,7 +186,7 @@ export function BootScreen({ onDone }: { onDone: () => void }) {
         }
 
         .logo-glow {
-          filter: drop-shadow(0 0 14px rgba(108, 99, 255, 0.35));
+          filter: drop-shadow(0 0 16px rgba(0, 240, 255, 0.45));
           animation: logoIn 0.6s ease-out;
         }
         @keyframes logoIn {
@@ -232,10 +232,11 @@ export function BootScreen({ onDone }: { onDone: () => void }) {
 
         .cursor-blink {
           display: inline-block;
-          width: 6px;
-          height: 12px;
-          margin-left: 4px;
-          background: currentColor;
+          width: 7px;
+          height: 13px;
+          margin-left: 5px;
+          background: #00f0ff;
+          box-shadow: 0 0 8px #00f0ff;
           vertical-align: -2px;
           animation: blink 0.9s step-start infinite;
         }
@@ -247,8 +248,6 @@ export function BootScreen({ onDone }: { onDone: () => void }) {
 
         .progress-bar {
           transition: width 0.24s ease-out;
-          box-shadow: 0 0 12px 1px
-            color-mix(in srgb, var(--accent) 60%, transparent);
         }
       `}</style>
     </div>

@@ -84,6 +84,7 @@ src/
     ├── resume/                 # Dual Markdown/PDF interactive resume viewer
     ├── settings/               # System preference manager (accents, fonts, blur)
     ├── terminal/               # Interactive CLI shell simulator
+    ├── theme/                  # Multi-theme engine (Cyberpunk, Skeuomorphism, Neubrutalism)
     ├── thoughtProcess/         # Architectural thought process viewer
     └── window-manager/         # Centralized multi-window state & layer manager
 ```
@@ -94,6 +95,7 @@ Each feature owns its components, custom hooks, data, and types, exporting exclu
 
 ## ✨ Features
 
+- **Cyberpunk HUD Design System**: High-tech netrunner aesthetic with cyan ice luminance glow, neon accents, interactive 3D WebGL Aurora background shader, scanlines, and telemetry widgets.
 - **Desktop OS Simulation**: Windowed multitasking desktop with window stacking, drag, resize, minimize, maximize, and restore.
 - **Magnified Dock**: Spring physics dock with proximity-based icon magnification.
 - **Spotlight Search (`⌘K`)**: Instant keyboard search and app launcher.

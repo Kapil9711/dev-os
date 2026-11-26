@@ -24,9 +24,9 @@ export function TerminalPrompt({
   }, []);
 
   return (
-    <div className="mt-2 flex items-center gap-2">
-      <span className="text-accent-3">➜</span>
-      <span className="text-accent-2">~</span>
+    <div className="mt-3 flex items-center gap-2 font-mono">
+      <span className="font-bold text-cyan-400 drop-shadow-[0_0_6px_#00f0ff]">❯</span>
+      <span className="text-sky-400">~/cyber</span>
 
       <input
         ref={inputRef}
@@ -34,7 +34,7 @@ export function TerminalPrompt({
         disabled={typing}
         autoComplete="off"
         spellCheck={false}
-        className="flex-1 bg-transparent outline-none"
+        className="flex-1 bg-transparent font-mono text-cyan-100 outline-none placeholder-cyan-500/40"
         onChange={(e) => onInputChange(e.target.value)}
         onKeyDown={(e) => {
           if (typing) return;
@@ -62,7 +62,11 @@ export function TerminalPrompt({
         }}
       />
 
-      {!typing && <span className="animate-pulse">▋</span>}
+      {!typing && (
+        <span className="animate-pulse text-cyan-400 drop-shadow-[0_0_6px_#00f0ff]">
+          ▋
+        </span>
+      )}
     </div>
   );
 }
